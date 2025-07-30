@@ -25,17 +25,37 @@ export function Header({
 }: HeaderProps) {
   const {shop, menu} = header;
   return (
-    <header className="header">
-      <NavLink prefetch="intent" to="/" style={activeLinkStyle} end>
-        <strong>{shop.name}</strong>
-      </NavLink>
-      <HeaderMenu
-        menu={menu}
-        viewport="desktop"
-        primaryDomainUrl={header.shop.primaryDomain.url}
-        publicStoreDomain={publicStoreDomain}
-      />
-      <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+    <header className="w-full z-40">
+      <div className="flex justify-center items-center py-[15px] md:py-[15px] lg:py-[15px] bg-transparent">
+        <div className="relative w-full max-w-[1430px] md:max-w-[1014px] lg:max-w-[1430px] mx-auto">
+          {/* Overlay + Shadow + Background */}
+          <div className="absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)]" style={{ background: '#FBAC18' }} />
+          {/* Content */}
+          <div className="relative flex items-center justify-between h-[52.3px] md:h-[79.3px] px-4 md:px-8 lg:px-8">
+            {/* Left: Logo */}
+            <NavLink prefetch="intent" to="/" className="flex items-center z-10 select-none" style={{ textDecoration: 'none' }} end>
+              <span className="block w-[120px] h-[32px] md:w-[160px] md:h-[40px] lg:w-[180px] lg:h-[48px] bg-white rounded flex items-center justify-center font-bold text-[#FBAC18] text-lg md:text-xl lg:text-2xl shadow-sm">
+                {shop.name}
+              </span>
+            </NavLink>
+            {/* Desktop/Tablet Menu */}
+            <HeaderMenu
+              menu={menu}
+              viewport="desktop"
+              primaryDomainUrl={header.shop.primaryDomain.url}
+              publicStoreDomain={publicStoreDomain}
+            />
+            {/* Desktop/Tablet CTAs */}
+            <div className="hidden md:flex items-center z-10">
+              <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+            </div>
+            {/* Mobile Hamburger/CTAs */}
+            <div className="md:hidden flex items-center z-10">
+              <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+            </div>
+          </div>
+        </div>
+      </div>
     </header>
   );
 }
@@ -51,7 +71,7 @@ export function HeaderMenu({
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
-  const className = `header-menu-${viewport}`;
+  const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-8 lg:gap-12 items-center z-10' : 'flex flex-col gap-4'} `;
   const {close} = useAside();
 
   return (
@@ -69,8 +89,6 @@ export function HeaderMenu({
       )}
       {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
         if (!item.url) return null;
-
-        // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
           item.url.includes(publicStoreDomain) ||
@@ -79,12 +97,12 @@ export function HeaderMenu({
             : item.url;
         return (
           <NavLink
-            className="header-menu-item"
+            className="text-white font-semibold text-base lg:text-lg tracking-widest hover:text-black transition-colors px-2 py-1 rounded"
+            style={{ letterSpacing: '0.12em', textDecoration: 'none' }}
             end
             key={item.id}
             onClick={close}
             prefetch="intent"
-            style={activeLinkStyle}
             to={url}
           >
             {item.title}
@@ -100,9 +118,9 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas" role="navigation">
+    <nav className="header-ctas flex items-center gap-4" role="navigation">
       <HeaderMenuMobileToggle />
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle}>
+      <NavLink prefetch="intent" to="/account" style={activeLinkStyle} className="text-white font-semibold hover:text-black transition-colors">
         <Suspense fallback="Sign in">
           <Await resolve={isLoggedIn} errorElement="Sign in">
             {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
@@ -119,10 +137,16 @@ function HeaderMenuMobileToggle() {
   const {open} = useAside();
   return (
     <button
-      className="header-menu-mobile-toggle reset"
+      className="header-menu-mobile-toggle reset text-white text-2xl px-2"
       onClick={() => open('mobile')}
+      aria-label="Open menu"
     >
-      <h3>☰</h3>
+      <span className="sr-only">Open menu</span>
+      <svg width="28" height="28" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
+        <line x1="4" y1="6" x2="20" y2="6" />
+        <line x1="4" y1="12" x2="20" y2="12" />
+        <line x1="4" y1="18" x2="20" y2="18" />
+      </svg>
     </button>
   );
 }
@@ -130,7 +154,7 @@ function HeaderMenuMobileToggle() {
 function SearchToggle() {
   const {open} = useAside();
   return (
-    <button className="reset" onClick={() => open('search')}>
+    <button className="reset text-white hover:text-black transition-colors" onClick={() => open('search')}>
       Search
     </button>
   );
@@ -153,6 +177,7 @@ function CartBadge({count}: {count: number | null}) {
           url: window.location.href || '',
         } as CartViewPayload);
       }}
+      className="text-white font-semibold hover:text-black transition-colors"
     >
       Cart {count === null ? <span>&nbsp;</span> : count}
     </a>
@@ -227,5 +252,6 @@ function activeLinkStyle({
   return {
     fontWeight: isActive ? 'bold' : undefined,
     color: isPending ? 'grey' : 'black',
+    textDecoration: 'none',
   };
 }

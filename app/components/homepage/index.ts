@@ -1,0 +1,12 @@
+export { AnnouncementBar } from './AnnouncementBar';
+export { Header } from './Header';
+export { Hero } from './Hero';
+export { FeaturedProducts } from './FeaturedProducts';
+export { TabsSection } from './TabsSection';
+export { CTASection } from './CTASection';
+export { HomePageLayout } from './HomePageLayout';
+export { SalePopup } from './SalePopup';
+export { RegionBar } from './RegionBar';
+export { ContentSections } from './ContentSections';
+export { ImageGallery } from './ImageGallery';
+export { OverlaySection } from './OverlaySection'; 

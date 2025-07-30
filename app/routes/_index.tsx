@@ -1,5 +1,5 @@
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import { Await, useLoaderData, Link, type MetaFunction } from 'react-router';
+import { Await, useLoaderData, Link, type MetaFunction, useRouteLoaderData } from 'react-router';
 import {Suspense} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import type {
@@ -7,9 +7,23 @@ import type {
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
 import {ProductItem} from '~/components/ProductItem';
+import {
+  Hero,
+  FeaturedProducts,
+  TabsSection,
+  CTASection,
+  HomePageLayout,
+  SalePopup,
+  RegionBar,
+  ContentSections,
+  ImageGallery,
+  OverlaySection
+} from '~/components/homepage';
+import type { RootLoader } from '~/root';
+import { useFirstVisit } from '~/hooks/useFirstVisit';
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Hydrogen | Home'}];
+  return [{title: 'Jacket Sunscreen | Premium Sun Protection'}];
 };
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -58,33 +72,83 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
 
 export default function Homepage() {
   const data = useLoaderData<typeof loader>();
-  return (
-    <div className="home">
-      <FeaturedCollection collection={data.featuredCollection} />
-      <RecommendedProducts products={data.recommendedProducts} />
-    </div>
-  );
-}
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const {
+    showPopup,
+    showRegionBar,
+    closePopup,
+    closeRegionBar,
+    acceptAllCookies,
+    managePreferences,
+  } = useFirstVisit();
+  
+  // Sample tabs data - you can customize this based on your needs
+  const tabs = [
+    {
+      id: 'all',
+      label: 'All Products',
+      content: <RecommendedProducts products={data.recommendedProducts} />
+    },
+    {
+      id: 'sunscreen',
+      label: 'Sunscreen',
+      content: <div className="text-center py-8">Sunscreen products coming soon...</div>
+    },
+    {
+      id: 'skincare',
+      label: 'Skincare',
+      content: <div className="text-center py-8">Skincare products coming soon...</div>
+    }
+  ];
 
-function FeaturedCollection({
-  collection,
-}: {
-  collection: FeaturedCollectionFragment;
-}) {
-  if (!collection) return null;
-  const image = collection?.image;
   return (
-    <Link
-      className="featured-collection"
-      to={`/collections/${collection.handle}`}
-    >
-      {image && (
-        <div className="featured-collection-image">
-          <Image data={image} sizes="100vw" />
-        </div>
-      )}
-      <h1>{collection.title}</h1>
-    </Link>
+    <HomePageLayout cart={rootData?.cart || Promise.resolve(null)}>
+      <div className="homepage">
+        {/* Header */}
+        {/* <Header /> */}
+        
+        {/* Hero Section */}
+        <Hero />
+        
+        {/* Featured Products Section */}
+        <FeaturedProducts 
+          title="Featured Products"
+          products={[]} // This will be populated with actual product data
+        />
+        
+        {/* Content Sections */}
+        <ContentSections />
+        
+        {/* Image Gallery */}
+        <ImageGallery />
+        
+        {/* Overlay Section */}
+        <OverlaySection />
+        
+        {/* Tabs Section */}
+        <TabsSection 
+          title="Learn More About JACKET"
+          tabs={tabs}
+        />
+        
+        {/* CTA Section */}
+        <CTASection />
+
+        {/* Sale Popup */}
+        <SalePopup 
+          isVisible={showPopup}
+          onClose={closePopup}
+        />
+
+        {/* Region Bar */}
+        <RegionBar 
+          isVisible={showRegionBar}
+          onClose={closeRegionBar}
+          onAcceptAll={acceptAllCookies}
+          onManagePreferences={managePreferences}
+        />
+      </div>
+    </HomePageLayout>
   );
 }
 
@@ -95,21 +159,19 @@ function RecommendedProducts({
 }) {
   return (
     <div className="recommended-products">
-      <h2>Recommended Products</h2>
-      <Suspense fallback={<div>Loading...</div>}>
+      <Suspense fallback={<div className="text-center py-8">Loading products...</div>}>
         <Await resolve={products}>
           {(response) => (
-            <div className="recommended-products-grid">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-8">
               {response
                 ? response.products.nodes.map((product) => (
                     <ProductItem key={product.id} product={product} />
                   ))
-                : null}
+                : <div className="text-center py-8">No products available</div>}
             </div>
           )}
         </Await>
       </Suspense>
-      <br />
     </div>
   );
 }

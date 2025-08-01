@@ -19,6 +19,7 @@ import {
   ImageGallery,
   OverlaySection
 } from '~/components/homepage';
+import { PGAPartner } from '~/components/homepage/PGAPartner';
 import type { RootLoader } from '~/root';
 import { useFirstVisit } from '~/hooks/useFirstVisit';
 
@@ -102,53 +103,54 @@ export default function Homepage() {
   ];
 
   return (
-    <HomePageLayout cart={rootData?.cart || Promise.resolve(null)}>
-      <div className="homepage">
-        {/* Header */}
-        {/* <Header /> */}
-        
-        {/* Hero Section */}
-        <Hero />
-        
-        {/* Featured Products Section */}
-        <FeaturedProducts 
-          title="Featured Products"
-          products={[]} // This will be populated with actual product data
-        />
-        
-        {/* Content Sections */}
-        <ContentSections />
-        
-        {/* Image Gallery */}
-        <ImageGallery />
-        
-        {/* Overlay Section */}
-        <OverlaySection />
-        
-        {/* Tabs Section */}
-        <TabsSection 
-          title="Learn More About JACKET"
-          tabs={tabs}
-        />
-        
-        {/* CTA Section */}
-        <CTASection />
+    <div className="homepage">
+      {/* Header */}
+      {/* <Header /> */}
+      
+      {/* Hero Section */}
+      <Hero />
+      
+      {/* PGA Partner Section */}
+      <PGAPartner />
+      
+      {/* Featured Products Section */}
+      <FeaturedProducts 
+        title="Featured Products"
+        products={[]} // This will be populated with actual product data
+      />
+      
+      {/* Content Sections */}
+      <ContentSections />
+      
+      {/* Image Gallery */}
+      <ImageGallery />
+      
+      {/* Overlay Section */}
+      <OverlaySection />
+      
+      {/* Tabs Section */}
+      <TabsSection 
+        title="Learn More About JACKET"
+        tabs={tabs}
+      />
+      
+      {/* CTA Section */}
+      <CTASection />
 
-        {/* Sale Popup */}
-        <SalePopup 
-          isVisible={showPopup}
-          onClose={closePopup}
-        />
+      {/* Sale Popup */}
+      <SalePopup 
+        isVisible={showPopup}
+        onClose={closePopup}
+      />
 
-        {/* Region Bar */}
-        <RegionBar 
-          isVisible={showRegionBar}
-          onClose={closeRegionBar}
-          onAcceptAll={acceptAllCookies}
-          onManagePreferences={managePreferences}
-        />
-      </div>
-    </HomePageLayout>
+      {/* Region Bar */}
+      <RegionBar 
+        isVisible={showRegionBar}
+        onClose={closeRegionBar}
+        onAcceptAll={acceptAllCookies}
+        onManagePreferences={managePreferences}
+      />
+    </div>
   );
 }
 

@@ -10,7 +10,7 @@ interface HeroProps {
 
 export function Hero({
   title = "IT'S ALWAYS WEATHER",
-  subtitle = "ULTIMATE PERFORMANCE, ANTI-AGING SUNSCREEN THAT PROTECTS + REPAIRS",
+  subtitle = "ULTIMATE PERFORMANCEs, ANTI-AGING SUNSCREEN THAT PROTECTS + REPAIRS",
   ctaText = "SHOP NOW",
   ctaLink = "/products"
 }: HeroProps) {

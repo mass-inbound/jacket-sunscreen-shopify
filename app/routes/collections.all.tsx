@@ -1,8 +1,10 @@
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, type MetaFunction} from 'react-router';
+import {useLoaderData, useSearchParams, type MetaFunction} from 'react-router';
 import {getPaginationVariables, Image, Money} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {ProductItem} from '~/components/ProductItem';
+import {ProductFilter} from '~/components/ProductFilter';
+import type {CatalogQuery} from 'storefrontapi.generated';
 
 export const meta: MetaFunction<typeof loader> = () => {
   return [{title: `Hydrogen | Products`}];
@@ -24,17 +26,37 @@ export async function loader(args: LoaderFunctionArgs) {
  */
 async function loadCriticalData({context, request}: LoaderFunctionArgs) {
   const {storefront} = context;
+  const url = new URL(request.url);
+  const productTypes = url.searchParams.getAll('product_type');
+  
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
 
-  const [{products}] = await Promise.all([
+  // Build filter query using the correct Shopify syntax
+  let query = '';
+  if (productTypes.length > 0) {
+    const typeFilters = productTypes.map(type => `product_type:${type}`).join(' OR ');
+    query = `(${typeFilters})`;
+  }
+
+  const [{products}, {productTypes: availableProductTypes}] = await Promise.all([
     storefront.query(CATALOG_QUERY, {
-      variables: {...paginationVariables},
+      variables: {
+        ...paginationVariables,
+        query: query || undefined,
+      },
     }),
-    // Add other queries here, so that they are loaded in parallel
+    storefront.query(PRODUCT_TYPES_QUERY, {
+      variables: {},
+    }),
   ]);
-  return {products};
+  
+  return {
+    products,
+    availableProductTypes: availableProductTypes?.nodes || [],
+    selectedProductTypes: productTypes,
+  };
 }
 
 /**
@@ -47,23 +69,31 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
 }
 
 export default function Collection() {
-  const {products} = useLoaderData<typeof loader>();
+  const {products, availableProductTypes, selectedProductTypes} = useLoaderData<typeof loader>();
 
   return (
-    <div className="collection">
-      <h1>Products</h1>
-      <PaginatedResourceSection
-        connection={products}
-        resourcesClassName="products-grid"
-      >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
-        )}
-      </PaginatedResourceSection>
+    <div className="collections-page px-8 pt-2">
+      <ProductFilter 
+        productTypes={availableProductTypes}
+        selectedTypes={selectedProductTypes}
+      />
+      
+      <div className="collections-content">
+       
+        
+        <PaginatedResourceSection
+          connection={products}
+          resourcesClassName="products-grid"
+        >
+          {({node: product, index}) => (
+            <ProductItem
+              key={product.id}
+              product={product as CatalogQuery['products']['nodes'][0]}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+          )}
+        </PaginatedResourceSection>
+      </div>
     </div>
   );
 }
@@ -104,8 +134,15 @@ const CATALOG_QUERY = `#graphql
     $last: Int
     $startCursor: String
     $endCursor: String
+    $query: String
   ) @inContext(country: $country, language: $language) {
-    products(first: $first, last: $last, before: $startCursor, after: $endCursor) {
+    products(
+      first: $first, 
+      last: $last, 
+      before: $startCursor, 
+      after: $endCursor,
+      query: $query
+    ) {
       nodes {
         ...CollectionItem
       }
@@ -118,4 +155,15 @@ const CATALOG_QUERY = `#graphql
     }
   }
   ${COLLECTION_ITEM_FRAGMENT}
+` as const;
+
+const PRODUCT_TYPES_QUERY = `#graphql
+  query ProductTypes(
+    $country: CountryCode
+    $language: LanguageCode
+  ) @inContext(country: $country, language: $language) {
+    productTypes(first: 250) {
+      nodes
+    }
+  }
 ` as const;

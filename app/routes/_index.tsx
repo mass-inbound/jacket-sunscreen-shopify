@@ -10,6 +10,7 @@ import {ProductItem} from '~/components/ProductItem';
 import {
   Hero,
   FeaturedProducts,
+  InfoTabsSection,
   TabsSection,
   CTASection,
   HomePageLayout,
@@ -84,7 +85,6 @@ export default function Homepage() {
     acceptAllCookies,
     managePreferences,
   } = useFirstVisit();
-  
   // Sample tabs data - you can customize this based on your needs
   const tabs = [
     {
@@ -117,9 +117,12 @@ export default function Homepage() {
       
       {/* Featured Products Section */}
       <FeaturedProducts 
-        title="Featured Products"
+       
         products={data.featuredProducts}
       />
+      
+      {/* Info Tabs Section */}
+      <InfoTabsSection />
       
       {/* Content Sections */}
       <ContentSections />
@@ -127,14 +130,7 @@ export default function Homepage() {
       {/* Image Gallery */}
       <ImageGallery />
       
-      {/* Overlay Section */}
-      <OverlaySection />
-      
-      {/* Tabs Section */}
-      <TabsSection 
-        title="Learn More About JACKET"
-        tabs={tabs}
-      />
+   
       
       {/* CTA Section */}
       <CTASection />

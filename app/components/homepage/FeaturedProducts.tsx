@@ -8,24 +8,20 @@ import type {
 } from 'storefrontapi.generated';
 
 interface FeaturedProductsProps {
-  title?: string;
+  
   products?: (ProductItemFragment | CollectionItemFragment | RecommendedProductFragment)[];
 }
 
 export function FeaturedProducts({
-  title = "Featured Products",
+ 
   products = []
 }: FeaturedProductsProps) {
   return (
-    <section className="w-full py-5 md:py-5 lg:py-5 px-5 md:px-6 lg:px-[230px]">
+    <section className="w-full mt-9 py-5 md:py-5 lg:py-5 px-5 md:px-6 lg:px-[230px]">
       <div className="max-w-[280px] md:max-w-[980px] lg:max-w-[980px] mx-auto">
-        <div className="flex justify-center items-center">
-          <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8">
-            {title}
-          </h2>
-        </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-8">
+        
+        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
           {products.map((product, index) => (
             <ProductCard key={product.id || index} product={product} />
           ))}
@@ -51,7 +47,7 @@ function ProductCard({
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Product Image Container */}
-      <div className="relative overflow-hidden rounded-[49px] mb-4 flex-shrink-0">
+      <div className="relative overflow-hidden  mb-4 flex-shrink-0 h-80 md:h-96 lg:h-[420px]">
         {image && (
           <Image
             alt={image.altText || product.title}
@@ -65,10 +61,10 @@ function ProductCard({
         
         {/* Quick View Overlay */}
         {isHovered && (
-          <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center transition-opacity duration-300">
+          <div className="absolute inset-0 w-full flex items-end justify-center pb-6 transition-opacity duration-300">
             <Link
               to={`/products/${product.handle}`}
-              className="bg-white text-black px-6 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors duration-200"
+              className="bg-[#FBAC18] text-black w-full text-center py-4 font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg"
             >
               QUICK VIEW
             </Link>

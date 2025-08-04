@@ -2,6 +2,7 @@ export { AnnouncementBar } from './AnnouncementBar';
 export { Header } from './Header';
 export { Hero } from './Hero';
 export { FeaturedProducts } from './FeaturedProducts';
+export { InfoTabsSection } from './InfoTabsSection';
 export { TabsSection } from './TabsSection';
 export { CTASection } from './CTASection';
 export { HomePageLayout } from './HomePageLayout';

@@ -402,14 +402,38 @@ button.reset:hover:not(:has(> *)) {
 
 .products-grid {
   display: grid;
-  grid-gap: 1.5rem;
-  grid-template-columns: repeat(auto-fit, minmax(var(--grid-item-width), 1fr));
+  grid-gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   margin-bottom: 2rem;
+  padding: 0 1rem;
+  
+  @media (min-width: 45em) {
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-gap: 2.5rem;
+    padding: 0 2rem;
+  }
+  
+  @media (min-width: 64em) {
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-gap: 3rem;
+  }
+}
+
+.product-item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.3s ease;
+}
+
+.product-item:hover {
+  transform: translateY(-2px);
 }
 
 .product-item img {
   height: auto;
   width: 100%;
+  object-fit: cover;
 }
 
 /*

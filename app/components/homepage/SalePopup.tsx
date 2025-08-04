@@ -41,7 +41,7 @@ export function SalePopup({ onClose, isVisible }: SalePopupProps) {
     <>
       {/* Backdrop */}
       <div 
-        className="fixed inset-0 bg-black bg-opacity-50 z-50"
+        className="fixed inset-0 bg-black bg-opacity-50 z-40"
         onClick={handleBackdropClick}
         onKeyDown={handleKeyDown}
         role="button"
@@ -51,33 +51,43 @@ export function SalePopup({ onClose, isVisible }: SalePopupProps) {
       
       {/* Popup */}
       <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <div className="relative w-full max-w-[812px] bg-[#1B1A1B] text-white rounded-lg overflow-hidden">
+        <div className="relative w-full max-w-[812px] bg-[#1B1A1B] text-white overflow-hidden">
           {/* Close Button */}
           <button
             onClick={onClose}
             className="absolute top-4 right-4 z-10 text-white hover:text-gray-300 transition-colors"
             aria-label="Close popup"
           >
-            <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            <svg
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
 
           <div className="flex flex-col md:flex-row">
             {/* Content Section */}
-            <div className="flex-1 p-8 md:p-12">
+            <div className="flex-1 px-8 py-5 md:py-6 md:px-12">
               {/* Logo/Icon */}
               <div className="mb-6">
-                <div className="w-8 h-8 bg-white rounded-full flex items-center justify-center">
-                  <span className="text-[#1B1A1B] font-bold text-sm">JS</span>
-                </div>
+                
               </div>
 
               {/* Heading */}
-              <h2 className="text-2xl md:text-3xl font-bold mb-6">
-                Join the JACKET Sunscreen Community
+              <h2 className="text-2xl md:text-3xl">
+                Stay Protected 
               </h2>
-
+              <h2 className="text-3xl md:text-4xl mb-6">
+                &  <span className='text-[#FBAC18]'>Save 15%</span> 
+              </h2>
               {/* Description */}
               <div className="space-y-4 mb-8">
                 <p className="text-base leading-relaxed">
@@ -89,39 +99,44 @@ export function SalePopup({ onClose, isVisible }: SalePopupProps) {
               </div>
 
               {/* Newsletter Form */}
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="">
+                <div className="mb-4">
+                  <label htmlFor="email" className="block text-white text-sm font-medium mb-2">
+                    Email
+                  </label>
+                </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <input
+                    id="email"
                     type="email"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     placeholder="Enter your email address"
                     required
-                    className="flex-1 px-4 py-3 bg-white text-black rounded-md focus:outline-none focus:ring-2 focus:ring-white"
+                    className="flex-1 px-4 py-3 bg-[#1B1A1B] text-white border border-[#FBAC18] focus:outline-none focus:border-[#FBAC18] placeholder-gray-400"
                   />
                   <button
                     type="submit"
                     disabled={isSubmitting}
-                    className="px-6 py-3 bg-white text-black font-semibold rounded-md hover:bg-gray-100 transition-colors disabled:opacity-50"
+                    className="px-6 py-3 bg-[#FBAC18] text-white font-semibold hover:bg-gray-100 transition-colors disabled:opacity-50"
                   >
-                    {isSubmitting ? 'Signing up...' : 'Get 15% Off'}
+                   SIGN UP
                   </button>
                 </div>
               </form>
             </div>
 
             {/* Image Section */}
-            <div className="w-full md:w-[299px] h-[430px] bg-gray-300 flex items-center justify-center">
-              <div className="text-gray-600 text-center">
-                <svg className="w-16 h-16 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                <p>Product Image</p>
-              </div>
+           
+            <img
+                src="/assets/promo.png"
+                alt="JACKET Sunscreen"
+                className="object-contain rounded-none lg:w-auto"
+              />
             </div>
           </div>
         </div>
-      </div>
+      
     </>
   );
 } 

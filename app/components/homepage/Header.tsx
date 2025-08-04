@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 const MENU_ITEMS = [
   { label: 'HOME', href: '/' },
-  { label: 'SHOP', href: '/shop' },
+  { label: 'SHOP', href: '/collections' },
   { label: 'ABOUT', href: '/about' },
   { label: 'CONTACT', href: '/contact' },
 ];

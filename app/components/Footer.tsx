@@ -119,10 +119,10 @@ export function Footer({
                     <NavLink to="/" className="text-[16.31px] leading-[1.349] font-bold text-white hover:text-[#FBAC18] transition-colors">
                       Home
                     </NavLink>
-                    <NavLink to="/about" className="text-[16.31px] leading-[1.349] font-bold text-white hover:text-[#FBAC18] transition-colors">
+                    <NavLink to="/pages/about" className="text-[16.31px] leading-[1.349] font-bold text-white hover:text-[#FBAC18] transition-colors">
                       About
                     </NavLink>
-                    <NavLink to="/faq" className="text-[16.31px] leading-[1.349] font-bold text-white hover:text-[#FBAC18] transition-colors">
+                    <NavLink to="/pages/faq" className="text-[16.31px] leading-[1.349] font-bold text-white hover:text-[#FBAC18] transition-colors">
                       FAQ
                     </NavLink>
                   </div>
@@ -133,7 +133,7 @@ export function Footer({
                     <NavLink to="/blog" className="text-[16.31px] leading-[1.349] font-bold text-white hover:text-[#FBAC18] transition-colors">
                       Blog
                     </NavLink>
-                    <NavLink to="/contact" className="text-[16.31px] leading-[1.349] font-bold text-white hover:text-[#FBAC18] transition-colors">
+                    <NavLink to="/pages/contact" className="text-[16.31px] leading-[1.349] font-bold text-white hover:text-[#FBAC18] transition-colors">
                       Contact
                     </NavLink>
                     <NavLink to="/cart" className="text-[16.31px] leading-[1.349] font-bold text-white hover:text-[#FBAC18] transition-colors">

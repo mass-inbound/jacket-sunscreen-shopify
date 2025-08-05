@@ -239,6 +239,24 @@ const FALLBACK_HEADER_MENU = {
       url: '/pages/about',
       items: [],
     },
+    {
+      id: 'gid://shopify/MenuItem/461609599033',
+      resourceId: null,
+      tags: [],
+      title: 'Reviews',
+      type: 'HTTP',
+      url: '/reviews',
+      items: [],
+    },
+    {
+      id: 'gid://shopify/MenuItem/461609599034',
+      resourceId: null,
+      tags: [],
+      title: 'Contact',
+      type: 'HTTP',
+      url: '/pages/contact',
+      items: [],
+    },
   ],
 };
 

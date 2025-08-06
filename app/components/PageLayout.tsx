@@ -1,20 +1,21 @@
-import { Await, Link } from 'react-router';
 import {Suspense, useId} from 'react';
+import {Await, Link} from 'react-router';
 import type {
   CartApiQueryFragment,
   FooterQuery,
   HeaderQuery,
 } from 'storefrontapi.generated';
 import {Aside} from '~/components/Aside';
+import {CartMain} from '~/components/CartMain';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
-import {CartMain} from '~/components/CartMain';
 import {AnnouncementBar} from '~/components/homepage/AnnouncementBar';
 import {
   SEARCH_ENDPOINT,
   SearchFormPredictive,
 } from '~/components/SearchFormPredictive';
 import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
+import {getCartItemCount} from '~/lib/inventory';
 
 interface PageLayoutProps {
   cart: Promise<CartApiQueryFragment | null>;
@@ -59,15 +60,22 @@ export function PageLayout({
 
 function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
   return (
-    <Aside type="cart" heading="CART">
-      <Suspense fallback={<p>Loading cart ...</p>}>
-        <Await resolve={cart}>
-          {(cart) => {
-            return <CartMain cart={cart} layout="aside" />;
-          }}
-        </Await>
-      </Suspense>
-    </Aside>
+    <Suspense fallback={null}>
+      <Await resolve={cart}>
+        {(cart) => {
+          const itemCount = getCartItemCount(cart);
+          return (
+            <Aside type="cart" heading="CART" cart={cart}>
+              <div className="flex flex-col h-full">
+                <div className="flex-1">
+                  <CartMain cart={cart} layout="aside" />
+                </div>
+              </div>
+            </Aside>
+          );
+        }}
+      </Await>
+    </Suspense>
   );
 }
 

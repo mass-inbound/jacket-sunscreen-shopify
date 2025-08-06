@@ -1,4 +1,4 @@
-import {Suspense} from 'react';
+import {Suspense, useState} from 'react';
 import { Await, NavLink, useAsyncValue } from 'react-router';
 import {
   type CartViewPayload,
@@ -7,6 +7,7 @@ import {
 } from '@shopify/hydrogen';
 import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
+import { getCartItemCount } from '~/lib/inventory';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -32,25 +33,22 @@ export function Header({
           <div className="absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)]" style={{ background: '#FBAC18' }} />
           {/* Content */}
           <div className="relative flex items-center justify-between h-[52.3px] md:h-[79.3px] px-4 md:px-8 lg:px-8">
-            {/* Left: Logo */}
-            <NavLink prefetch="intent" to="/" className="flex items-center z-10 select-none" style={{ textDecoration: 'none' }} end>
-              <span className="block w-[120px] h-[32px] md:w-[160px] md:h-[40px] lg:w-[180px] lg:h-[48px] bg-white rounded flex items-center justify-center font-bold text-[#FBAC18] text-lg md:text-xl lg:text-2xl shadow-sm">
-                {shop.name}
-              </span>
-            </NavLink>
-            {/* Desktop/Tablet Menu */}
-            <HeaderMenu
-              menu={menu}
-              viewport="desktop"
-              primaryDomainUrl={header.shop.primaryDomain.url}
-              publicStoreDomain={publicStoreDomain}
-            />
-            {/* Desktop/Tablet CTAs */}
-            <div className="hidden md:flex items-center z-10">
-              <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
+            {/* Left: Mobile Menu Toggle */}
+            <div className="flex items-center z-10">
+              <HeaderMenuMobileToggle />
             </div>
-            {/* Mobile Hamburger/CTAs */}
-            <div className="md:hidden flex items-center z-10">
+            
+            {/* Center: Logo */}
+            <div className="flex-1 flex justify-center">
+              <NavLink prefetch="intent" to="/" className="flex items-center z-10 select-none" style={{ textDecoration: 'none' }} end>
+                <span className="block w-[120px] h-[32px] md:w-[160px] md:h-[40px] lg:w-[180px] lg:h-[48px] bg-white rounded flex items-center justify-center font-bold text-[#FBAC18] text-lg md:text-xl lg:text-2xl shadow-sm">
+                  {shop.name}
+                </span>
+              </NavLink>
+            </div>
+            
+            {/* Right: CTAs */}
+            <div className="flex items-center z-10">
               <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
             </div>
           </div>
@@ -73,40 +71,94 @@ export function HeaderMenu({
 }) {
   const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-8 lg:gap-12 items-center z-10' : 'flex flex-col gap-4'} `;
   const {close} = useAside();
+  const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+
+  const toggleSubmenu = (itemId: string, e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    const newExpandedItems = new Set(expandedItems);
+    if (newExpandedItems.has(itemId)) {
+      newExpandedItems.delete(itemId);
+    } else {
+      newExpandedItems.add(itemId);
+    }
+    setExpandedItems(newExpandedItems);
+  };
+
+  // Static menu items matching the design
+  const staticMenuItems = [
+    {
+      id: 'home',
+      title: 'HOME',
+      url: '/',
+      items: []
+    },
+    {
+      id: 'shop',
+      title: 'SHOP',
+      url: '/collections',
+      items: []
+    },
+    {
+      id: 'explore',
+      title: 'EXPLORE',
+      url: '#',
+      items: [
+        { id: 'retailers', title: 'RETAILERS', url: '/pages/retailers' },
+        { id: 'reviews', title: 'REVIEWS', url: '/pages/reviews' },
+        { id: 'contact', title: 'CONTACT', url: '/pages/contact' },
+        { id: 'about', title: 'ABOUT', url: '/pages/about' }
+      ]
+    },
+    {
+      id: 'education',
+      title: 'EDUCATION',
+      url: '#',
+      items: [
+        { id: 'faq', title: 'FAQ', url: '/pages/faq' }
+      ]
+    }
+  ];
 
   return (
     <nav className={className} role="navigation">
-      {viewport === 'mobile' && (
-        <NavLink
-          end
-          onClick={close}
-          prefetch="intent"
-          style={activeLinkStyle}
-          to="/"
-        >
-          Home
-        </NavLink>
-      )}
-      {(menu || FALLBACK_HEADER_MENU).items.map((item) => {
-        if (!item.url) return null;
-        const url =
-          item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
-            ? new URL(item.url).pathname
-            : item.url;
+      {staticMenuItems.map((item) => {
+        const hasSubItems = item.items && item.items.length > 0;
+        const isExpanded = expandedItems.has(item.id);
+        
         return (
-          <NavLink
-            className="text-white font-semibold text-base lg:text-lg tracking-widest hover:text-black transition-colors px-2 py-1 rounded"
-            style={{ letterSpacing: '0.12em', textDecoration: 'none' }}
-            end
-            key={item.id}
-            onClick={close}
-            prefetch="intent"
-            to={url}
-          >
-            {item.title}
-          </NavLink>
+          <div key={item.id} className={viewport === 'mobile' ? 'mobile-menu-group' : ''}>
+            <NavLink
+              className={`${viewport === 'desktop' ? 'text-white font-semibold text-base lg:text-lg tracking-widest hover:text-black transition-colors px-2 py-1 rounded' : 'mobile-menu-item'} ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`}
+              style={viewport === 'desktop' ? { letterSpacing: '0.12em', textDecoration: 'none' } : {}}
+              end
+              onClick={hasSubItems && viewport === 'mobile' ? (e) => toggleSubmenu(item.id, e) : close}
+              prefetch="intent"
+              to={hasSubItems && viewport === 'mobile' ? '#' : item.url}
+            >
+              {item.title}
+              {viewport === 'mobile' && hasSubItems && (
+                <svg className="chevron-down" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="6,9 12,15 18,9"></polyline>
+                </svg>
+              )}
+            </NavLink>
+            {viewport === 'mobile' && hasSubItems && isExpanded && (
+              <div className="mobile-submenu">
+                {item.items.map((subItem) => (
+                  <NavLink
+                    key={subItem.id}
+                    className="mobile-submenu-item"
+                    onClick={close}
+                    prefetch="intent"
+                    to={subItem.url}
+                  >
+                    {subItem.title}
+                  </NavLink>
+                ))}
+              </div>
+            )}
+          </div>
         );
       })}
     </nav>
@@ -119,7 +171,6 @@ function HeaderCtas({
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
     <nav className="header-ctas flex items-center gap-4" role="navigation">
-      <HeaderMenuMobileToggle />
       <NavLink prefetch="intent" to="/account" style={activeLinkStyle} className="text-white font-semibold hover:text-black transition-colors">
         <Suspense fallback="Sign in">
           <Await resolve={isLoggedIn} errorElement="Sign in">
@@ -134,39 +185,65 @@ function HeaderCtas({
 }
 
 function HeaderMenuMobileToggle() {
-  const {open} = useAside();
+  let open: (mode: 'search' | 'cart' | 'mobile' | 'closed') => void = () => {};
+  
+  try {
+    const aside = useAside();
+    open = aside.open;
+  } catch (error) {
+    console.warn('Aside context not available:', error);
+  }
+  
   return (
     <button
-      className="header-menu-mobile-toggle reset text-white text-2xl px-2"
+      className="flex items-center justify-center w-10 h-10 text-black hover:text-gray-600 transition-colors"
       onClick={() => open('mobile')}
       aria-label="Open menu"
     >
-      <span className="sr-only">Open menu</span>
-      <svg width="28" height="28" fill="none" stroke="white" strokeWidth="2" viewBox="0 0 24 24">
-        <line x1="4" y1="6" x2="20" y2="6" />
-        <line x1="4" y1="12" x2="20" y2="12" />
-        <line x1="4" y1="18" x2="20" y2="18" />
+      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <line x1="3" y1="6" x2="21" y2="6" />
+        <line x1="3" y1="12" x2="21" y2="12" />
+        <line x1="3" y1="18" x2="21" y2="18" />
       </svg>
     </button>
   );
 }
 
 function SearchToggle() {
-  const {open} = useAside();
+  let open: (mode: 'search' | 'cart' | 'mobile' | 'closed') => void = () => {};
+  
+  try {
+    const aside = useAside();
+    open = aside.open;
+  } catch (error) {
+    console.warn('Aside context not available:', error);
+  }
+  
   return (
-    <button className="reset text-white hover:text-black transition-colors" onClick={() => open('search')}>
-      Search
+    <button className="reset text-black hover:text-gray-600 transition-colors" onClick={() => open('search')}>
+      <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.35-4.35"></path>
+      </svg>
     </button>
   );
 }
 
 function CartBadge({count}: {count: number | null}) {
-  const {open} = useAside();
-  const {publish, shop, cart, prevCart} = useAnalytics();
+  const analytics = useAnalytics();
+  let open: (mode: 'search' | 'cart' | 'mobile' | 'closed') => void = () => {};
+  
+  try {
+    const aside = useAside();
+    open = aside.open;
+  } catch (error) {
+    console.warn('Aside context not available:', error);
+  }
+
+  const {publish, shop, cart, prevCart} = analytics;
 
   return (
-    <a
-      href="/cart"
+    <button
       onClick={(e) => {
         e.preventDefault();
         open('cart');
@@ -177,10 +254,19 @@ function CartBadge({count}: {count: number | null}) {
           url: window.location.href || '',
         } as CartViewPayload);
       }}
-      className="text-white font-semibold hover:text-black transition-colors"
+      className="text-black font-semibold hover:text-gray-600 transition-colors relative"
     >
-      Cart {count === null ? <span>&nbsp;</span> : count}
-    </a>
+      <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+      </svg>
+      {count !== null && count > 0 && (
+        <span className="absolute -top-2 -right-2 bg-white text-[#FBAC18] rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold border border-gray-200">
+          {count}
+        </span>
+      )}
+    </button>
   );
 }
 
@@ -197,7 +283,7 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
 function CartBanner() {
   const originalCart = useAsyncValue() as CartApiQueryFragment | null;
   const cart = useOptimisticCart(originalCart);
-  return <CartBadge count={cart?.totalQuantity ?? 0} />;
+  return <CartBadge count={getCartItemCount(cart as CartApiQueryFragment | null)} />;
 }
 
 const FALLBACK_HEADER_MENU = {

@@ -21,7 +21,15 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
   // so the user immediately sees feedback when they modify the cart.
   const cart = useOptimisticCart(originalCart);
 
-  const linesCount = Boolean(cart?.lines?.nodes?.length || 0);
+  // Temporary debugging - remove this after confirming the fix works
+  console.log('CartMain Debug:', {
+    totalQuantity: cart?.totalQuantity,
+    linesCount: cart?.lines?.nodes?.length,
+    lines: cart?.lines?.nodes,
+    cart
+  });
+
+  const linesCount = cart?.lines?.nodes?.length || 0;
   const withDiscount =
     cart &&
     Boolean(cart?.discountCodes?.filter((code) => code.applicable)?.length);
@@ -30,10 +38,10 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
 
   return (
     <div className={className}>
-      <CartEmpty hidden={linesCount} layout={layout} />
-      <div className="cart-details">
-        <div aria-labelledby="cart-lines">
-          <ul>
+      <CartEmpty hidden={linesCount > 0} layout={layout} />
+      <div className="cart-details flex flex-col h-full">
+        <div className="cart-lines flex-1 overflow-y-auto" aria-labelledby="cart-lines" style={{maxHeight: 'calc(100vh - 60px - 329px)'}}>
+          <ul className="space-y-0">
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} layout={layout} />
             ))}
@@ -53,14 +61,17 @@ function CartEmpty({
 }) {
   const {close} = useAside();
   return (
-    <div hidden={hidden}>
-      <br />
-      <p>
+    <div hidden={hidden} className="text-center py-8">
+      <p className="text-gray-600 mb-4">
         Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
         started!
       </p>
-      <br />
-      <Link to="/collections" onClick={close} prefetch="viewport">
+      <Link 
+        to="/collections" 
+        onClick={close} 
+        prefetch="viewport"
+        className="text-[#FBAC18] hover:text-[#e69b15] transition-colors"
+      >
         Continue shopping →
       </Link>
     </div>

@@ -7,6 +7,11 @@ import type {
 } from 'storefrontapi.generated';
 import {useVariantUrl} from '~/lib/variants';
 import {useState} from 'react';
+import {AddToCartButton} from './AddToCartButton';
+import {useAside} from './Aside';
+import { getMaxAddableQuantity } from '~/lib/inventory';
+import { useRouteLoaderData } from 'react-router';
+import type { RootLoader } from '~/root';
 
 export function ProductItem({
   product,
@@ -21,9 +26,32 @@ export function ProductItem({
   const variantUrl = useVariantUrl(product.handle);
   const image = product.featuredImage;
   const [quantity, setQuantity] = useState(1);
+  const {open} = useAside();
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const cart = rootData?.cart as any;
 
-  const incrementQuantity = () => setQuantity(prev => prev + 1);
-  const decrementQuantity = () => setQuantity(prev => Math.max(1, prev - 1));
+  // Get the first available variant for add to cart
+  const firstVariant = (product as any).variants?.nodes?.[0] || null;
+
+  // Calculate maximum quantity that can be added
+  const maxAddable = getMaxAddableQuantity(cart, firstVariant?.id, firstVariant);
+  const maxQuantity = Math.max(1, maxAddable);
+
+  const incrementQuantity = () => {
+    if (quantity < maxQuantity) {
+      setQuantity(prev => prev + 1);
+    }
+  };
+  
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(prev => prev - 1);
+    }
+  };
+
+  const handleAddToCart = () => {
+    open('cart');
+  };
 
   return (
     <div className="product-item bg-white rounded-3xl overflow-hidden shadow-sm hover:shadow-md transition-shadow duration-300">
@@ -98,7 +126,7 @@ export function ProductItem({
 
         {/* Quantity Selector */}
         <div className="mt-3">
-          <div className="bg-white flex items-center justify-between px-1 py-1">
+          <div className="bg-white flex items-center justify-between px-1 py-1 border border-gray-300 rounded-md">
             <button
               onClick={decrementQuantity}
               className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
@@ -116,18 +144,46 @@ export function ProductItem({
             <button
               onClick={incrementQuantity}
               className="p-2 text-[#1B1A1B] hover:text-gray-700 transition-colors"
+              disabled={quantity >= maxQuantity}
             >
               <svg width="21" height="21" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/>
               </svg>
             </button>
           </div>
+          {maxQuantity < 999 && (
+            <p className="text-xs text-gray-500 mt-1 text-center">
+              Only {maxQuantity} available
+            </p>
+          )}
         </div>
 
         {/* Add to Cart Button */}
-        <button className="w-full bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200">
-          ADD TO CART
-        </button>
+        {firstVariant ? (
+          <AddToCartButton
+            lines={[
+              {
+                merchandiseId: firstVariant.id,
+                quantity,
+              },
+            ]}
+            onClick={handleAddToCart}
+            disabled={!firstVariant.availableForSale || maxQuantity === 0}
+          >
+            <button className="w-full bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+              {!firstVariant.availableForSale ? 'Sold out' : 
+               maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
+            </button>
+          </AddToCartButton>
+        ) : (
+          <button 
+            onClick={handleAddToCart}
+            disabled={true}
+            className="w-full bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Loading...
+          </button>
+        )}
       </div>
     </div>
   );

@@ -5,6 +5,8 @@ import {
   useEffect,
   useState,
 } from 'react';
+import type { CartApiQueryFragment } from 'storefrontapi.generated';
+import { getCartItemCount } from '~/lib/inventory';
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
 type AsideContextValue = {
@@ -27,13 +29,24 @@ export function Aside({
   children,
   heading,
   type,
+  cart,
 }: {
   children?: React.ReactNode;
   type: AsideType;
   heading: React.ReactNode;
+  cart?: CartApiQueryFragment | null;
 }) {
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
+  
+  // Get cart count for cart header
+  const getCartHeading = () => {
+    if (type === 'cart' && cart) {
+      const itemCount = getCartItemCount(cart);
+      return `Cart (${itemCount} ${itemCount === 1 ? 'item' : 'items'})`;
+    }
+    return heading;
+  };
 
   useEffect(() => {
     const abortController = new AbortController();
@@ -59,14 +72,14 @@ export function Aside({
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
-      <aside>
-        <header>
-          <h3>{heading}</h3>
+      <aside className={`aside ${type === 'cart' ? 'cart-aside' : ''}`} data-type={type}>
+        <header className="aside-header">
+          <h3 className="aside-heading">{getCartHeading()}</h3>
           <button className="close reset" onClick={close} aria-label="Close">
             &times;
           </button>
         </header>
-        <main>{children}</main>
+        <main className="aside-main">{children}</main>
       </aside>
     </div>
   );

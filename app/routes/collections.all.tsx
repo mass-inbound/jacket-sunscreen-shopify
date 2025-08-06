@@ -85,13 +85,16 @@ export default function Collection() {
           connection={products}
           resourcesClassName="products-grid"
         >
-          {({node: product, index}) => (
-            <ProductItem
-              key={product.id}
-              product={product as CatalogQuery['products']['nodes'][0]}
-              loading={index < 8 ? 'eager' : undefined}
-            />
-          )}
+          {({node, index}) => {
+            const product = node as any;
+            return (
+              <ProductItem
+                key={product.id}
+                product={product}
+                loading={index < 8 ? 'eager' : undefined}
+              />
+            );
+          }}
         </PaginatedResourceSection>
       </div>
     </div>
@@ -120,6 +123,17 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
       }
       maxVariantPrice {
         ...MoneyCollectionItem
+      }
+    }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+        quantityAvailable
+        price {
+          amount
+          currencyCode
+        }
       }
     }
   }

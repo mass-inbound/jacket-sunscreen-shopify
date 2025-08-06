@@ -24,14 +24,18 @@ export function HomePageLayout({
 
 function CartAside({cart}: {cart: HomePageLayoutProps['cart']}) {
   return (
-    <Aside type="cart" heading="CART">
-      <Suspense fallback={<p>Loading cart ...</p>}>
-        <Await resolve={cart}>
-          {(cart) => {
-            return <CartMain cart={cart} layout="aside" />;
-          }}
-        </Await>
-      </Suspense>
-    </Aside>
+    <Suspense fallback={<p>Loading cart ...</p>}>
+      <Await resolve={cart}>
+        {(cart) => (
+          <Aside type="cart" heading="CART" cart={cart}>
+            <div className="flex flex-col h-full">
+              <div className="flex-1">
+                <CartMain cart={cart} layout="aside" />
+              </div>
+            </div>
+          </Aside>
+        )}
+      </Await>
+    </Suspense>
   );
 } 

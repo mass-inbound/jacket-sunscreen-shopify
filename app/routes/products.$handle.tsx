@@ -14,6 +14,9 @@ import {AddToCartButton} from '~/components/AddToCartButton';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import { useState } from 'react';
 import { useAside } from '~/components/Aside';
+import { getMaxAddableQuantity } from '~/lib/inventory';
+import { useRouteLoaderData } from 'react-router';
+import type { RootLoader } from '~/root';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [
@@ -87,6 +90,8 @@ export default function Product() {
   const [quantity, setQuantity] = useState(1);
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({});
   const {open} = useAside();
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const cart = rootData?.cart as any;
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -113,10 +118,13 @@ export default function Product() {
     }));
   };
 
+  // Calculate maximum quantity that can be added
+  const maxAddable = getMaxAddableQuantity(cart, selectedVariant?.id, selectedVariant);
+  const maxQuantity = Math.max(1, maxAddable);
+
   const handleQuantityChange = (newQuantity: number) => {
-    if (newQuantity >= 1) {
-      setQuantity(newQuantity);
-    }
+    const clampedQuantity = Math.max(1, Math.min(newQuantity, maxQuantity));
+    setQuantity(clampedQuantity);
   };
 
   const handleAddToCart = () => {
@@ -207,6 +215,7 @@ export default function Product() {
                     type="button"
                     onClick={() => handleQuantityChange(quantity - 1)}
                     className="px-3 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    disabled={quantity <= 1}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
@@ -219,17 +228,23 @@ export default function Product() {
                     type="button"
                     onClick={() => handleQuantityChange(quantity + 1)}
                     className="px-3 py-2 text-gray-600 hover:text-gray-800 transition-colors"
+                    disabled={quantity >= maxQuantity}
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                     </svg>
                   </button>
                 </div>
+                {maxQuantity < 999 && (
+                  <p className="text-xs text-gray-500 mt-1">
+                    Only {maxQuantity} available
+                  </p>
+                )}
               </div>
 
               {/* Add to Cart Button */}
               <AddToCartButton
-                disabled={!selectedVariant?.availableForSale}
+                disabled={!selectedVariant?.availableForSale || maxQuantity === 0}
                 onClick={handleAddToCart}
                 lines={[
                   {
@@ -239,7 +254,8 @@ export default function Product() {
                 ]}
               >
                 <button className="w-full bg-[#FBAC18] text-white font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                  {selectedVariant?.availableForSale ? 'ADD TO CART' : 'Sold out'}
+                  {!selectedVariant?.availableForSale ? 'Sold out' : 
+                   maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
                 </button>
               </AddToCartButton>
 
@@ -538,6 +554,7 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       amount
       currencyCode
     }
+    quantityAvailable
   }
 ` as const;
 

@@ -6,6 +6,11 @@ import type {
   CollectionItemFragment,
   RecommendedProductFragment,
 } from 'storefrontapi.generated';
+import { AddToCartButton } from '../AddToCartButton';
+import { useAside } from '../Aside';
+import { getMaxAddableQuantity } from '~/lib/inventory';
+import { useRouteLoaderData } from 'react-router';
+import type { RootLoader } from '~/root';
 
 interface FeaturedProductsProps {
   
@@ -37,8 +42,35 @@ function ProductCard({
   product: ProductItemFragment | CollectionItemFragment | RecommendedProductFragment 
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+  const { open } = useAside();
+  const rootData = useRouteLoaderData<RootLoader>('root');
+  const cart = rootData?.cart as any;
   const image = product.featuredImage;
   const price = product.priceRange?.minVariantPrice;
+  
+  // Get the first available variant for add to cart
+  const firstVariant = (product as any).variants?.nodes?.[0] || null;
+
+  // Calculate maximum quantity that can be added
+  const maxAddable = getMaxAddableQuantity(cart, firstVariant?.id, firstVariant);
+  const maxQuantity = Math.max(1, maxAddable);
+
+  const handleAddToCart = () => {
+    open('cart');
+  };
+
+  const incrementQuantity = () => {
+    if (quantity < maxQuantity) {
+      setQuantity(prev => prev + 1);
+    }
+  };
+  
+  const decrementQuantity = () => {
+    if (quantity > 1) {
+      setQuantity(prev => prev - 1);
+    }
+  };
 
   return (
     <div 
@@ -98,10 +130,66 @@ function ProductCard({
           </div>
         </div>
         
+        {/* Quantity Selector */}
+        <div className="mb-3">
+          <div className="flex items-center justify-center border border-gray-300 rounded-md mx-auto w-24">
+            <button
+              onClick={decrementQuantity}
+              className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+              disabled={quantity <= 1}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M19 13H5v-2h14v2z"/>
+              </svg>
+            </button>
+            
+            <div className="flex-1 text-center">
+              <span className="text-[#1B1A1B] font-bold text-sm">{quantity}</span>
+            </div>
+            
+            <button
+              onClick={incrementQuantity}
+              className="p-2 text-[#1B1A1B] hover:text-gray-700 transition-colors"
+              disabled={quantity >= maxQuantity}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+              </svg>
+            </button>
+          </div>
+          {maxQuantity < 999 && (
+            <p className="text-xs text-gray-500 mt-1 text-center">
+              Only {maxQuantity} available
+            </p>
+          )}
+        </div>
+        
         {/* Add to Cart Button */}
-        <button className="w-full bg-[#FBAC18] text-white font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200">
-          ADD TO CART
-        </button>
+        {firstVariant ? (
+          <AddToCartButton
+            lines={[
+              {
+                merchandiseId: firstVariant.id,
+                quantity,
+              },
+            ]}
+            onClick={handleAddToCart}
+            disabled={!firstVariant.availableForSale || maxQuantity === 0}
+          >
+            <button className="w-full bg-[#FBAC18] text-white font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+              {!firstVariant.availableForSale ? 'Sold out' : 
+               maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
+            </button>
+          </AddToCartButton>
+        ) : (
+          <button 
+            onClick={handleAddToCart}
+            disabled={true}
+            className="w-full bg-[#FBAC18] text-white font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Loading...
+          </button>
+        )}
       </div>
     </div>
   );

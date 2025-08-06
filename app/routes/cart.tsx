@@ -8,9 +8,10 @@ import {
   type HeadersFunction,
 } from '@shopify/remix-oxygen';
 import {CartMain} from '~/components/CartMain';
+import { getCartItemCount } from '~/lib/inventory';
 
 export const meta: MetaFunction = () => {
-  return [{title: `Hydrogen | Cart`}];
+  return [{title: `Cart | Jacket Sunscreen`}];
 };
 
 export const headers: HeadersFunction = ({actionHeaders}) => actionHeaders;
@@ -107,11 +108,22 @@ export async function loader({context}: LoaderFunctionArgs) {
 
 export default function Cart() {
   const cart = useLoaderData<typeof loader>();
+  const itemCount = getCartItemCount(cart);
 
   return (
-    <div className="cart">
-      <h1>Cart</h1>
-      <CartMain layout="page" cart={cart} />
+    <div className="cart min-h-screen bg-gray-50">
+      <div className="max-w-4xl mx-auto px-4 py-8">
+        <div className="bg-white rounded-lg shadow-sm">
+          <div className="border-b border-gray-200 px-6 py-4">
+            <h1 className="text-2xl font-bold text-gray-900">
+              Cart ({itemCount} {itemCount === 1 ? 'item' : 'items'})
+            </h1>
+          </div>
+          <div className="p-6">
+            <CartMain layout="page" cart={cart} />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

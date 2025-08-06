@@ -1,12 +1,30 @@
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import { useLoaderData, type MetaFunction } from 'react-router';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import {ReviewsSection} from '../components/ReviewsSection';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
-  return [{title: `Hydrogen | ${data?.page.title ?? ''}`}];
+  return [{title: `Hydrogen | ${data?.page?.title ?? data?.reviewsTitle ?? ''}`}];
 };
 
 export async function loader(args: LoaderFunctionArgs) {
+  // Custom loader for /pages/reviews
+  if (args.params.handle === 'reviews') {
+    // Static reviews data (copy from your old reviews loader)
+    const reviews = [
+      {
+        id: '1',
+        rating: 5,
+        title: 'New favorite sunscreen for my face!',
+        content: "I was raised in the beaches of Puerto Rico, and because of that, now that I'm older I've had a couple of skin cancers removed. My dermatologist had recommended using pure zinc oxide sunscreen only, but they pretty much left me looking like a mime. I found JACKET, and this was a blessing! It's a strong sunscreen, doesn't feel oily, and doesn't leave any white residue on my face, even though it has a good zinc oxide content. It's 4 ounces, which allows me to bring it with me when I travel. And the fact that it has age spot remover is a bonus! I highly recommend it and will continue using it.",
+        author: 'José Alvarez',
+        verified: true
+      },
+      // ... (add more reviews as needed, or copy from your old file)
+    ];
+    return { reviews, reviewsTitle: 'Customer Reviews' };
+  }
+
   // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
 
@@ -59,14 +77,24 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
 }
 
 export default function Page() {
-  const {page} = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>();
 
+  // Custom rendering for /pages/reviews
+  if (data.reviews) {
+    return (
+      <div className="reviews-page">
+        <ReviewsSection reviews={data.reviews} />
+      </div>
+    );
+  }
+
+  // Default page rendering
   return (
     <div className="page">
       <header>
-        <h1>{page.title}</h1>
+        <h1>{data.page?.title ?? ''}</h1>
       </header>
-      <main dangerouslySetInnerHTML={{__html: page.body}} />
+      <main dangerouslySetInnerHTML={{__html: data.page?.body ?? ''}} />
     </div>
   );
 }

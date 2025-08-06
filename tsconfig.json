@@ -26,7 +26,8 @@
     "types": [
       "@shopify/oxygen-workers-types",
       "react-router",
-      "vite/client"
+      "vite/client",
+      "@types/google.maps"
     ],
     "paths": {
       "~/*": [

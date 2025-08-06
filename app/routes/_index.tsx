@@ -217,6 +217,17 @@ const FEATURED_PRODUCTS_QUERY = `#graphql
       width
       height
     }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+        quantityAvailable
+        price {
+          amount
+          currencyCode
+        }
+      }
+    }
   }
   query FeaturedProducts($country: CountryCode, $language: LanguageCode)
     @inContext(country: $country, language: $language) {
@@ -245,6 +256,17 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       altText
       width
       height
+    }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+        quantityAvailable
+        price {
+          amount
+          currencyCode
+        }
+      }
     }
   }
   query RecommendedProducts ($country: CountryCode, $language: LanguageCode)

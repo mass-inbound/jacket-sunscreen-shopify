@@ -59,9 +59,14 @@ export function ContentSections() {
                     • REEF-SAFE FORMULA
                   </p>
                   <div className="flex justify-end">
-                    <button className="bg-[#FBAC18] mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-[13px] lg:text-[15px]">
+                    <a 
+                      href="/products/spf-50-anti-aging-sunscreen?Title=Default+Title"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#FBAC18] mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-[13px] lg:text-[15px] inline-block"
+                    >
                       LEARN MORE
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -130,9 +135,14 @@ export function ContentSections() {
                   • VERSATILE USE
                 </p>
                   <div className="flex justify-end">
-                    <button className="bg-[#FBAC18] mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-[13px] lg:text-[15px]">
+                    <a 
+                      href="/products/refine-by-jacket?Title=Default+Title"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#FBAC18] mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-[13px] lg:text-[15px] inline-block"
+                    >
                       LEARN MORE
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -186,9 +196,14 @@ export function ContentSections() {
                   </p>
 
                   <div className="flex justify-end">
-                    <button className="bg-black mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-white lg:text-[15px]">
+                    <a 
+                      href="/products/refresh-by-jacket?Title=Default+Title"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-black mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-white lg:text-[15px] inline-block"
+                    >
                       LEARN MORE
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -255,9 +270,14 @@ export function ContentSections() {
                   • COCONUT + SUNFLOWER OIL
                 </p>
                   <div className="flex justify-end">
-                    <button className="bg-[#FBAC18] mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-[13px] lg:text-[15px]">
+                    <a 
+                      href="/products/lip-balm-by-jacket?Title=Default+Title"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-[#FBAC18] mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-[13px] lg:text-[15px] inline-block"
+                    >
                       LEARN MORE
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -318,9 +338,14 @@ export function ContentSections() {
                   </p>
 
                   <div className="flex justify-end">
-                    <button className="bg-black mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-white lg:text-[15px]">
+                    <a 
+                      href="/products/platinum-peptide-by-jacket-1?Title=Default+Title"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="bg-black mt-4 rounded text-[#1B1A1B] px-[12px] py-[7px] font-bold text-white lg:text-[15px] inline-block"
+                    >
                       LEARN MORE
-                    </button>
+                    </a>
                   </div>
                 </div>
               </div>

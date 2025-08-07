@@ -40,11 +40,11 @@ export function InfoTabsSection() {
   const activeTabData = tabsData.find(tab => tab.id === activeTab);
 
   return (
-    <section className="py-16 mt-10 px-4 md:px-8 lg:px-12">
+    <section className="pt-16 mt-10 px-4 md:px-8 lg:px-12">
       <div className="max-w-7xl mx-auto">
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col">
           {/* Tab Navigation */}
-          <div className="flex flex-wrap justify-center gap-3">
+          <div className="flex flex-wrap justify-center gap-4">
             {tabsData.map((tab) => (
               <button
                 key={tab.id}
@@ -64,7 +64,7 @@ export function InfoTabsSection() {
 
           {/* Tab Content */}
           <div className="bg-white rounded-sm p-16 md:p-20 lg:p-24 h-[400px] md:h-[450px] lg:h-[500px]">
-            <div className="max-w-4xl mx-auto text-center h-full flex flex-col justify-center">
+            <div className="max-w-4xl mx-auto text-center h-full flex flex-col">
               {activeTabData && (
                 <>
                   <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6">

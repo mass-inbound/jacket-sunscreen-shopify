@@ -17,6 +17,26 @@ export default async function handleRequest(
       checkoutDomain: context.env.PUBLIC_CHECKOUT_DOMAIN,
       storeDomain: context.env.PUBLIC_STORE_DOMAIN,
     },
+    connectSrc: [
+      "'self'",
+      'https://monorail-edge.shopifysvc.com',
+      'https://jacket-sunscreen.myshopify.com',
+      'http://localhost:*',
+      'ws://localhost:*',
+      'ws://127.0.0.1:*',
+      'ws://*.tryhydrogen.dev:*',
+      'https://rxmqy989nf.execute-api.us-east-2.amazonaws.com', // Allow external contact API
+      'https://forms.inboundrequest.com', // Allow JotForm API calls
+    ],
+    frameSrc: [
+      "'self'",
+      'https://forms.inboundrequest.com', // Allow iframes from JotForm
+    ],
+    scriptSrc: [
+      "'self'",
+      "'unsafe-inline'",
+      'https://forms.inboundrequest.com', // Allow JotForm scripts
+    ],
   });
 
   const body = await renderToReadableStream(

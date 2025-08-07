@@ -18,15 +18,15 @@ export function Footer({
       <Await resolve={footerPromise}>
         {(footer) => (
           <footer className="w-full bg-[#1B1A1B] text-white">
-            <div className="max-w-[980px] mx-auto relative">
+            <div className="mx-auto relative">
               {/* Main Content */}
-              <div className="flex py-[93px] pb-[92.41px]">
+              <div className="flex justify-between py-[93px] px-28 pb-[92.41px]">
                 {/* Left Column */}
-                <div className="flex flex-col w-[499px]">
+                <div className="flex flex-col">
                   {/* Top Section with Navigation Links and Contact Info */}
-                  <div className="flex px-[43px] py-[33px] pb-[32px]">
+                  <div className="flex px-[43px] py-[33px] justify-center pb-[32px]">
                     {/* Navigation Links - Two Columns */}
-                    <div className="flex gap-[34px]">
+                    <div className="flex gap-[70px]">
                       {/* Left Column of Links */}
                       <div className="flex flex-col gap-[16px] w-[48px]">
                         <NavLink to="/" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
@@ -41,12 +41,12 @@ export function Footer({
                       </div>
                       {/* Right Column of Links */}
                       <div className="flex flex-col gap-[16px] w-[61px]">
-                        <NavLink to="/shop" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
+                        <NavLink to="/collections/all" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
                           Shop
                         </NavLink>
-                        <NavLink to="/blog" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
+                        {/* <NavLink to="/blog" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
                           Blog
-                        </NavLink>
+                        </NavLink> */}
                         <NavLink to="/pages/contact" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
                           Contact
                         </NavLink>
@@ -57,7 +57,7 @@ export function Footer({
                     </div>
 
                     {/* Vertical Separator Line */}
-                    <div className="w-[1px] h-[120px] bg-[#FBAC18] mx-[40px]"></div>
+                    <div className="w-[3px]  bg-[#FBAC18] mx-8 rounded-none"></div>
 
                     {/* Contact Info and Policy Links */}
                     <div className="flex flex-col gap-[18px]">
@@ -109,11 +109,10 @@ export function Footer({
                   </div>
                 </div>
 
-                {/* Vertical Golden Line Separator */}
-                <div className="w-[1px] h-full bg-[#FBAC18] mx-[40px]"></div>
-
+               
                 {/* Right Column */}
-                <div className="flex flex-col w-[461px]">
+                <div className="flex flex-col ">
+                  <div className="flex justify-center items-center gap-8">
                   {/* Logo */}
                   <div className="pt-[41px] pb-[20px]">
                     <div className="w-[159px] h-[57px]">
@@ -122,19 +121,19 @@ export function Footer({
                   </div>
                   
                   {/* Tagline */}
-                  <div className="pb-[30px]">
-                    <div className="w-[198px]">
+                  <div className="">
+                   
                       <h6 className="text-[13px] leading-[1.4em] font-bold text-white">
                         MAXIMIZE THE ACTION.<br />
                         MINIMIZE THE RISK.
                       </h6>
-                    </div>
+                   
                   </div>
-                  
+                  </div>
                   {/* Newsletter Signup */}
-                  <div className="w-[461px] p-[24px]">
+                  <div className=" p-[24px]">
                     <form className="w-full h-[73.59px]">
-                      <div className="flex items-end pb-[8px] w-[303.75px] h-[27.59px]">
+                      <div className="flex items-end pb-[8px] h-[27.59px]">
                         <label htmlFor="newsletter-email" className="text-[14px] leading-[1.4em] font-normal text-white">
                           Email
                         </label>

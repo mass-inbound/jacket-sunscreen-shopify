@@ -28,7 +28,7 @@ export function RegionBar({
               <div className="flex-1 text-sm leading-relaxed">
                 <p>
                   We use cookies to improve your experience, analyze traffic, and show personalized ads. 
-                  By clicking &ldquo;Accept,&rdquo; you agree to our use of cookies. You can customize your preferences or decline all non-essential cookies.   Learn more in our{' '}  <a href="/privacy-policy" className="underline hover:no-underline transition-all">
+                  By clicking &ldquo;Accept,&rdquo; you agree to our use of cookies. You can customize your preferences or decline all non-essential cookies.   Learn more in our{' '}  <a href="/policies/privacy-policy" className="underline hover:no-underline transition-all">
                     Privacy Policy
                   </a>
                 </p>

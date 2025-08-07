@@ -49,6 +49,10 @@ export function useFirstVisit() {
     updateState({ popupClosed: true });
   };
 
+  const openPopup = () => {
+    updateState({ popupClosed: false });
+  };
+
   const closeRegionBar = () => {
     updateState({ regionBarClosed: true });
   };
@@ -83,6 +87,7 @@ export function useFirstVisit() {
     showRegionBar: isLoaded && !state.hasVisited && !state.regionBarClosed && !hasConsented,
     showCookieModal,
     closePopup,
+    openPopup,
     closeRegionBar,
     acceptCookies,
     declineAllCookies,

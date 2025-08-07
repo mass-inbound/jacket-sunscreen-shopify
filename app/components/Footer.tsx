@@ -86,16 +86,16 @@ export function Footer({
                   {/* Social Media Icons */}
                   <div className="px-[43px] pb-[33px]">
                     <div className="flex gap-[10px] w-[186px] h-[39px]">
-                      <a href="https://instagram.com/jacketsunscreen" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
+                      <a href="https://www.instagram.com/jacketsunscreen/" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                         <img src="/images/instagram-icon.svg" alt="Instagram" className="w-full h-full" />
                       </a>
-                      <a href="https://facebook.com/jacketsunscreen" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
+                      <a href="https://www.facebook.com/JacketSunscreenOfficial" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                         <img src="/images/facebook-icon.svg" alt="Facebook" className="w-full h-full" />
                       </a>
-                      <a href="https://tiktok.com/@jacketsunscreen" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
+                      <a href="https://www.tiktok.com/@jacketsunscreen" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                         <img src="/images/tiktok-icon.svg" alt="TikTok" className="w-full h-full" />
                       </a>
-                      <a href="https://twitter.com/jacketsunscreen" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
+                      <a href="https://x.com/JACKET_SPF" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                         <img src="/images/twitter-icon.svg" alt="Twitter" className="w-full h-full" />
                       </a>
                     </div>

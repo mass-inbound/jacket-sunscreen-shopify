@@ -16,6 +16,7 @@ import {
   HomePageLayout,
   SalePopup,
   RegionBar,
+  CookiePreferencesModal,
   ContentSections,
   ImageGallery,
   OverlaySection
@@ -80,10 +81,15 @@ export default function Homepage() {
   const {
     showPopup,
     showRegionBar,
+    showCookieModal,
     closePopup,
     closeRegionBar,
-    acceptAllCookies,
-    managePreferences,
+    acceptCookies,
+    declineAllCookies,
+    showSettings,
+    closeCookieModal,
+    saveCookiePreferences,
+    cookiePreferences,
   } = useFirstVisit();
   // Sample tabs data - you can customize this based on your needs
   const tabs = [
@@ -145,8 +151,17 @@ export default function Homepage() {
       <RegionBar 
         isVisible={showRegionBar}
         onClose={closeRegionBar}
-        onAcceptAll={acceptAllCookies}
-        onManagePreferences={managePreferences}
+        onAccept={acceptCookies}
+        onDeclineAll={declineAllCookies}
+        onShowSettings={showSettings}
+      />
+
+      {/* Cookie Preferences Modal */}
+      <CookiePreferencesModal
+        isVisible={showCookieModal}
+        onClose={closeCookieModal}
+        onSave={saveCookiePreferences}
+        currentPreferences={cookiePreferences}
       />
     </div>
   );

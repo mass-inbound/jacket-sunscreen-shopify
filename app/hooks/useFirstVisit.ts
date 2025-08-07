@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useCookieConsent } from './useCookieConsent';
 
 interface FirstVisitState {
   hasVisited: boolean;
@@ -14,6 +15,15 @@ export function useFirstVisit() {
   });
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const [showCookieModal, setShowCookieModal] = useState(false);
+
+  const {
+    hasConsented,
+    preferences,
+    acceptAll,
+    acceptEssential,
+    updateConsent,
+  } = useCookieConsent();
 
   useEffect(() => {
     // Check localStorage on mount
@@ -43,23 +53,42 @@ export function useFirstVisit() {
     updateState({ regionBarClosed: true });
   };
 
-  const acceptAllCookies = () => {
-    updateState({ regionBarClosed: true });
-    // TODO: Implement actual cookie consent logic
+  const acceptCookies = () => {
+    acceptAll();
+    closeRegionBar();
   };
 
-  const managePreferences = () => {
-    // TODO: Implement cookie preferences management
-    console.log('Manage cookie preferences');
+  const declineAllCookies = () => {
+    acceptEssential();
+    closeRegionBar();
+  };
+
+  const showSettings = () => {
+    setShowCookieModal(true);
+  };
+
+  const closeCookieModal = () => {
+    setShowCookieModal(false);
+  };
+
+  const saveCookiePreferences = (newPreferences: any) => {
+    updateConsent(newPreferences);
+    closeRegionBar();
+    closeCookieModal();
   };
 
   return {
     isLoaded,
     showPopup: isLoaded && !state.hasVisited && !state.popupClosed,
-    showRegionBar: isLoaded && !state.hasVisited && !state.regionBarClosed,
+    showRegionBar: isLoaded && !state.hasVisited && !state.regionBarClosed && !hasConsented,
+    showCookieModal,
     closePopup,
     closeRegionBar,
-    acceptAllCookies,
-    managePreferences,
+    acceptCookies,
+    declineAllCookies,
+    showSettings,
+    closeCookieModal,
+    saveCookiePreferences,
+    cookiePreferences: preferences,
   };
 } 

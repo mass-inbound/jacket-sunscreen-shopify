@@ -8,6 +8,7 @@ export { CTASection } from './CTASection';
 export { HomePageLayout } from './HomePageLayout';
 export { SalePopup } from './SalePopup';
 export { RegionBar } from './RegionBar';
+export { CookiePreferencesModal } from './CookiePreferencesModal';
 export { ContentSections } from './ContentSections';
 export { ImageGallery } from './ImageGallery';
 export { OverlaySection } from './OverlaySection'; 

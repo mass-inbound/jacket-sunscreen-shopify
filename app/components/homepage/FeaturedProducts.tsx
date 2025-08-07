@@ -131,7 +131,7 @@ function ProductCard({
         </div>
         
         {/* Quantity Selector */}
-        <div className="mb-3">
+        {/* <div className="mb-3">
           <div className="flex items-center justify-center border border-gray-300 rounded-md mx-auto w-24">
             <button
               onClick={decrementQuantity}
@@ -162,7 +162,7 @@ function ProductCard({
               Only {maxQuantity} available
             </p>
           )}
-        </div>
+        </div> */}
         
         {/* Add to Cart Button */}
         {firstVariant ? (

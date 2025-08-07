@@ -13,7 +13,7 @@ import { getMaxAddableQuantity } from '~/lib/inventory';
 import { useRouteLoaderData } from 'react-router';
 import type { RootLoader } from '~/root';
 
-export function ProductItem({
+export function RecommendedProductItem({
   product,
   loading,
 }: {
@@ -75,7 +75,6 @@ export function ProductItem({
             </div>
           )}
         </Link>
-        
         {/* Optional NEW! Badge - you can add logic to show this based on product tags or dates */}
         {/* <div className="absolute top-2 left-2 bg-[#FBAC18] text-white text-xs font-bold px-3 py-1 rounded-lg">
           NEW!
@@ -94,10 +93,6 @@ export function ProductItem({
             <h3 className="text-[#1B1A1B] font-bold text-xl leading-tight mb-2 line-clamp-2">
               {product.title}
             </h3>
-            
-            {/* Separator Line */}
-            <div className="w-20 h-1 bg-[#FBAC18] mb-2"></div>
-            
             {/* Price */}
             <div className="text-[#1B1A1B] text-base font-normal">
               <Money data={product.priceRange.minVariantPrice} />
@@ -124,47 +119,13 @@ export function ProductItem({
           <span className="text-[#1B1A1B] text-sm">5.0 (1)</span>
         </div>
 
-        {/* Quantity Selector */}
-        <div className="mt-3">
-          <div className="flex items-center border border-gray-300 rounded-md w-full">
-            <button
-              type="button"
-              onClick={decrementQuantity}
-              className="px-3 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              disabled={quantity <= 1}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
-              </svg>
-            </button>
-            <span className="flex-1 text-center py-2 text-sm font-medium">
-              {quantity}
-            </span>
-            <button
-              type="button"
-              onClick={incrementQuantity}
-              className="px-3 py-2 text-gray-600 hover:text-gray-800 transition-colors"
-              disabled={quantity >= maxQuantity}
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-              </svg>
-            </button>
-          </div>
-          {maxQuantity < 999 && (
-            <p className="text-xs text-gray-500 mt-1 text-center">
-              Only {maxQuantity} available
-            </p>
-          )}
-        </div>
-
         {/* Add to Cart Button */}
         {firstVariant ? (
           <AddToCartButton
             lines={[
               {
                 merchandiseId: firstVariant.id,
-                quantity,
+                quantity: 1,
               },
             ]}
             onClick={handleAddToCart}
@@ -187,4 +148,4 @@ export function ProductItem({
       </div>
     </div>
   );
-}
+} 

@@ -1,4 +1,4 @@
-import {Suspense, useState} from 'react';
+import {Suspense, useState, useEffect} from 'react';
 import { Await, NavLink, useAsyncValue } from 'react-router';
 import {
   type CartViewPayload,
@@ -25,12 +25,30 @@ export function Header({
   publicStoreDomain,
 }: HeaderProps) {
   const {shop, menu} = header;
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = window.scrollY;
+      setIsScrolled(scrollTop > 50); // Start sticky behavior after 50px scroll
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <header className="w-full z-40">
-      <div className="flex justify-center items-center py-[15px] md:py-[15px] lg:py-[15px] bg-transparent">
-        <div className="relative w-full max-w-[1430px] md:max-w-[1014px] lg:max-w-[1430px] mx-auto">
+    <header className={`w-full z-40 transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0' : ''}`}>
+      <div className={`flex px-4 justify-center items-center py-[15px] md:py-[15px] lg:py-[15px] ${isScrolled ? 'pt-[40px]' : ''} bg-transparent`}>
+        <div className="relative w-full mx-auto">
           {/* Overlay + Shadow + Background */}
-          <div className="absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)]" style={{ background: '#FBAC18' }} />
+          <div 
+            className={`absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)] transition-opacity duration-300`} 
+            style={{ 
+              background: '#FBAC18',
+              opacity: isScrolled ? 0.8 : 1
+            }} 
+          />
           {/* Content */}
           <div className="relative flex items-center justify-between h-[52.3px] md:h-[79.3px] px-4 md:px-8 lg:px-8">
             {/* Left: Mobile Menu Toggle */}
@@ -41,8 +59,8 @@ export function Header({
             {/* Center: Logo */}
             <div className="flex-1 flex justify-center">
               <NavLink prefetch="intent" to="/" className="flex items-center z-10 select-none" style={{ textDecoration: 'none' }} end>
-                <span className="block w-[120px] h-[32px] md:w-[160px] md:h-[40px] lg:w-[180px] lg:h-[48px] bg-white rounded flex items-center justify-center font-bold text-[#FBAC18] text-lg md:text-xl lg:text-2xl shadow-sm">
-                  {shop.name}
+                <span className="block -mr-28 w-[120px] h-[32px] md:w-[160px] md:h-[40px] lg:w-[180px] lg:h-[48px] rounded flex items-center justify-center font-bold text-white text-lg md:text-3xl lg:text-4xl">
+                  JA
                 </span>
               </NavLink>
             </div>

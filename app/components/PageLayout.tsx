@@ -41,7 +41,7 @@ export function PageLayout({
         <CartAside cart={cart} />
         <SearchAside />
         <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
-        <AnnouncementBar />
+        <AnnouncementBar cart={cart} />
         {header && (
           <Header
             header={header}

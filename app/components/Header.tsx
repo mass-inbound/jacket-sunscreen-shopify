@@ -5,7 +5,7 @@ import {
   useAnalytics,
   useOptimisticCart,
 } from '@shopify/hydrogen';
-import type {HeaderQuery, CartApiQueryFragment} from 'storefrontapi.generated';
+import type {HeaderQuery, CartApiQueryFragment, CollectionFragment, ProductItemFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import { getCartItemCount } from '~/lib/inventory';
 
@@ -90,6 +90,25 @@ export function HeaderMenu({
   const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-8 lg:gap-12 items-center z-10' : 'flex flex-col'} `;
   const {close} = useAside();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
+  const [products, setProducts] = useState<ProductItemFragment[]>([]);
+  const [productsLoading, setProductsLoading] = useState(true);
+
+  // Fetch products dynamically
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/products?limit=20');
+        const data = await response.json() as {products: ProductItemFragment[]};
+        setProducts(data.products || []);
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      } finally {
+        setProductsLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   const toggleSubmenu = (itemId: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -103,7 +122,31 @@ export function HeaderMenu({
     setExpandedItems(newExpandedItems);
   };
 
-  // Static menu items matching the design
+  // Generate dynamic shop items from products
+  const generateShopItems = () => {
+    if (productsLoading) {
+      return [
+        { id: 'shop-all', title: 'SHOP ALL', url: '/collections/all' }
+      ];
+    }
+
+    const shopItems = [
+      { id: 'shop-all', title: 'SHOP ALL', url: '/collections/all' }
+    ];
+
+    // Add dynamic products
+    products.forEach((product) => {
+      shopItems.push({
+        id: product.handle,
+        title: product.title.toUpperCase(),
+        url: `/products/${product.handle}`
+      });
+    });
+
+    return shopItems;
+  };
+
+  // Static menu items with dynamic shop items
   const staticMenuItems = [
     {
       id: 'home',
@@ -115,16 +158,7 @@ export function HeaderMenu({
       id: 'shop',
       title: 'SHOP',
       url: '/collections/all',
-      items: [
-        { id: 'shop-all', title: 'SHOP ALL', url: '/collections/all' },
-        { id: 'jacket-sunscreen', title: 'JACKET SUNSCREEN', url: '/collections/jacket-sunscreen' },
-        { id: 'spray-sunscreen', title: 'SPRAY SUNSCREEN', url: '/collections/spray-sunscreen' },
-        { id: 'platinum-peptide', title: 'PLATINUM PEPTIDE', url: '/collections/platinum-peptide' },
-        { id: 'refresh', title: 'REFRESH', url: '/collections/refresh' },
-        { id: 'refine-face-wash', title: 'REFINE FACE WASH', url: '/collections/refine-face-wash' },
-        { id: 'lip-balm', title: 'LIP BALM', url: '/collections/lip-balm' },
-        { id: 'extras', title: 'EXTRAS', url: '/collections/extras' }
-      ]
+      items: generateShopItems()
     },
     {
       id: 'explore',
@@ -374,7 +408,7 @@ function activeLinkStyle({
 
 // Add ShopByImages component
 function ShopByImages() {
-  const [products, setProducts] = useState<any[]>([]);
+  const [products, setProducts] = useState<ProductItemFragment[]>([]);
   const [loading, setLoading] = useState(true);
   const {close} = useAside();
 
@@ -382,7 +416,7 @@ function ShopByImages() {
     const fetchProducts = async () => {
       try {
         const response = await fetch('/api/products?limit=6');
-        const data = await response.json() as {products: any[]};
+        const data = await response.json() as {products: ProductItemFragment[]};
         setProducts(data.products || []);
       } catch (error) {
         console.error('Failed to fetch products:', error);

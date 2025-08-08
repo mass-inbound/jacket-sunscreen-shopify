@@ -131,11 +131,14 @@ aside {
 
 aside header {
   align-items: center;
-  border-bottom: 1px solid var(--color-dark);
+  /* border-bottom: 1px solid var(--color-dark); */
   display: flex;
   height: var(--header-height);
   justify-content: space-between;
-  padding: 0 20px;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  opacity: 0.9;
+  padding: 0 20px !important;
 }
 
 aside header h3 {
@@ -144,10 +147,12 @@ aside header h3 {
 
 aside header .close {
   font-weight: bold;
-  opacity: 0.8;
+  opacity: 0.9;
   text-decoration: none;
   transition: all 200ms;
   width: 20px;
+  padding-top: 8px;
+  padding-bottom: 8px;
 }
 
 aside header .close:hover {
@@ -1068,12 +1073,12 @@ button.reset:hover:not(:has(> *)) {
 aside[data-type="mobile"] {
   background: white;
   height: 100vh;
-  width: min(400px, 100vw);
+  width: min(500px, 90vw);
   position: fixed;
   left: 0;
   right: auto !important;
   top: 0;
-  transform: translateX(-400px);
+  transform: translateX(-500px);
   transition: transform 200ms ease-in-out;
   z-index: 1001;
   /* Prevent layout shifts */
@@ -1083,9 +1088,9 @@ aside[data-type="mobile"] {
 /* Mobile responsive adjustments for mobile menu */
 @media (max-width: 768px) {
   aside[data-type="mobile"] {
-    width: 100vw;
+    width: 90vw;
     left: 0;
-    transform: translateX(-100vw);
+    transform: translateX(-90vw);
   }
   
   .overlay.expanded aside[data-type="mobile"] {
@@ -1096,48 +1101,47 @@ aside[data-type="mobile"] {
 /* Mobile menu header styling */
 aside[data-type="mobile"] header {
   align-items: center;
-  border-bottom: 1px solid #e5e7eb;
+  border-bottom: none;
   display: flex;
   height: 60px;
-  justify-content: space-between;
-  padding: 0 20px;
+  justify-content: flex-start;
+  padding: 0 30px;
   background: white;
   flex-shrink: 0;
 }
 
 aside[data-type="mobile"] header h3 {
-  margin: 0;
-  font-size: 16px;
-  font-weight: 600;
-  color: #1f2937;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  display: none;
 }
 
 aside[data-type="mobile"] header .close {
-  font-size: 24px;
-  font-weight: bold;
-  color: #1f2937;
-  opacity: 0.8;
+  font-size: 56px;
+  font-weight: normal;
+  color: #000;
+  opacity: 0.9;
   text-decoration: none;
   transition: all 200ms;
-  width: 30px;
-  height: 30px;
+  width: 80px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
+  border-radius: 0;
+  background: none;
+  margin-left: 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
 }
 
 aside[data-type="mobile"] header .close:hover {
-  opacity: 1;
-  background: #f3f4f6;
+  opacity: 0.7;
+  background: none;
 }
 
 /* Mobile menu content styling */
 aside[data-type="mobile"] main {
   margin: 0;
-  padding: 20px;
+  padding: 0 30px 30px 30px;
   height: calc(100vh - 60px);
   display: flex;
   flex-direction: column;
@@ -1155,19 +1159,19 @@ aside[data-type="mobile"] nav {
 
 aside[data-type="mobile"] nav a {
   display: block;
-  padding: 15px 0;
-  color: #1f2937;
+  padding: 4px 0;
+  color: #000;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: none;
   transition: color 200ms ease;
 }
 
 aside[data-type="mobile"] nav a:hover {
-  color: #FBAC18;
+  color: #666;
 }
 
 aside[data-type="mobile"] nav a:last-child {
@@ -1179,19 +1183,19 @@ aside[data-type="mobile"] nav a:last-child {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 15px 0;
-  color: #1f2937;
+  padding: 4px 0;
+  color: #000;
   text-decoration: none;
-  font-weight: 500;
+  font-weight: 700;
   font-size: 16px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: none;
   transition: color 200ms ease;
 }
 
 .mobile-menu-item:hover {
-  color: #FBAC18;
+  color: #666;
 }
 
 .mobile-menu-item.has-submenu {
@@ -1199,26 +1203,28 @@ aside[data-type="mobile"] nav a:last-child {
 }
 
 .mobile-submenu {
-  padding-left: 20px;
-  border-left: 2px solid #f3f4f6;
-  margin-left: 10px;
+  padding-left: 16px;
+  margin-left: 0;
+  border-left: none;
+  margin-top: 1px;
+  margin-bottom: 2px;
 }
 
 .mobile-submenu-item {
   display: block;
-  padding: 10px 0;
-  color: #6b7280;
+  padding: 2px 0;
+  color: #000;
   text-decoration: none;
   font-weight: 400;
   font-size: 14px;
-  text-transform: none;
-  letter-spacing: normal;
-  border-bottom: 1px solid #f9fafb;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-bottom: none;
   transition: color 200ms ease;
 }
 
 .mobile-submenu-item:hover {
-  color: #FBAC18;
+  color: #666;
 }
 
 .chevron-down {
@@ -1251,7 +1257,7 @@ aside[data-type="mobile"] nav a:last-child {
 
 .quick-view-modal-content {
   background: white;
-  border-radius: 0.5rem;
+  border-radius: 0;
   max-width: 64rem;
   width: 100%;
   max-height: 90vh;
@@ -1287,6 +1293,37 @@ aside[data-type="mobile"] nav a:last-child {
   }
   
   .quick-view-modal-content {
-    border-radius: 0.25rem;
+    border-radius: 0;
   }
+}
+
+/* Hide scrollbar but keep functionality */
+.shop-by-images .flex {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.shop-by-images .flex::-webkit-scrollbar {
+  display: none; /* Chrome, Safari, Opera */
+}
+
+/* Search aside - translucent styling */
+aside[data-type="search"] {
+  background: rgba(255, 255, 255, 0.85); /* Translucent white background */
+  backdrop-filter: blur(10px); /* Add blur effect for better visual appearance */
+  -webkit-backdrop-filter: blur(10px); /* Safari support */
+  border-left: 1px solid rgba(255, 255, 255, 0.2); /* Subtle border */
+}
+
+/* Make search aside header translucent too */
+aside[data-type="search"] .aside-header {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+/* Make overlay less opaque when search is open */
+.overlay:has(aside[data-type="search"]) {
+  background: rgba(0, 0, 0, 0.1); /* Less opaque overlay for search */
 }

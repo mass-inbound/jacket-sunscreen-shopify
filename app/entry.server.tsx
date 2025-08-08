@@ -40,8 +40,19 @@ export default async function handleRequest(
     connectSrc: [
       "'self'",
       "https://monorail-edge.shopifysvc.com",
+      "https://jacket-sunscreen.myshopify.com",
       "https://api.shop.app",
       "https://*.myshopify.com",
+      "https://rxmqy989nf.execute-api.us-east-2.amazonaws.com",
+      "http://localhost:*",
+      "ws://localhost:*",
+      "ws://127.0.0.1:*",
+      "ws://*.tryhydrogen.dev:*",
+    ],
+    frameSrc: [
+      "'self'",
+      "https://forms.inboundrequest.com",
+      "https://www.google.com",
     ],
     fontSrc: [
       "'self'",

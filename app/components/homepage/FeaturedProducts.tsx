@@ -106,22 +106,28 @@ function ProductCard({
         {/* Product Image Container */}
         <div className="relative overflow-hidden  mb-4 flex-shrink-0 h-80 md:h-96 lg:h-[420px]">
           {image && (
-            <Image
-              alt={image.altText || product.title}
-              aspectRatio="1/1"
-              data={image}
-              loading="lazy"
-              sizes="(min-width: 45em) 400px, 100vw"
-              className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-            />
+            <Link to={`/products/${product.handle}`} className="block w-full h-full">
+              <Image
+                alt={image.altText || product.title}
+                aspectRatio="1/1"
+                data={image}
+                loading="lazy"
+                sizes="(min-width: 45em) 400px, 100vw"
+                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+              />
+            </Link>
           )}
           
-          {/* Quick View Overlay */}
+          {/* Quick View Overlay - Only covers bottom area */}
           {showHoverEffects && (
-            <div className="absolute inset-0 w-full flex items-end justify-center pb-6 transition-opacity duration-300">
+            <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center pb-6 transition-opacity duration-300 pointer-events-none">
               <button
-                onClick={handleQuickView}
-                className="bg-[#FBAC18] text-black w-full text-center py-4 font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleQuickView();
+                }}
+                className="bg-[#FBAC18] text-black w-full text-center py-4 font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg pointer-events-auto"
                 type="button"
               >
                 QUICK VIEW
@@ -136,7 +142,7 @@ function ProductCard({
             {/* Product Title */}
             <Link 
               to={`/products/${product.handle}`}
-              className="block mb-3"
+              className="block mb-3 no-underline hover:no-underline"
             >
               <h3 className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#FBAC18] transition-colors">
                 {product.title}
@@ -146,28 +152,9 @@ function ProductCard({
             {/* Price */}
             {price && (
               <div className="mb-4">
-                <Money data={price} className="text-xl md:text-2xl font-bold text-gray-900" />
+                <Money data={price} className="text-base md:text-lg font-bold text-[#545354]" />
               </div>
             )}
-          </div>
-          
-          {/* Quantity Selector */}
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <button
-              onClick={decrementQuantity}
-              disabled={quantity <= 1 || !mounted}
-              className="w-8 h-8 border border-gray-300 flex items-center justify-center text-gray-600 hover:text-gray-800 hover:border-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              -
-            </button>
-            <span className="px-4 py-1 border border-gray-300 min-w-[3rem] text-center">{quantity}</span>
-            <button
-              onClick={incrementQuantity}
-              disabled={quantity >= maxQuantity || !mounted}
-              className="w-8 h-8 border border-gray-300 flex items-center justify-center text-gray-600 hover:text-gray-800 hover:border-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              +
-            </button>
           </div>
           
           {/* Add to Cart Button */}
@@ -300,13 +287,13 @@ function QuickViewModal({
       />
       
       <div 
-        className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden relative z-10"
+        className="bg-white rounded-none max-w-4xl w-full max-h-[90vh] overflow-hidden relative z-10"
         role="document"
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 text-gray-500 hover:text-gray-700 text-2xl font-bold bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-all"
+          className="absolute top-4 right-4 z-10 text-gray-500 hover:text-gray-700 text-2xl w-12 h-12 flex items-center justify-center transition-colors"
           aria-label="Close quick view"
           type="button"
         >
@@ -432,7 +419,7 @@ function QuickViewModal({
               <div className="text-center">
                 <Link
                   to={`/products/${product.handle}`}
-                  className="text-[#FBAC18] font-medium hover:underline"
+                  className="text-[#FBAC18] font-medium hover:no-underline"
                   onClick={onClose}
                 >
                   View More Details

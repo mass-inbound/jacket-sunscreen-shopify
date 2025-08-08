@@ -87,11 +87,11 @@ export function ProductItem({
         {/* Product Title and Price */}
         <div className="flex-1">
           <Link
-            className="block"
+            className="block no-underline hover:no-underline"
             prefetch="intent"
             to={variantUrl}
           >
-            <h3 className="text-[#1B1A1B] font-bold text-xl leading-tight mb-2 line-clamp-2">
+            <h3 className="text-[#1B1A1B] font-bold text-xl leading-tight mb-2 line-clamp-2 hover:text-[#FBAC18] transition-colors">
               {product.title}
             </h3>
             
@@ -99,7 +99,7 @@ export function ProductItem({
             <div className="w-20 h-1 bg-[#FBAC18] mb-2"></div>
             
             {/* Price */}
-            <div className="text-[#1B1A1B] text-base font-normal">
+            <div className="text-[#545354] text-sm font-normal">
               <Money data={product.priceRange.minVariantPrice} />
             </div>
           </Link>

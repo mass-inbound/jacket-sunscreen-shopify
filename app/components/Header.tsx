@@ -50,7 +50,7 @@ export function Header({
             }} 
           />
           {/* Content */}
-          <div className="relative flex items-center justify-between h-[44px] md:h-[52.3px] lg:h-[79.3px] px-3 md:px-4 lg:px-8">
+          <div className="relative flex items-center justify-between h-[44px] md:h-[52.3px] lg:h-[79.3px] px-24 md:px-32 lg:px-48 xl:px-64">
             {/* Left: Mobile Menu Toggle */}
             <div className="flex items-center z-10">
               <HeaderMenuMobileToggle />
@@ -87,7 +87,7 @@ export function HeaderMenu({
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
-  const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-8 lg:gap-12 items-center z-10' : 'flex flex-col gap-4'} `;
+  const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-8 lg:gap-12 items-center z-10' : 'flex flex-col'} `;
   const {close} = useAside();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
 
@@ -115,7 +115,16 @@ export function HeaderMenu({
       id: 'shop',
       title: 'SHOP',
       url: '/collections/all',
-      items: []
+      items: [
+        { id: 'shop-all', title: 'SHOP ALL', url: '/collections/all' },
+        { id: 'jacket-sunscreen', title: 'JACKET SUNSCREEN', url: '/collections/jacket-sunscreen' },
+        { id: 'spray-sunscreen', title: 'SPRAY SUNSCREEN', url: '/collections/spray-sunscreen' },
+        { id: 'platinum-peptide', title: 'PLATINUM PEPTIDE', url: '/collections/platinum-peptide' },
+        { id: 'refresh', title: 'REFRESH', url: '/collections/refresh' },
+        { id: 'refine-face-wash', title: 'REFINE FACE WASH', url: '/collections/refine-face-wash' },
+        { id: 'lip-balm', title: 'LIP BALM', url: '/collections/lip-balm' },
+        { id: 'extras', title: 'EXTRAS', url: '/collections/extras' }
+      ]
     },
     {
       id: 'explore',
@@ -145,28 +154,31 @@ export function HeaderMenu({
         const isExpanded = expandedItems.has(item.id);
         
         return (
-          <div key={item.id} className={viewport === 'mobile' ? 'mobile-menu-group' : ''}>
+          <div key={item.id} className={viewport === 'mobile' ? 'mb-0' : ''}>
             <NavLink
-              className={`${viewport === 'desktop' ? 'text-white font-semibold text-base lg:text-lg tracking-widest hover:text-black transition-colors px-2 py-1 rounded' : 'mobile-menu-item'} ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`}
-              style={viewport === 'desktop' ? { letterSpacing: '0.12em', textDecoration: 'none' } : {}}
+              className={`${viewport === 'desktop' ? 'text-white font-semibold text-[14px] lg:text-[14px] tracking-widest hover:text-black transition-colors px-2 py-1 rounded' : 'block py-2 text-black font-bold text-[14px] tracking-wider border-0'} ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`}
+              style={viewport === 'desktop' ? { letterSpacing: '0.12em', textDecoration: 'none' , fontSize:"14px"} : { textDecoration: 'none' }}
               end
               onClick={hasSubItems && viewport === 'mobile' ? (e) => toggleSubmenu(item.id, e) : close}
               prefetch="intent"
               to={hasSubItems && viewport === 'mobile' ? '#' : item.url}
             >
-              {item.title}
-              {viewport === 'mobile' && hasSubItems && (
-                <svg className="chevron-down" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polyline points="6,9 12,15 18,9"></polyline>
-                </svg>
-              )}
+              <div className="flex items-center justify-between">
+                {item.title}
+                {viewport === 'mobile' && hasSubItems && (
+                  <svg className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <polyline points="6,9 12,15 18,9"></polyline>
+                  </svg>
+                )}
+              </div>
             </NavLink>
             {viewport === 'mobile' && hasSubItems && isExpanded && (
-              <div className="mobile-submenu">
+              <div className="ml-4 mt-2 mb-4">
                 {item.items.map((subItem) => (
                   <NavLink
                     key={subItem.id}
-                    className="mobile-submenu-item"
+                    className="block py-1 text-black text-[14px] font-medium tracking-wide"
+                    style={{ textDecoration: 'none' }}
                     onClick={close}
                     prefetch="intent"
                     to={subItem.url}
@@ -179,6 +191,7 @@ export function HeaderMenu({
           </div>
         );
       })}
+      {viewport === 'mobile' && <ShopByImages />}
     </nav>
   );
 }
@@ -188,11 +201,16 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas flex items-center gap-2 md:gap-3 lg:gap-4" role="navigation">
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle} className="text-white font-semibold hover:text-black transition-colors text-xs md:text-sm lg:text-base">
-        <Suspense fallback="Sign in">
+    <nav className="header-ctas text-white flex items-center gap-2 md:gap-3 lg:gap-4" role="navigation">
+      <NavLink 
+        prefetch="intent" 
+        to="/account" 
+        className="text-white font-bold hover:text-gray-200 transition-colors text-xs md:text-sm lg:text-base"
+        style={{ textDecoration: 'none' }}
+      >
+        <Suspense fallback="Log In">
           <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
+            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Log In')}
           </Await>
         </Suspense>
       </NavLink>
@@ -211,11 +229,7 @@ function HeaderMenuMobileToggle() {
       onClick={() => aside.open('mobile')}
       aria-label="Open menu"
     >
-      <svg width="20" height="20" className="md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <line x1="3" y1="6" x2="21" y2="6" />
-        <line x1="3" y1="12" x2="21" y2="12" />
-        <line x1="3" y1="18" x2="21" y2="18" />
-      </svg>
+      <img src="/assets/sandIcon.svg" alt="Menu" width="24" height="24" className="md:w-7 md:h-7" />
     </button>
   );
 }
@@ -225,10 +239,7 @@ function SearchToggle() {
   
   return (
     <button className="reset text-black hover:text-gray-600 transition-colors p-1" onClick={() => aside.open('search')}>
-      <svg width="18" height="18" className="md:w-5 md:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-        <circle cx="11" cy="11" r="8"></circle>
-        <path d="m21 21-4.35-4.35"></path>
-      </svg>
+      <img src="/assets/searchIcon.svg" alt="Search" width="18" height="18" className="md:w-5 md:h-5" />
     </button>
   );
 }
@@ -253,16 +264,20 @@ function CartBadge({count}: {count: number | null}) {
       }}
       className="text-black font-semibold hover:text-gray-600 transition-colors relative p-1"
     >
+       {count !== null && count > 0 && (
+          <span className="absolute top-[1px] left-[9px] transform translate-x-1 text-black text-xs font-bold">
+            {count}
+          </span>
+        )}
       <svg width="18" height="18" className="md:w-5 md:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <circle cx="9" cy="21" r="1"></circle>
         <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6"></path>
+        <path d="M6 16v2"></path>
+        <path d="M21 16v2"></path>
       </svg>
-      {count !== null && count > 0 && (
-        <span className="absolute -top-1 -right-1 md:-top-2 md:-right-2 bg-white text-[#FBAC18] rounded-full w-4 h-4 md:w-5 md:h-5 flex items-center justify-center text-xs font-bold border border-gray-200">
-          {count}
-        </span>
-      )}
+     
+     
     </button>
   );
 }
@@ -355,4 +370,62 @@ function activeLinkStyle({
     color: isPending ? 'grey' : 'black',
     textDecoration: 'none',
   };
+}
+
+// Add ShopByImages component
+function ShopByImages() {
+  const [products, setProducts] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const {close} = useAside();
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch('/api/products?limit=6');
+        const data = await response.json() as {products: any[]};
+        setProducts(data.products || []);
+      } catch (error) {
+        console.error('Failed to fetch products:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProducts();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="shop-by-images mt-8">
+        <h3 className="text-lg font-bold mb-6 text-black tracking-wider">SHOP BY IMAGE</h3>
+        <div className="flex gap-3 overflow-x-auto">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="w-32 h-96 bg-gray-200 animate-pulse flex-shrink-0" />
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="shop-by-images mt-8">
+      <h3 className="text-lg font-bold mb-6 text-black tracking-wider">SHOP BY IMAGE</h3>
+      <div className="flex gap-3 overflow-x-auto">
+        {products.slice(0, 6).map((product) => (
+          <NavLink
+            key={product.id}
+            to={`/products/${product.handle}`}
+            className="block hover:opacity-80 transition-opacity flex-shrink-0"
+            onClick={close}
+          >
+            <img
+              src={product.featuredImage?.url}
+              alt={product.featuredImage?.altText || product.title}
+              className="w-20 h-64 object-cover"
+            />
+          </NavLink>
+        ))}
+      </div>
+    </div>
+  );
 }

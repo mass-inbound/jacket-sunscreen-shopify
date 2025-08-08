@@ -109,7 +109,7 @@ export function Footer({
                 {/* Right Column */}
                 <div className="flex flex-col w-full lg:w-auto">
                   {/* Logo and Tagline on same line */}
-                  <div className="flex flex-col md:flex-row lg:flex-row items-center gap-4 md:gap-6 lg:gap-8 justify-center lg:justify-start pt-4 md:pt-[41px] pb-4 md:pb-[20px]">
+                  <div className="flex flex-col md:flex-row lg:flex-row items-center gap-2 md:gap-6 lg:gap-3 justify-center lg:justify-start pt-4 md:pt-[41px] pb-4 md:pb-[20px]">
                     {/* Logo */}
                     <div className="w-32 h-12 md:w-[159px] md:h-[57px] flex-shrink-0">
                       <img src="/images/jacket-logo.png" alt="JACKET Sunscreen" className="w-full h-full object-cover" />
@@ -118,7 +118,10 @@ export function Footer({
                     {/* Tagline */}
                     <div className="text-center md:text-left lg:text-left">
                       <h6 className="text-xs md:text-[13px] leading-[1.4em] font-bold text-white whitespace-nowrap">
-                        MAXIMIZE THE ACTION. MINIMIZE THE RISK.
+                        MAXIMIZE THE ACTION. 
+                      </h6>
+                      <h6 className="text-xs md:text-[13px] leading-[1.4em] font-bold text-white whitespace-nowrap">
+                      MINIMIZE THE RISK.
                       </h6>
                     </div>
                   </div>
@@ -131,7 +134,7 @@ export function Footer({
                           Email
                         </label>
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="flex w-full items-center gap-2">
                         <input 
                           id="newsletter-email"
                           type="email" 
@@ -140,7 +143,7 @@ export function Footer({
                         />
                         <button 
                           type="submit"
-                          className="bg-[#FBAC18] text-[#1B1A1B] px-3 md:px-[12px] py-2 md:py-[11px] text-sm md:text-[15px] leading-[1.2em] font-normal hover:bg-[#e69c15] transition-colors rounded-[4px] whitespace-nowrap h-10 md:h-[40px]"
+                          className="bg-[#FBAC18] text-white font-bold px-3 md:px-[12px] py-2 md:py-[11px] text-sm md:text-[15px] leading-[1.2em] hover:bg-[#e69c15] transition-colors rounded-none whitespace-nowrap h-10 md:h-[40px]"
                         >
                           SIGN UP
                         </button>

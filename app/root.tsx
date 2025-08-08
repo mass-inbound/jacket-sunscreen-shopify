@@ -11,6 +11,7 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
+import {Suspense} from 'react';
 import favicon from '~/assets/favicon.svg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
@@ -159,7 +160,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
             shop={data.shop}
             consent={data.consent}
           >
-            <PageLayout {...data}>{children}</PageLayout>
+            <Suspense fallback={<div>Loading...</div>}>
+              <PageLayout {...data}>{children}</PageLayout>
+            </Suspense>
           </Analytics.Provider>
         ) : (
           children
@@ -187,6 +190,9 @@ export function ErrorBoundary() {
     errorMessage = error.message;
   }
 
+  // Log the error for debugging
+  console.error('Root Error Boundary caught:', error);
+
   return (
     <div className="route-error">
       <h1>Oops</h1>
@@ -196,6 +202,13 @@ export function ErrorBoundary() {
           <pre>{errorMessage}</pre>
         </fieldset>
       )}
+      {/* Add a button to reload the page */}
+      <button 
+        onClick={() => window.location.reload()} 
+        className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+      >
+        Reload Page
+      </button>
     </div>
   );
 }

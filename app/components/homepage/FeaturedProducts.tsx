@@ -1,34 +1,32 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router';
+import { Link, useRouteLoaderData } from 'react-router';
 import { Image, Money } from '@shopify/hydrogen';
-import type {
-  ProductItemFragment,
-  CollectionItemFragment,
-  RecommendedProductFragment,
+import type { 
+  ProductItemFragment, 
+  CollectionItemFragment, 
+  RecommendedProductFragment 
 } from 'storefrontapi.generated';
-import { AddToCartButton } from '../AddToCartButton';
-import { useAside } from '../Aside';
+import { AddToCartButton } from '~/components/AddToCartButton';
+import { useAside } from '~/components/Aside';
 import { getMaxAddableQuantity } from '~/lib/inventory';
-import { useRouteLoaderData } from 'react-router';
 import type { RootLoader } from '~/root';
 
 interface FeaturedProductsProps {
-  
   products?: (ProductItemFragment | CollectionItemFragment | RecommendedProductFragment)[];
 }
 
 export function FeaturedProducts({
- 
   products = []
 }: FeaturedProductsProps) {
   return (
-    <section className="w-full mt-9 py-5 md:py-5 lg:py-5 px-5 md:px-6 lg:px-[230px]">
-      <div className="max-w-[280px] md:max-w-[980px] lg:max-w-[980px] mx-auto">
-        
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-8 md:gap-12 lg:gap-16">
-          {products.map((product, index) => (
-            <ProductCard key={product.id || index} product={product} />
+    <section className="py-8 md:py-12 lg:py-16 px-4 md:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto">
+        <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12 lg:mb-16 text-gray-900">
+          Featured Products
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       </div>
@@ -44,6 +42,13 @@ function ProductCard({
   const [isHovered, setIsHovered] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  
+  // Fix hydration by only enabling interactions after mounting
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  
   const { open } = useAside();
   const rootData = useRouteLoaderData<RootLoader>('root');
   const cart = rootData?.cart as any;
@@ -58,7 +63,9 @@ function ProductCard({
   const maxQuantity = Math.max(1, maxAddable);
 
   const handleAddToCart = () => {
-    open('cart');
+    if (mounted) {
+      open('cart');
+    }
   };
 
   const incrementQuantity = () => {
@@ -74,19 +81,27 @@ function ProductCard({
   };
 
   const handleQuickView = () => {
-    setIsModalOpen(true);
+    if (mounted) {
+      setIsModalOpen(true);
+    }
   };
 
   const handleModalAddToCart = () => {
-    open('cart');
+    if (mounted) {
+      open('cart');
+    }
   };
+
+  // Don't render hover effects or modals until mounted
+  const showHoverEffects = mounted && isHovered;
+  const showModal = mounted && isModalOpen;
 
   return (
     <>
       <div 
         className="relative group flex flex-col"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => mounted && setIsHovered(true)}
+        onMouseLeave={() => mounted && setIsHovered(false)}
       >
         {/* Product Image Container */}
         <div className="relative overflow-hidden  mb-4 flex-shrink-0 h-80 md:h-96 lg:h-[420px]">
@@ -102,11 +117,12 @@ function ProductCard({
           )}
           
           {/* Quick View Overlay */}
-          {isHovered && (
+          {showHoverEffects && (
             <div className="absolute inset-0 w-full flex items-end justify-center pb-6 transition-opacity duration-300">
               <button
                 onClick={handleQuickView}
                 className="bg-[#FBAC18] text-black w-full text-center py-4 font-semibold hover:bg-gray-100 transition-colors duration-200 shadow-lg"
+                type="button"
               >
                 QUICK VIEW
               </button>
@@ -118,64 +134,44 @@ function ProductCard({
         <div className="text-center px-4 flex-1 flex flex-col justify-between">
           <div>
             {/* Product Title */}
-            <Link to={`/products/${product.handle}`} className="block">
-              <h3 className="text-base md:text-lg font-bold text-[#1B1A1B] mb-2 leading-tight">
+            <Link 
+              to={`/products/${product.handle}`}
+              className="block mb-3"
+            >
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#FBAC18] transition-colors">
                 {product.title}
               </h3>
             </Link>
             
-            {/* Separator */}
-            <div className="flex justify-center mb-2">
-              <div className="w-5 h-px bg-[#1B1A1B]"></div>
-            </div>
-            
             {/* Price */}
-            <div className="mb-4">
-              {price && (
-                <Money 
-                  data={price} 
-                  className="text-sm md:text-base font-bold text-[#545354]"
-                />
-              )}
-            </div>
+            {price && (
+              <div className="mb-4">
+                <Money data={price} className="text-xl md:text-2xl font-bold text-gray-900" />
+              </div>
+            )}
           </div>
           
           {/* Quantity Selector */}
-          {/* <div className="mb-3">
-            <div className="flex items-center justify-center border border-gray-300 rounded-md mx-auto w-24">
-              <button
-                onClick={decrementQuantity}
-                className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
-                disabled={quantity <= 1}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M19 13H5v-2h14v2z"/>
-                </svg>
-              </button>
-              
-              <div className="flex-1 text-center">
-                <span className="text-[#1B1A1B] font-bold text-sm">{quantity}</span>
-              </div>
-              
-              <button
-                onClick={incrementQuantity}
-                className="p-2 text-[#1B1A1B] hover:text-gray-700 transition-colors"
-                disabled={quantity >= maxQuantity}
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                </svg>
-              </button>
-            </div>
-            {maxQuantity < 999 && (
-              <p className="text-xs text-gray-500 mt-1 text-center">
-                Only {maxQuantity} available
-              </p>
-            )}
-          </div> */}
+          <div className="flex items-center justify-center gap-3 mb-4">
+            <button
+              onClick={decrementQuantity}
+              disabled={quantity <= 1 || !mounted}
+              className="w-8 h-8 border border-gray-300 flex items-center justify-center text-gray-600 hover:text-gray-800 hover:border-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              -
+            </button>
+            <span className="px-4 py-1 border border-gray-300 min-w-[3rem] text-center">{quantity}</span>
+            <button
+              onClick={incrementQuantity}
+              disabled={quantity >= maxQuantity || !mounted}
+              className="w-8 h-8 border border-gray-300 flex items-center justify-center text-gray-600 hover:text-gray-800 hover:border-gray-400 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              +
+            </button>
+          </div>
           
           {/* Add to Cart Button */}
-          {firstVariant ? (
+          {firstVariant && mounted ? (
             <AddToCartButton
               lines={[
                 {
@@ -194,17 +190,17 @@ function ProductCard({
           ) : (
             <button 
               onClick={handleAddToCart}
-              disabled={true}
+              disabled={!mounted}
               className="w-full bg-[#FBAC18] text-white font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              Loading...
+              {!mounted ? 'Loading...' : 'ADD TO CART'}
             </button>
           )}
         </div>
       </div>
 
       {/* Quick View Modal */}
-      {isModalOpen && (
+      {showModal && (
         <QuickViewModal 
           product={product}
           firstVariant={firstVariant}

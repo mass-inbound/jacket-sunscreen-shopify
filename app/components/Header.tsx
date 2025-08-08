@@ -203,19 +203,12 @@ function HeaderCtas({
 }
 
 function HeaderMenuMobileToggle() {
-  let open: (mode: 'search' | 'cart' | 'mobile' | 'closed') => void = () => {};
-  
-  try {
-    const aside = useAside();
-    open = aside.open;
-  } catch (error) {
-    console.warn('Aside context not available:', error);
-  }
+  const aside = useAside(); // Remove try-catch, let it throw if context is missing
   
   return (
     <button
       className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 text-black hover:text-gray-600 transition-colors"
-      onClick={() => open('mobile')}
+      onClick={() => aside.open('mobile')}
       aria-label="Open menu"
     >
       <svg width="20" height="20" className="md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
@@ -228,17 +221,10 @@ function HeaderMenuMobileToggle() {
 }
 
 function SearchToggle() {
-  let open: (mode: 'search' | 'cart' | 'mobile' | 'closed') => void = () => {};
-  
-  try {
-    const aside = useAside();
-    open = aside.open;
-  } catch (error) {
-    console.warn('Aside context not available:', error);
-  }
+  const aside = useAside(); // Remove try-catch, let it throw if context is missing
   
   return (
-    <button className="reset text-black hover:text-gray-600 transition-colors p-1" onClick={() => open('search')}>
+    <button className="reset text-black hover:text-gray-600 transition-colors p-1" onClick={() => aside.open('search')}>
       <svg width="18" height="18" className="md:w-5 md:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <circle cx="11" cy="11" r="8"></circle>
         <path d="m21 21-4.35-4.35"></path>
@@ -249,14 +235,7 @@ function SearchToggle() {
 
 function CartBadge({count}: {count: number | null}) {
   const analytics = useAnalytics();
-  let open: (mode: 'search' | 'cart' | 'mobile' | 'closed') => void = () => {};
-  
-  try {
-    const aside = useAside();
-    open = aside.open;
-  } catch (error) {
-    console.warn('Aside context not available:', error);
-  }
+  const aside = useAside(); // Remove try-catch, let it throw if context is missing
 
   const {publish, shop, cart, prevCart} = analytics;
 
@@ -264,7 +243,7 @@ function CartBadge({count}: {count: number | null}) {
     <button
       onClick={(e) => {
         e.preventDefault();
-        open('cart');
+        aside.open('cart');
         publish('cart_viewed', {
           cart,
           prevCart,

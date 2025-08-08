@@ -106,7 +106,12 @@ Aside.Provider = function AsideProvider({children}: {children: ReactNode}) {
 export function useAside() {
   const aside = useContext(AsideContext);
   if (!aside) {
-    throw new Error('useAside must be used within an AsideProvider');
+    // More descriptive error for debugging
+    throw new Error(
+      'useAside must be used within an AsideProvider. ' +
+      'Make sure your component is wrapped with <Aside.Provider>. ' +
+      'This error often occurs during hydration mismatches in production.'
+    );
   }
   return aside;
 }

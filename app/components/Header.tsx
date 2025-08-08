@@ -39,7 +39,7 @@ export function Header({
 
   return (
     <header className={`w-full z-40 transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0' : ''}`}>
-      <div className={`flex px-4 justify-center items-center py-[15px] md:py-[15px] lg:py-[15px] ${isScrolled ? 'pt-[40px]' : ''} bg-transparent`}>
+      <div className={`flex px-2 md:px-2 justify-center items-center py-2 md:py-[15px] ${isScrolled ? 'pt-4 md:pt-[40px]' : ''} bg-transparent`}>
         <div className="relative w-full mx-auto">
           {/* Overlay + Shadow + Background */}
           <div 
@@ -50,7 +50,7 @@ export function Header({
             }} 
           />
           {/* Content */}
-          <div className="relative flex items-center justify-between h-[52.3px] md:h-[79.3px] px-4 md:px-8 lg:px-8">
+          <div className="relative flex items-center justify-between h-[44px] md:h-[52.3px] lg:h-[79.3px] px-3 md:px-4 lg:px-8">
             {/* Left: Mobile Menu Toggle */}
             <div className="flex items-center z-10">
               <HeaderMenuMobileToggle />
@@ -59,7 +59,7 @@ export function Header({
             {/* Center: Logo */}
             <div className="flex-1 flex justify-center">
               <NavLink prefetch="intent" to="/" className="flex items-center z-10 select-none" style={{ textDecoration: 'none' }} end>
-                <span className="block -mr-28 w-[120px] h-[32px] md:w-[160px] md:h-[40px] lg:w-[180px] lg:h-[48px] rounded flex items-center justify-center font-bold text-white text-lg md:text-3xl lg:text-4xl">
+                <span className="block -mr-16 md:-mr-20 lg:-mr-28 w-[100px] h-[28px] md:w-[120px] md:h-[32px] lg:w-[160px] lg:h-[40px] xl:w-[180px] xl:h-[48px] rounded flex items-center justify-center font-bold text-white text-base md:text-lg lg:text-3xl xl:text-4xl">
                   JA
                 </span>
               </NavLink>
@@ -114,7 +114,7 @@ export function HeaderMenu({
     {
       id: 'shop',
       title: 'SHOP',
-      url: '/collections',
+      url: '/collections/all',
       items: []
     },
     {
@@ -188,8 +188,8 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas flex items-center gap-4" role="navigation">
-      <NavLink prefetch="intent" to="/account" style={activeLinkStyle} className="text-white font-semibold hover:text-black transition-colors">
+    <nav className="header-ctas flex items-center gap-2 md:gap-3 lg:gap-4" role="navigation">
+      <NavLink prefetch="intent" to="/account" style={activeLinkStyle} className="text-white font-semibold hover:text-black transition-colors text-xs md:text-sm lg:text-base">
         <Suspense fallback="Sign in">
           <Await resolve={isLoggedIn} errorElement="Sign in">
             {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Sign in')}
@@ -214,11 +214,11 @@ function HeaderMenuMobileToggle() {
   
   return (
     <button
-      className="flex items-center justify-center w-10 h-10 text-black hover:text-gray-600 transition-colors"
+      className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 text-black hover:text-gray-600 transition-colors"
       onClick={() => open('mobile')}
       aria-label="Open menu"
     >
-      <svg width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <svg width="20" height="20" className="md:w-6 md:h-6" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <line x1="3" y1="6" x2="21" y2="6" />
         <line x1="3" y1="12" x2="21" y2="12" />
         <line x1="3" y1="18" x2="21" y2="18" />
@@ -238,8 +238,8 @@ function SearchToggle() {
   }
   
   return (
-    <button className="reset text-black hover:text-gray-600 transition-colors" onClick={() => open('search')}>
-      <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+    <button className="reset text-black hover:text-gray-600 transition-colors p-1" onClick={() => open('search')}>
+      <svg width="18" height="18" className="md:w-5 md:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <circle cx="11" cy="11" r="8"></circle>
         <path d="m21 21-4.35-4.35"></path>
       </svg>
@@ -272,15 +272,15 @@ function CartBadge({count}: {count: number | null}) {
           url: window.location.href || '',
         } as CartViewPayload);
       }}
-      className="text-black font-semibold hover:text-gray-600 transition-colors relative"
+      className="text-black font-semibold hover:text-gray-600 transition-colors relative p-1"
     >
-      <svg width="20" height="20" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <svg width="18" height="18" className="md:w-5 md:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <circle cx="9" cy="21" r="1"></circle>
         <circle cx="20" cy="21" r="1"></circle>
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
       </svg>
       {count !== null && count > 0 && (
-        <span className="absolute -top-2 -right-2 bg-white text-[#FBAC18] rounded-full w-5 h-5 flex items-center justify-center text-xs font-bold border border-gray-200">
+        <span className="absolute -top-1 -right-1 md:-top-2 md:-right-2 bg-white text-[#FBAC18] rounded-full w-4 h-4 md:w-5 md:h-5 flex items-center justify-center text-xs font-bold border border-gray-200">
           {count}
         </span>
       )}

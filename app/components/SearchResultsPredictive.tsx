@@ -204,8 +204,8 @@ function SearchResultsPredictiveProducts({
 
   return (
     <div className="predictive-search-result" key="products">
-      <h5>Products</h5>
-      <ul>
+      <h5 className="text-lg font-semibold text-gray-900 mb-4 px-4">Products</h5>
+      <div className="space-y-2">
         {products.map((product) => {
           const productUrl = urlWithTrackingParams({
             baseUrl: `/products/${product.handle}`,
@@ -215,30 +215,56 @@ function SearchResultsPredictiveProducts({
 
           const price = product?.selectedOrFirstAvailableVariant?.price;
           const image = product?.selectedOrFirstAvailableVariant?.image;
+          
           return (
-            <li className="predictive-search-result-item" key={product.id}>
-              <Link to={productUrl} onClick={closeSearch}>
-                {image && (
-                  <Image
-                    alt={image.altText ?? ''}
-                    src={image.url}
-                    width={50}
-                    height={50}
-                  />
-                )}
-                <div>
-                  <p>{product.title}</p>
-                  <small>
-                    {price && (
-                      <Money data={price} />
-                    )}
-                  </small>
+            <div key={product.id} className="group">
+              <Link 
+                to={productUrl} 
+                onClick={closeSearch}
+                className="flex items-center p-4 rounded-lg hover:bg-gray-50 transition-colors duration-200 border-b border-gray-100 last:border-b-0"
+              >
+                <div className="flex-shrink-0 w-20 h-20 rounded-lg overflow-hidden bg-gray-100 mr-4">
+                  {image ? (
+                    <Image
+                      alt={image.altText ?? product.title}
+                      src={image.url}
+                      width={80}
+                      height={80}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-200"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                      <svg className="w-8 h-8 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="flex-grow min-w-0">
+                  <h6 className="text-base font-medium text-gray-900 group-hover:text-[#FBAC18] transition-colors duration-200 line-clamp-2 mb-1">
+                    {product.title}
+                  </h6>
+                  
+                  {price && (
+                    <div className="flex items-center space-x-2">
+                      <span className="text-lg font-semibold text-gray-900">
+                        <Money data={price} />
+                      </span>
+                    </div>
+                  )}
+                </div>
+                
+                <div className="flex-shrink-0 ml-4">
+                  <svg className="w-5 h-5 text-gray-400 group-hover:text-[#FBAC18] transition-colors duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
                 </div>
               </Link>
-            </li>
+            </div>
           );
         })}
-      </ul>
+      </div>
     </div>
   );
 }

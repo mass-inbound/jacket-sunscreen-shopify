@@ -40,17 +40,17 @@ export function InfoTabsSection() {
   const activeTabData = tabsData.find(tab => tab.id === activeTab);
 
   return (
-    <section className="pt-16 mt-10 px-4 md:px-8 lg:px-12">
+    <section className="pt-8 md:pt-12 lg:pt-16 mt-4 md:mt-6 lg:mt-10 px-4 md:px-8 lg:px-12">
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col">
           {/* Tab Navigation */}
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-4">
             {tabsData.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  px-8 py-2 rounded text-sm font-semibold transition-all duration-200
+                  px-3 md:px-6 lg:px-8 py-2 rounded text-xs md:text-sm font-semibold transition-all duration-200 min-h-[40px] md:min-h-auto
                   ${activeTab === tab.id 
                     ? 'bg-black text-white' 
                     : 'bg-[#FBAC18] text-black hover:bg-[#e69b15]'
@@ -63,11 +63,11 @@ export function InfoTabsSection() {
           </div>
 
           {/* Tab Content */}
-          <div className="bg-white rounded-sm p-16 md:p-20 lg:p-24 h-[400px] md:h-[450px] lg:h-[500px]">
-            <div className="max-w-4xl mx-auto text-center h-full flex flex-col">
+          <div className="bg-white rounded-sm p-6 md:p-12 lg:p-16 xl:p-20 2xl:p-24 min-h-[300px] md:min-h-[350px] lg:min-h-[400px] xl:min-h-[450px] 2xl:min-h-[500px]">
+            <div className="max-w-4xl mx-auto text-center h-full flex flex-col justify-center">
               {activeTabData && (
                 <>
-                  <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-black mb-6">
+                  <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-black mb-4 md:mb-6">
                     {activeTabData.heading}
                   </h2>
                   <p className="text-sm md:text-base leading-relaxed text-black max-w-3xl mx-auto">

@@ -83,6 +83,7 @@ export default function Homepage() {
     showRegionBar,
     showCookieModal,
     closePopup,
+    openPopup,
     closeRegionBar,
     acceptCookies,
     declineAllCookies,
@@ -141,6 +142,14 @@ export default function Homepage() {
       {/* CTA Section */}
       <CTASection />
 
+      {/* Sticky Save 15% Button */}
+      <button
+        onClick={openPopup}
+        className="fixed bottom-4 left-4 bg-[#FBAC18] text-black font-bold py-3 px-9 rounded shadow-lg hover:bg-[#e69c15] transition-colors z-50"
+      >
+        Save 15%
+      </button>
+
       {/* Sale Popup */}
       <SalePopup 
         isVisible={showPopup}
@@ -174,15 +183,15 @@ function RecommendedProducts({
 }) {
   return (
     <div className="recommended-products">
-      <Suspense fallback={<div className="text-center py-8">Loading products...</div>}>
+      <Suspense fallback={<div className="text-center py-4 md:py-6 lg:py-8">Loading products...</div>}>
         <Await resolve={products}>
           {(response) => (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 px-4 md:px-6 lg:px-8">
               {response
                 ? response.products.nodes.map((product) => (
                     <ProductItem key={product.id} product={product} />
                   ))
-                : <div className="text-center py-8">No products available</div>}
+                : <div className="col-span-full text-center py-4 md:py-6 lg:py-8 text-sm md:text-base">No products available</div>}
             </div>
           )}
         </Await>

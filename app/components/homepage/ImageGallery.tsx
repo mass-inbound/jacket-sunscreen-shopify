@@ -19,7 +19,7 @@ export function ImageGallery() {
   }, [images.length]);
 
   return (
-    <section className="w-full bg-white py-4 md:py-6 lg:py-8">
+    <section className="w-full bg-white py-2 md:py-4 lg:py-6 xl:py-8">
       <div className="w-full">
         {/* Carousel Container */}
         <div className="relative overflow-hidden">
@@ -37,9 +37,9 @@ export function ImageGallery() {
                 style={{ width: '100%' }}
               >
                 <div className="flex">
-                  {/* Previous Image (15% width) */}
-                  <div className="relative w-[15%] flex-shrink-0">
-                    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[629px]">
+                  {/* Previous Image (responsive width) */}
+                  <div className="relative w-[10%] md:w-[12%] lg:w-[15%] flex-shrink-0">
+                    <div className="relative w-full h-[200px] sm:h-[250px] md:h-[350px] lg:h-[500px] xl:h-[629px]">
                       <img
                         src={images[(index - 1 + images.length) % images.length]}
                         alt={`Previous carousel`}
@@ -49,9 +49,9 @@ export function ImageGallery() {
                     </div>
                   </div>
 
-                  {/* Current Image (70% width) */}
-                  <div className="relative w-[70%] flex-shrink-0">
-                    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[629px]">
+                  {/* Current Image (responsive width) */}
+                  <div className="relative w-[80%] md:w-[76%] lg:w-[70%] flex-shrink-0">
+                    <div className="relative w-full h-[200px] sm:h-[250px] md:h-[350px] lg:h-[500px] xl:h-[629px]">
                       <img
                         src={image}
                         alt={`Current carousel`}
@@ -60,18 +60,18 @@ export function ImageGallery() {
                       
                       {/* Overlay with centered text - only on central image */}
                       <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center">
-                        <div className="text-center px-4">
-                          <h2 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold leading-tight">
-                            MAXIMIZE THE ACTIN. MINIMIZE THE RISK.
+                        <div className="text-center px-2 md:px-4">
+                          <h2 className="text-white text-sm sm:text-base md:text-lg lg:text-xl xl:text-2xl 2xl:text-3xl font-bold leading-tight">
+                            MAXIMIZE THE ACTION. MINIMIZE THE RISK.
                           </h2>
                         </div>
                       </div>
                     </div>
                   </div>
 
-                  {/* Next Image (15% width) */}
-                  <div className="relative w-[15%] flex-shrink-0">
-                    <div className="relative w-full h-[300px] sm:h-[400px] md:h-[500px] lg:h-[629px]">
+                  {/* Next Image (responsive width) */}
+                  <div className="relative w-[10%] md:w-[12%] lg:w-[15%] flex-shrink-0">
+                    <div className="relative w-full h-[200px] sm:h-[250px] md:h-[350px] lg:h-[500px] xl:h-[629px]">
                       <img
                         src={images[(index + 1) % images.length]}
                         alt={`Next carousel`}

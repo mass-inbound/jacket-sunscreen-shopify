@@ -82,80 +82,102 @@ function CartAside({cart}: {cart: PageLayoutProps['cart']}) {
 function SearchAside() {
   const queriesDatalistId = useId();
   return (
-    <Aside type="search" heading="SEARCH">
-      <div className="predictive-search">
-        <br />
-        <SearchFormPredictive>
-          {({fetchResults, goToSearch, inputRef}) => (
-            <>
-              <input
-                name="q"
-                onChange={fetchResults}
-                onFocus={fetchResults}
-                placeholder="Search"
-                ref={inputRef}
-                type="search"
-                list={queriesDatalistId}
-              />
-              &nbsp;
-              <button onClick={goToSearch}>Search</button>
-            </>
-          )}
-        </SearchFormPredictive>
+    <Aside type="search" heading="Search Products">
+      <div className="predictive-search h-full flex flex-col">
+        {/* Enhanced Search Input */}
+        <div className="p-6 border-b border-gray-200">
+          <SearchFormPredictive>
+            {({fetchResults, goToSearch, inputRef, fetcher}) => (
+              <div className="relative">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <input
+                    name="q"
+                    onChange={fetchResults}
+                    onFocus={fetchResults}
+                    placeholder="Search for products..."
+                    ref={inputRef}
+                    type="search"
+                    list={queriesDatalistId}
+                    className="block w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-2 focus:ring-[#FBAC18] focus:border-[#FBAC18] transition-colors duration-200"
+                    autoComplete="off"
+                  />
+                  {fetcher.state === 'loading' && (
+                    <div className="absolute inset-y-0 right-0 pr-3 flex items-center">
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-[#FBAC18]"></div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+          </SearchFormPredictive>
+        </div>
 
-        <SearchResultsPredictive>
-          {({items, total, term, state, closeSearch}) => {
-            const {articles, collections, pages, products, queries} = items;
+        {/* Search Results */}
+        <div className="flex-1 overflow-y-auto">
+          <SearchResultsPredictive>
+            {({items, total, term, state, closeSearch}) => {
+              const {products, queries} = items;
 
-            if (state === 'loading' && term.current) {
-              return <div>Loading...</div>;
-            }
+              if (state === 'loading' && term.current) {
+                return (
+                  <div className="flex flex-col items-center justify-center py-12">
+                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-[#FBAC18] mb-4"></div>
+                    <p className="text-gray-500">Searching products...</p>
+                  </div>
+                );
+              }
 
-            if (!total) {
-              return <SearchResultsPredictive.Empty term={term} />;
-            }
+              if (!term.current) {
+                return (
+                  <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                    <svg className="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">Search Products</h3>
+                    <p className="text-gray-500">Start typing to find your perfect products</p>
+                  </div>
+                );
+              }
 
-            return (
-              <>
-                <SearchResultsPredictive.Queries
-                  queries={queries}
-                  queriesDatalistId={queriesDatalistId}
-                />
-                <SearchResultsPredictive.Products
-                  products={products}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                <SearchResultsPredictive.Collections
-                  collections={collections}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                <SearchResultsPredictive.Pages
-                  pages={pages}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                <SearchResultsPredictive.Articles
-                  articles={articles}
-                  closeSearch={closeSearch}
-                  term={term}
-                />
-                {term.current && total ? (
-                  <Link
-                    onClick={closeSearch}
-                    to={`${SEARCH_ENDPOINT}?q=${term.current}`}
-                  >
-                    <p>
-                      View all results for <q>{term.current}</q>
-                      &nbsp; →
+              if (!total) {
+                return (
+                  <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
+                    <svg className="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.291-1.1-5.5-2.709" />
+                    </svg>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">No Products Found</h3>
+                    <p className="text-gray-500">
+                      No results found for <span className="font-medium">&ldquo;{term.current}&rdquo;</span>
                     </p>
-                  </Link>
-                ) : null}
-              </>
-            );
-          }}
-        </SearchResultsPredictive>
+                    <p className="text-sm text-gray-400 mt-1">Try adjusting your search terms</p>
+                  </div>
+                );
+              }
+
+              return (
+                <div className="py-4">
+                  <SearchResultsPredictive.Queries
+                    queries={queries}
+                    queriesDatalistId={queriesDatalistId}
+                  />
+                  
+                  {products.length > 0 && (
+                    <SearchResultsPredictive.Products
+                      products={products}
+                      closeSearch={closeSearch}
+                      term={term}
+                    />
+                  )}
+                </div>
+              );
+            }}
+          </SearchResultsPredictive>
+        </div>
       </div>
     </Aside>
   );

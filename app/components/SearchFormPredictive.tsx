@@ -1,5 +1,5 @@
 import { useFetcher, useNavigate, type FormProps, type Fetcher } from 'react-router';
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useCallback} from 'react';
 import type {PredictiveSearchReturn} from '~/lib/search';
 import {useAside} from './Aside';
 
@@ -15,6 +15,31 @@ type SearchFormPredictiveProps = Omit<FormProps, 'children'> & {
 };
 
 export const SEARCH_ENDPOINT = '/search';
+
+// Custom hook for debounced search
+function useDebounce<T extends (...args: any[]) => void>(callback: T, delay: number) {
+  const debounceTimer = useRef<NodeJS.Timeout>();
+
+  const debouncedCallback = useCallback((...args: Parameters<T>) => {
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
+    }
+    
+    debounceTimer.current = setTimeout(() => {
+      callback(...args);
+    }, delay);
+  }, [callback, delay]);
+
+  useEffect(() => {
+    return () => {
+      if (debounceTimer.current) {
+        clearTimeout(debounceTimer.current);
+      }
+    };
+  }, []);
+
+  return debouncedCallback;
+}
 
 /**
  *  Search form component that sends search requests to the `/search` route
@@ -45,12 +70,26 @@ export function SearchFormPredictive({
     aside.close();
   }
 
-  /** Fetch search results based on the input value */
-  function fetchResults(event: React.ChangeEvent<HTMLInputElement>) {
+  /** Fetch search results based on the input value - immediate version */
+  function fetchResultsImmediate(query: string) {
     fetcher.submit(
-      {q: event.target.value || '', limit: 5, predictive: true},
+      {q: query || '', limit: 8, predictive: true},
       {method: 'GET', action: SEARCH_ENDPOINT},
     );
+  }
+
+  /** Debounced version of fetchResults */
+  const debouncedFetchResults = useDebounce(fetchResultsImmediate, 300);
+
+  /** Fetch search results based on the input value */
+  function fetchResults(event: React.ChangeEvent<HTMLInputElement>) {
+    const query = event.target.value;
+    if (query.length > 0) {
+      debouncedFetchResults(query);
+    } else {
+      // Clear results immediately when input is empty
+      fetchResultsImmediate('');
+    }
   }
 
   // ensure the passed input has a type of search, because SearchResults

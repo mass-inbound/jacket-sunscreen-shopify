@@ -30,7 +30,8 @@ export default async function handleRequest(
     ],
     frameSrc: [
       "'self'",
-      'https://forms.inboundrequest.com', // Allow iframes from JotForm
+      'https://forms.inboundrequest.com', // Allow iframes from Jotform
+      'https://www.google.com'
     ],
     scriptSrc: [
       "'self'",

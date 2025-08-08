@@ -1177,8 +1177,8 @@ aside[data-type="mobile"] nav a:last-child {
 /* Mobile menu specific item styling */
 .mobile-menu-item {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  justify-content: space-between;
   padding: 15px 0;
   color: #1f2937;
   text-decoration: none;
@@ -1198,7 +1198,30 @@ aside[data-type="mobile"] nav a:last-child {
   cursor: pointer;
 }
 
-.mobile-menu-item .chevron-down {
+.mobile-submenu {
+  padding-left: 20px;
+  border-left: 2px solid #f3f4f6;
+  margin-left: 10px;
+}
+
+.mobile-submenu-item {
+  display: block;
+  padding: 10px 0;
+  color: #6b7280;
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 14px;
+  text-transform: none;
+  letter-spacing: normal;
+  border-bottom: 1px solid #f9fafb;
+  transition: color 200ms ease;
+}
+
+.mobile-submenu-item:hover {
+  color: #FBAC18;
+}
+
+.chevron-down {
   transition: transform 200ms ease;
 }
 
@@ -1206,40 +1229,64 @@ aside[data-type="mobile"] nav a:last-child {
   transform: rotate(180deg);
 }
 
-/* Mobile submenu styling */
-.mobile-submenu {
-  background: #f9fafb;
-  margin-left: 20px;
-  border-left: 2px solid #e5e7eb;
+/*
+* --------------------------------------------------
+* Quick View Modal
+* --------------------------------------------------
+*/
+.quick-view-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(2px);
+  padding: 1rem;
 }
 
-.mobile-submenu-item {
-  display: block;
-  padding: 12px 20px;
-  color: #6b7280;
-  text-decoration: none;
-  font-weight: 400;
-  font-size: 14px;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  border-bottom: 1px solid #f3f4f6;
-  transition: color 200ms ease;
+.quick-view-modal-content {
+  background: white;
+  border-radius: 0.5rem;
+  max-width: 64rem;
+  width: 100%;
+  max-height: 90vh;
+  overflow: hidden;
+  position: relative;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  animation: quickViewFadeIn 0.2s ease-out;
 }
 
-.mobile-submenu-item:hover {
-  color: #FBAC18;
-  background: #f3f4f6;
+@keyframes quickViewFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
-.mobile-submenu-item:last-child {
-  border-bottom: none;
+/* Ensure modal content is scrollable on small screens */
+@media (max-height: 600px) {
+  .quick-view-modal-content {
+    max-height: 95vh;
+    overflow-y: auto;
+  }
 }
 
-/* Mobile menu group styling */
-.mobile-menu-group {
-  border-bottom: 1px solid #f3f4f6;
-}
-
-.mobile-menu-group:last-child {
-  border-bottom: none;
+/* Prevent content jumping on small screens */
+@media (max-width: 768px) {
+  .quick-view-modal {
+    padding: 0.5rem;
+  }
+  
+  .quick-view-modal-content {
+    border-radius: 0.25rem;
+  }
 }

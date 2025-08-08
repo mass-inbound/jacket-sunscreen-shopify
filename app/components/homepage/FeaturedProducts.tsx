@@ -245,6 +245,28 @@ function QuickViewModal({
       onClose();
     }
   }, [type, onClose]);
+
+  // Handle ESC key to close modal
+  useEffect(() => {
+    const handleEscKey = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose();
+      }
+    };
+    
+    document.addEventListener('keydown', handleEscKey);
+    return () => {
+      document.removeEventListener('keydown', handleEscKey);
+    };
+  }, [onClose]);
+
+  // Prevent body scroll when modal is open
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, []);
   
   // Generate SKU from product handle or variant
   const sku = firstVariant?.sku || `${product.handle?.toUpperCase().replace(/-/g, '')}-01` || 'SKU-N/A';
@@ -254,13 +276,39 @@ function QuickViewModal({
     open('cart');
   };
 
+  // Handle background click to close modal
+  const handleBackgroundClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden relative">
+    <div 
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
+      style={{ zIndex: 9999 }}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="quick-view-title"
+    >
+      {/* Background overlay that closes modal */}
+      <button
+        className="absolute inset-0 w-full h-full bg-transparent border-none cursor-default"
+        onClick={onClose}
+        aria-label="Close quick view"
+        type="button"
+      />
+      
+      <div 
+        className="bg-white rounded-lg max-w-4xl w-full max-h-[90vh] overflow-hidden relative z-10"
+        role="document"
+      >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 text-gray-500 hover:text-gray-700 text-2xl font-bold"
+          className="absolute top-4 right-4 z-10 text-gray-500 hover:text-gray-700 text-2xl font-bold bg-white rounded-full w-8 h-8 flex items-center justify-center shadow-md hover:shadow-lg transition-all"
+          aria-label="Close quick view"
+          type="button"
         >
           ×
         </button>
@@ -284,7 +332,10 @@ function QuickViewModal({
           <div className="md:w-1/2 p-6 flex flex-col justify-between">
             <div>
               {/* Product Title */}
-              <h2 className="text-2xl md:text-3xl font-bold text-[#FBAC18] mb-4">
+              <h2 
+                id="quick-view-title"
+                className="text-2xl md:text-3xl font-bold text-[#FBAC18] mb-4"
+              >
                 {product.title}
               </h2>
               
@@ -311,8 +362,10 @@ function QuickViewModal({
                 <div className="flex items-center border border-gray-300 rounded-md w-32">
                   <button
                     onClick={onDecrementQuantity}
-                    className="p-3 text-gray-500 hover:text-gray-700 transition-colors"
+                    className="p-3 text-gray-500 hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={quantity <= 1}
+                    type="button"
+                    aria-label="Decrease quantity"
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                       <path d="M19 13H5v-2h14v2z"/>
@@ -325,8 +378,10 @@ function QuickViewModal({
                   
                   <button
                     onClick={onIncrementQuantity}
-                    className="p-3 text-[#1B1A1B] hover:text-gray-700 transition-colors"
+                    className="p-3 text-[#1B1A1B] hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     disabled={quantity >= maxQuantity}
+                    type="button"
+                    aria-label="Increase quantity"
                   >
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -355,7 +410,10 @@ function QuickViewModal({
                   onClick={handleModalAddToCart}
                   disabled={!firstVariant.availableForSale || maxQuantity === 0}
                 >
-                  <button className="w-full bg-[#FBAC18] text-white font-bold py-3 px-6 rounded text-lg hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                  <button 
+                    className="w-full bg-[#FBAC18] text-white font-bold py-3 px-6 rounded text-lg hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    type="button"
+                  >
                     {!firstVariant.availableForSale ? 'Sold out' : 
                      maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
                   </button>
@@ -364,6 +422,7 @@ function QuickViewModal({
                 <button 
                   disabled={true}
                   className="w-full bg-[#FBAC18] text-white font-bold py-3 px-6 rounded text-lg hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                  type="button"
                 >
                   Loading...
                 </button>

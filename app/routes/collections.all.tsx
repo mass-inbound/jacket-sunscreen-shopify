@@ -92,6 +92,7 @@ export default function Collection() {
                 key={product.id}
                 product={product}
                 loading={index < 8 ? 'eager' : undefined}
+                variant="collection"
               />
             );
           }}
@@ -110,6 +111,7 @@ const COLLECTION_ITEM_FRAGMENT = `#graphql
     id
     handle
     title
+    tags
     featuredImage {
       id
       altText

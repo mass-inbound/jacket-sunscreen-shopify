@@ -11,7 +11,7 @@ interface ContentSectionProps {
 export function ContentSections() {
   return (
     <section className="w-full bg-white py-3 md:py-[12px]">
-      <div className="max-w-[1200px] mx-auto bg-white relative px-4 md:px-0">
+      <div className="mx-auto bg-white relative px-4 md:px-28">
         {/* Section 1: JACKET Sunscreen - Image on RIGHT */}
         <div className="flex flex-col lg:flex-row bg-[#1B1A1B] mb-4 md:mb-8 rounded-lg lg:rounded-none">
           <div className="flex-1 lg:w-1/2">
@@ -25,7 +25,7 @@ export function ContentSections() {
               </div>
               <div className="flex-1">
                 <div>
-                  <div className="flex flex-col md:flex-row items-center lg:items-start mb-2 md:mb-[3px] text-center lg:text-left">
+                  <div className="flex flex-col md:flex-row items-center lg:items-start mb-4 md:mb-6 text-center lg:text-left">
                     <span className="text-lg md:text-xl lg:text-[27px] font-normal text-[#FBAC18] mr-0 lg:mr-[15px]">
                       JACKET
                     </span>
@@ -76,7 +76,7 @@ export function ContentSections() {
               </div>
             </div>
           </div>
-          <div className="lg:w-1/2 h-[200px] md:h-[250px] lg:h-full order-first lg:order-last">
+          <div className="lg:w-1/2 h-[510px] order-first lg:order-last">
             <img
               src="/assets/contentImage1.png"
               alt="JACKET Sunscreen"
@@ -87,7 +87,7 @@ export function ContentSections() {
 
         {/* Section 2: JACKET Spray Sunscreen - Image on LEFT */}
         <div className="flex flex-col lg:flex-row bg-[#1B1A1B] mb-4 md:mb-8 rounded-lg lg:rounded-none">
-          <div className="lg:w-1/2 h-[200px] md:h-[250px] lg:h-full">
+          <div className="lg:w-1/2 h-[510px]">
             <img
               src="/assets/contentImage2.png"
               alt="JACKET Sunscreen"
@@ -105,7 +105,7 @@ export function ContentSections() {
               </div>
               <div className="flex-1">
                 <div>
-                  <div className="flex flex-col md:flex-row items-center lg:items-start mb-2 md:mb-[3px] text-center lg:text-left">
+                  <div className="flex flex-col md:flex-row items-center lg:items-start mb-4 md:mb-6 text-center lg:text-left">
                     <span className="text-lg md:text-xl lg:text-[27px] font-normal text-[#FBAC18] mr-0 lg:mr-[15px]">
                       JACKET
                     </span>
@@ -171,7 +171,7 @@ export function ContentSections() {
               </div>
               <div className="flex-1 lg:-ml-12">
                 <div>
-                  <div className="flex flex-col md:flex-row items-center lg:items-start mb-2 md:mb-[3px] text-center lg:text-left">
+                  <div className="flex flex-col md:flex-row items-center lg:items-start mb-4 md:mb-6 text-center lg:text-left">
                     <span className="text-lg md:text-xl lg:text-[27px] font-normal text-white mr-0 lg:mr-[15px]">
                       REFRESH
                     </span>
@@ -219,7 +219,7 @@ export function ContentSections() {
               </div>
             </div>
           </div>
-          <div className="lg:w-1/2 h-[200px] md:h-[250px] lg:h-full order-first lg:order-last">
+          <div className="lg:w-1/2 h-[510px] order-first lg:order-last">
             <img
               src="/assets/contentImage3.png"
               alt="JACKET Sunscreen"
@@ -230,7 +230,7 @@ export function ContentSections() {
 
         {/* Section 4: LIP BALM BY JACKET - Image on LEFT */}
         <div className="flex flex-col lg:flex-row bg-[#1B1A1B] mb-4 md:mb-8 rounded-lg lg:rounded-none">
-          <div className="lg:w-1/2 h-[200px] md:h-[250px] lg:h-full">
+          <div className="lg:w-1/2 h-[510px]">
             <img
               src="/assets/contentImage4.png"
               alt="JACKET Sunscreen"
@@ -248,7 +248,7 @@ export function ContentSections() {
               </div>
               <div className="flex-1">
                 <div>
-                  <div className="flex flex-col md:flex-row items-center lg:items-start mb-2 md:mb-[3px] text-center lg:text-left">
+                  <div className="flex flex-col md:flex-row items-center lg:items-start mb-4 md:mb-6 text-center lg:text-left">
                     <span className="text-lg md:text-xl lg:text-[27px] font-normal text-[#FBAC18] mr-0 lg:mr-[15px]">
                       LIP BALM
                     </span>
@@ -311,7 +311,7 @@ export function ContentSections() {
               </div>
               <div className="flex-1">
                 <div>
-                  <div className="text-center lg:text-left mb-2 md:mb-[3px]">
+                  <div className="text-center lg:text-left mb-4 md:mb-6">
                     <div className="text-lg md:text-xl lg:text-[27px] font-normal text-white">
                       PLATINUM PEPTIDE
                     </div>
@@ -362,11 +362,11 @@ export function ContentSections() {
               </div>
             </div>
           </div>
-          <div className="lg:w-1/2 h-[200px] md:h-[250px] lg:h-full order-first lg:order-last">
+          <div className="lg:w-1/2 h-[510px] order-first lg:order-last">
             <img
               src="/assets/contentImage5.png"
               alt="JACKET Sunscreen"
-              className="w-full h-[200px] md:h-[250px] lg:h-[507px] rounded-t-lg lg:rounded-none object-cover"
+              className="w-full h-[510px] rounded-t-lg lg:rounded-none object-cover"
             />
           </div>
         </div>

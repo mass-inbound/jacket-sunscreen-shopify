@@ -63,7 +63,7 @@ export function InfoTabsSection() {
           </div>
 
           {/* Tab Content */}
-          <div className="bg-white rounded-sm p-6 md:p-12 lg:p-16 xl:p-20 2xl:p-24 min-h-[300px] md:min-h-[350px] lg:min-h-[400px] xl:min-h-[450px] 2xl:min-h-[500px]">
+          <div className="bg-white rounded-sm p-6 md:p-12 lg:p-12 xl:p-12 2xl:p-12 min-h-[300px] md:min-h-[350px] lg:min-h-[300px] xl:min-h-[300px] 2xl:min-h-[300px]">
             <div className="max-w-4xl mx-auto text-center h-full flex flex-col justify-center">
               {activeTabData && (
                 <>

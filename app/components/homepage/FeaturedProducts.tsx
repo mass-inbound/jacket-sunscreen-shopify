@@ -18,15 +18,29 @@ interface FeaturedProductsProps {
 export function FeaturedProducts({
   products = []
 }: FeaturedProductsProps) {
+  // Function to determine if a product is new
+  const isNewProduct = (product: any) => {
+    // Only check if product has "new" related tags - no automatic detection
+    if (product.tags && product.tags.some((tag: string) => 
+      tag.toLowerCase().includes('new') || 
+      tag.toLowerCase().includes('arrival') ||
+      tag.toLowerCase().includes('latest')
+    )) {
+      return true;
+    }
+    
+    return false;
+  };
+
   return (
-    <section className="py-8 md:py-12 lg:py-16 px-4 md:px-6 lg:px-8">
+    <section className="py-8 md:py-12 lg:py-16 px-6 md:px-8 lg:px-9">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12 lg:mb-16 text-gray-900">
           Featured Products
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard key={product.id} product={product} isNew={isNewProduct(product)} />
           ))}
         </div>
       </div>
@@ -35,9 +49,11 @@ export function FeaturedProducts({
 }
 
 function ProductCard({ 
-  product 
+  product, 
+  isNew 
 }: { 
-  product: ProductItemFragment | CollectionItemFragment | RecommendedProductFragment 
+  product: ProductItemFragment | CollectionItemFragment | RecommendedProductFragment;
+  isNew: boolean;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   const [quantity, setQuantity] = useState(1);
@@ -104,16 +120,16 @@ function ProductCard({
         onMouseLeave={() => mounted && setIsHovered(false)}
       >
         {/* Product Image Container */}
-        <div className="relative overflow-hidden  mb-4 flex-shrink-0 h-80 md:h-96 lg:h-[420px]">
+        <div className="relative overflow-hidden  mb-4 flex-shrink-0" style={{ height: '425px', width: '319px', maxWidth: '100%', margin: '0 auto' }}>
           {image && (
             <Link to={`/products/${product.handle}`} className="block w-full h-full">
               <Image
                 alt={image.altText || product.title}
-                aspectRatio="1/1"
+                aspectRatio="3/4"
                 data={image}
                 loading="lazy"
-                sizes="(min-width: 45em) 400px, 100vw"
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                sizes="(min-width: 45em) 319px, 100vw"
+                className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
               />
             </Link>
           )}
@@ -136,6 +152,15 @@ function ProductCard({
           )}
         </div>
 
+        {/* NEW Tag - appears between image and product info */}
+        {isNew && (
+          <div className="flex justify-center mb-3">
+            <span className="bg-[#FBAC18] mt-1 text-white font-bold px-4 py-1 text-xs rounded-none">
+              NEW!
+            </span>
+          </div>
+        )}
+
         {/* Product Info */}
         <div className="text-center px-4 flex-1 flex flex-col justify-between">
           <div>
@@ -144,8 +169,9 @@ function ProductCard({
               to={`/products/${product.handle}`}
               className="block mb-3 no-underline hover:no-underline"
             >
-              <h3 className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#FBAC18] transition-colors">
+              <h3 className="text-lg md:text-xl font-semibold text-gray-900 hover:text-[#FBAC18] transition-colors relative pb-2">
                 {product.title}
+                <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[25px] h-[2px] bg-black"></span>
               </h3>
             </Link>
             
@@ -169,7 +195,7 @@ function ProductCard({
               onClick={handleAddToCart}
               disabled={!firstVariant.availableForSale || maxQuantity === 0}
             >
-              <button className="w-full bg-[#FBAC18] text-white font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+              <button className="w-[50%] bg-[#FBAC18] text-black font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                 {!firstVariant.availableForSale ? 'Sold out' : 
                  maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
               </button>
@@ -306,11 +332,11 @@ function QuickViewModal({
             {image && (
               <Image
                 alt={image.altText || product.title}
-                aspectRatio="1/1"
+                aspectRatio="3/4"
                 data={image}
                 loading="lazy"
                 sizes="(min-width: 45em) 400px, 100vw"
-                className="w-full h-full object-cover rounded-lg"
+                className="w-full h-full object-contain rounded-lg"
               />
             )}
           </div>
@@ -398,7 +424,7 @@ function QuickViewModal({
                   disabled={!firstVariant.availableForSale || maxQuantity === 0}
                 >
                   <button 
-                    className="w-full bg-[#FBAC18] text-white font-bold py-3 px-6 rounded text-lg hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="w-full bg-[#FBAC18] text-black font-bold py-3 px-6 rounded text-lg hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     type="button"
                   >
                     {!firstVariant.availableForSale ? 'Sold out' : 

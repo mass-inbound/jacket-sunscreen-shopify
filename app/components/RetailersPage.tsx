@@ -52,7 +52,7 @@ export function RetailersPage({retailers}: RetailersPageProps) {
                 <h3 className="font-bold text-lg text-black">
                   {retailer.name}
                 </h3>
-                <div className="text-sm text-white">
+                <div className="text-sm text-black">
                   <p>{retailer.address}</p>
                   <p>{retailer.city}</p>
                 </div>

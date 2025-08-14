@@ -96,7 +96,7 @@ export function ProductForm({
         <Button
           type="submit"
           variant="primary"
-          className="w-full bg-[#FBAC18] text-white font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors"
+          className="w-full bg-[#FBAC18] text-black font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors"
           disabled={!selectedVariant?.availableForSale || fetcher.state !== 'idle' || maxQuantity === 0}
         >
           {!selectedVariant?.availableForSale ? 'Sold out' : 

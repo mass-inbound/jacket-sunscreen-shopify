@@ -87,7 +87,7 @@ export function HeaderMenu({
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
 }) {
-  const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-8 lg:gap-12 items-center z-10' : 'flex flex-col'} `;
+  const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-4 lg:gap-6 items-center z-10' : 'flex flex-col'} `;
   const {close} = useAside();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [products, setProducts] = useState<ProductItemFragment[]>([]);
@@ -190,7 +190,7 @@ export function HeaderMenu({
         return (
           <div key={item.id} className={viewport === 'mobile' ? 'mb-0' : ''}>
             <NavLink
-              className={`${viewport === 'desktop' ? 'text-white font-semibold text-[14px] lg:text-[14px] tracking-widest hover:text-black transition-colors px-2 py-1 rounded' : 'block py-2 text-black font-bold text-[14px] tracking-wider border-0'} ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`}
+              className={`${viewport === 'desktop' ? 'text-white font-semibold text-[14px] lg:text-[14px] tracking-widest hover:text-black transition-colors px-1 py-0.5 rounded' : 'block py-1 text-black font-bold text-[14px] tracking-wider border-0'} ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`}
               style={viewport === 'desktop' ? { letterSpacing: '0.12em', textDecoration: 'none' , fontSize:"14px"} : { textDecoration: 'none' }}
               end
               onClick={hasSubItems && viewport === 'mobile' ? (e) => toggleSubmenu(item.id, e) : close}
@@ -207,12 +207,12 @@ export function HeaderMenu({
               </div>
             </NavLink>
             {viewport === 'mobile' && hasSubItems && isExpanded && (
-              <div className="ml-4 mt-2 mb-4">
+              <div className="ml-4 mt-1 mb-2">
                 {item.items.map((subItem) => (
                   <NavLink
                     key={subItem.id}
-                    className="block py-1 text-black text-[14px] font-medium tracking-wide"
-                    style={{ textDecoration: 'none' }}
+                    className="block py-0.5 text-black text-[14px] tracking-wide"
+                    style={{ textDecoration: 'none', fontSize: '14px' }}
                     onClick={close}
                     prefetch="intent"
                     to={subItem.url}
@@ -296,10 +296,10 @@ function CartBadge({count}: {count: number | null}) {
           url: window.location.href || '',
         } as CartViewPayload);
       }}
-      className="text-black font-semibold hover:text-gray-600 transition-colors relative p-1"
+      className="text-black font-semibold hover:text-gray-600 transition-colors relative"
     >
        {count !== null && count > 0 && (
-          <span className="absolute top-[1px] left-[9px] transform translate-x-1 text-black text-xs font-bold">
+          <span className="absolute -top-[8px] left-[5px] transform translate-x-1 text-black text-xs font-bold">
             {count}
           </span>
         )}
@@ -332,79 +332,6 @@ function CartBanner() {
   return <CartBadge count={getCartItemCount(cart as CartApiQueryFragment | null)} />;
 }
 
-const FALLBACK_HEADER_MENU = {
-  id: 'gid://shopify/Menu/199655587896',
-  items: [
-    {
-      id: 'gid://shopify/MenuItem/461609500728',
-      resourceId: null,
-      tags: [],
-      title: 'Collections',
-      type: 'HTTP',
-      url: '/collections',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609533496',
-      resourceId: null,
-      tags: [],
-      title: 'Blog',
-      type: 'HTTP',
-      url: '/blogs/journal',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609566264',
-      resourceId: null,
-      tags: [],
-      title: 'Policies',
-      type: 'HTTP',
-      url: '/policies',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609599032',
-      resourceId: 'gid://shopify/Page/92591030328',
-      tags: [],
-      title: 'About',
-      type: 'PAGE',
-      url: '/pages/about',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609599033',
-      resourceId: null,
-      tags: [],
-      title: 'Reviews',
-      type: 'HTTP',
-      url: '/reviews',
-      items: [],
-    },
-    {
-      id: 'gid://shopify/MenuItem/461609599034',
-      resourceId: null,
-      tags: [],
-      title: 'Contact',
-      type: 'HTTP',
-      url: '/pages/contact',
-      items: [],
-    },
-  ],
-};
-
-function activeLinkStyle({
-  isActive,
-  isPending,
-}: {
-  isActive: boolean;
-  isPending: boolean;
-}) {
-  return {
-    fontWeight: isActive ? 'bold' : undefined,
-    color: isPending ? 'grey' : 'black',
-    textDecoration: 'none',
-  };
-}
 
 // Add ShopByImages component
 function ShopByImages() {
@@ -417,7 +344,9 @@ function ShopByImages() {
       try {
         const response = await fetch('/api/products?limit=6');
         const data = await response.json() as {products: ProductItemFragment[]};
-        setProducts(data.products || []);
+        // Sort products by id in ascending order (oldest first)
+        const sortedProducts = (data.products || []).sort((a, b) => a.id.localeCompare(b.id));
+        setProducts(sortedProducts);
       } catch (error) {
         console.error('Failed to fetch products:', error);
       } finally {
@@ -431,7 +360,7 @@ function ShopByImages() {
   if (loading) {
     return (
       <div className="shop-by-images mt-8">
-        <h3 className="text-lg font-bold mb-6 text-black tracking-wider">SHOP BY IMAGE</h3>
+        <h3 className="text-lg font-[900] mb-6 text-black tracking-wider">SHOP BY IMAGE</h3>
         <div className="flex gap-3 overflow-x-auto">
           {[...Array(6)].map((_, i) => (
             <div key={i} className="w-32 h-96 bg-gray-200 animate-pulse flex-shrink-0" />
@@ -443,7 +372,7 @@ function ShopByImages() {
 
   return (
     <div className="shop-by-images mt-8">
-      <h3 className="text-lg font-bold mb-6 text-black tracking-wider">SHOP BY IMAGE</h3>
+      <h3 className="text-lg font-[900] mb-6 text-black tracking-wider">SHOP BY IMAGE</h3>
       <div className="flex gap-3 overflow-x-auto">
         {products.slice(0, 6).map((product) => (
           <NavLink
@@ -455,7 +384,8 @@ function ShopByImages() {
             <img
               src={product.featuredImage?.url}
               alt={product.featuredImage?.altText || product.title}
-              className="w-20 h-64 object-cover"
+              className="w-16 object-cover"
+              style={{ height: '230px' }}
             />
           </NavLink>
         ))}

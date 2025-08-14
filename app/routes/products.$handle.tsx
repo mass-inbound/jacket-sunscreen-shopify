@@ -142,6 +142,16 @@ export default function Product() {
     open('cart');
   };
 
+  const handleBuyNow = () => {
+    if (!selectedVariant?.id) return;
+    
+    // Extract the variant ID from the full Shopify GID
+    const variantId = selectedVariant.id.split('/').pop();
+    
+    // Redirect to the cart URL which will create a cart and redirect to checkout
+    window.location.href = `/cart/${variantId}:${quantity}`;
+  };
+
   return (
     <div className="min-h-screen bg-white">
       {/* Breadcrumb Navigation */}
@@ -279,11 +289,20 @@ export default function Product() {
                   },
                 ]}
               >
-                <button className="w-full bg-[#FBAC18] text-white font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                <button className="w-full bg-[#FBAC18] text-black font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
                   {!selectedVariant?.availableForSale ? 'Sold out' : 
                    maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
                 </button>
               </AddToCartButton>
+
+              {/* Buy Now Button */}
+              <button
+                className="w-full bg-[#FBAC18] text-black font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={handleBuyNow}
+                disabled={!selectedVariant?.availableForSale || maxQuantity === 0}
+              >
+               BUY NOW
+              </button>
 
               {/* Wishlist Button */}
               {/* <button className="w-12 h-12 border border-[#FBAC18] rounded-full flex items-center justify-center hover:bg-[#FBAC18] hover:text-white transition-colors">

@@ -17,7 +17,7 @@ export function PGAPartner({
         </div>
         <div className="w-24 h-20 md:w-32 md:h-24 lg:w-[149px] lg:h-[112px]">
           <img 
-            src="/assets/pgaImg.svg" 
+            src="/assets/pgaImg2.png" 
             alt="PGA Partner Logo"
             className="w-full h-full object-contain"
           />

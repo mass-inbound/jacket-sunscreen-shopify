@@ -44,6 +44,8 @@ export default async function handleRequest(
       "https://api.shop.app",
       "https://*.myshopify.com",
       "https://rxmqy989nf.execute-api.us-east-2.amazonaws.com",
+      "https://judge.me",
+      "https://api.judge.me",
       "http://localhost:*",
       "ws://localhost:*",
       "ws://127.0.0.1:*",

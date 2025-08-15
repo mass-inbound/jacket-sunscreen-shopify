@@ -23,6 +23,8 @@ import { Await } from 'react-router';
 import { RecommendedProductItem } from '~/components/RecommendedProductItem';
 import { ImageZoomModal } from '~/components/ImageZoomModal';
 import { useMemo } from 'react';
+import { fetchProductReviews, type ReviewForDisplay, type ReviewStats } from '~/lib/judge-me';
+import { ProductReviews } from '~/components/ProductReviews';
 
 // Function to process description HTML and extract sections
 function processDescriptionHtml(descriptionHtml: string): {
@@ -141,25 +143,55 @@ async function loadCriticalData({
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
 function loadDeferredData({context, params}: LoaderFunctionArgs) {
-  // Fetch 10 recommended products
-  const recommendedProducts = context.storefront
+  const {storefront, env} = context;
+
+  // Fetch recommended products (existing)
+  const recommendedProducts = storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error) => {
       console.error(error);
       return null;
     });
-  return { recommendedProducts };
+
+  // First get the product to extract the ID for Judge.me
+  const productForReviews = storefront.query(PRODUCT_QUERY, {
+    variables: {handle: params.handle!, selectedOptions: []},
+  }).then((result) => {
+    if (result.product?.id) {
+      // Extract the numeric ID from the global ID (e.g., "gid://shopify/Product/123" -> "123")
+      const idParts = result.product.id.split('/');
+      const productId = idParts[idParts.length - 1];
+      
+      // Ensure productId is a valid string before using it
+      if (typeof productId === 'string' && productId.length > 0) {
+        // Fetch product reviews from Judge.me using the Shopify product ID
+        return fetchProductReviews(
+          productId,
+          env.JUDGE_ME_SHOP_DOMAIN || '',
+          env.JUDGE_ME_PRIVATE_API_TOKEN || ''
+        );
+      }
+    }
+    return { reviews: [], stats: { averageRating: 0, totalReviews: 0, ratingBreakdown: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } } };
+  }).catch((error) => {
+    console.error('Failed to fetch reviews:', error);
+    return { reviews: [], stats: { averageRating: 0, totalReviews: 0, ratingBreakdown: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } } };
+  });
+
+  return { 
+    recommendedProducts,
+    productReviews: productForReviews
+  };
 }
 
 export default function Product() {
-  const {product} = useLoaderData<typeof loader>();
+  const {product, recommendedProducts, productReviews} = useLoaderData<typeof loader>();
   const [quantity, setQuantity] = useState(1);
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({});
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
   const {open} = useAside();
   const rootData = useRouteLoaderData<RootLoader>('root');
   const cart = rootData?.cart as any;
-  const { recommendedProducts } = useLoaderData<typeof loader>();
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -276,17 +308,39 @@ export default function Product() {
               </h1>
             </div>
 
-            {/* Rating and Reviews */}
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-1">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-[#FBAC18]" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
+            {/* Rating and Reviews - Dynamic from Judge.me */}
+            <Suspense fallback={
+              <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-1">
+                  {[...Array(5)].map((_, i) => (
+                    <svg key={i} className="w-5 h-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                    </svg>
+                  ))}
+                </div>
+                <span className="text-sm text-gray-600">Loading ratings...</span>
               </div>
-              <span className="text-sm text-gray-600">5.0 | 1 review</span>
-            </div>
+            }>
+              <Await resolve={productReviews}>
+                {(reviewsData) => (
+                  <div className="flex items-center space-x-4">
+                    <div className="flex items-center space-x-1">
+                      {[...Array(5)].map((_, i) => (
+                        <svg key={i} className={`w-5 h-5 ${i < Math.round(reviewsData.stats.averageRating) ? 'text-[#FBAC18]' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                        </svg>
+                      ))}
+                    </div>
+                    <span className="text-sm text-gray-600">
+                      {reviewsData.stats.totalReviews > 0 
+                        ? `${reviewsData.stats.averageRating.toFixed(1)} | ${reviewsData.stats.totalReviews} ${reviewsData.stats.totalReviews === 1 ? 'review' : 'reviews'}`
+                        : 'No reviews yet'
+                      }
+                    </span>
+                  </div>
+                )}
+              </Await>
+            </Suspense>
 
             {/* SKU */}
             <div className="text-sm text-gray-500">
@@ -459,140 +513,23 @@ export default function Product() {
       </div>
 
       {/* Reviews Section */}
-      <div className="bg-gray-50 border-t border-gray-200 py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* Reviews Header */}
-          <div className="flex items-start justify-between mb-8">
-            <div className="flex-1">
-              <h2 className="text-3xl font-bold text-gray-900 mb-2">Reviews</h2>
-              <button className="border border-[#FBAC18] text-[#FBAC18] px-8 py-3 rounded-md hover:bg-[#FBAC18] hover:text-white transition-colors font-medium">
-                Leave a Review
-              </button>
-            </div>
+      <Suspense fallback={<div className="bg-gray-50 border-t border-gray-200 py-12"><div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"><div className="text-center">Loading reviews...</div></div></div>}>
+        <Await resolve={productReviews}>
+          {(reviewsData) => {
+            // Extract the numeric ID from the product ID for the review form
+            const productId = product.id.split('/').pop() || '';
             
-            <div className="flex flex-col items-end">
-              <div className="flex items-center space-x-4 mb-4">
-                <div className="flex items-center space-x-2">
-                  {[...Array(5)].map((_, i) => (
-                    <svg key={i} className="w-6 h-6 text-[#FBAC18]" fill="currentColor" viewBox="0 0 20 20">
-                      <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                    </svg>
-                  ))}
-                  <span className="text-2xl font-bold text-gray-900">5.0</span>
-                </div>
-                <span className="text-gray-600">Based on 1 review</span>
-              </div>
-              {/* Rating Breakdown */}
-              <div className="space-y-2">
-                {[5, 4, 3, 2, 1].map((stars) => (
-                  <div key={stars} className="flex items-center space-x-3">
-                    <span className="text-xs text-gray-600 w-12 text-right">
-                      {stars} {stars === 1 ? 'star' : 'stars'}
-                    </span>
-                    <div className="w-44 bg-gray-200 rounded-full h-2">
-                      <div 
-                        className="bg-[#FBAC18] h-2 rounded-full" 
-                        style={{ 
-                          width: stars === 5 ? '100%' : '0%',
-                          opacity: stars === 5 ? 1 : 0.2
-                        }}
-                      ></div>
-                    </div>
-                    <span className="text-xs text-gray-600 w-4 text-left">
-                      {stars === 5 ? '1' : '0'}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Filter & Sort Section */}
-          <div className="flex items-center justify-between py-4 border-b border-gray-300">
-            <span className="text-gray-600">1 review</span>
-            <div className="flex items-center space-x-4">
-              {/* Filter Dropdown */}
-              <div className="relative">
-                <select className="appearance-none bg-white border border-gray-300 rounded-md px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-[#FBAC18] focus:border-transparent">
-                  <option>Filter by rating: All stars</option>
-                  <option>5 stars only</option>
-                  <option>4 stars only</option>
-                  <option>3 stars only</option>
-                  <option>2 stars only</option>
-                  <option>1 star only</option>
-                </select>
-                <svg className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-              
-              {/* Sort Dropdown */}
-              <div className="relative">
-                <select className="appearance-none bg-white border border-gray-300 rounded-md px-4 py-2 pr-8 text-sm focus:outline-none focus:ring-2 focus:ring-[#FBAC18] focus:border-transparent">
-                  <option>Sort by: Most Relevant</option>
-                  <option>Newest First</option>
-                  <option>Oldest First</option>
-                  <option>Highest Rated</option>
-                  <option>Lowest Rated</option>
-                </select>
-                <svg className="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </div>
-            </div>
-          </div>
-
-          {/* Review List */}
-          <div className="space-y-6 mt-6">
-            <div className="bg-white p-6 rounded-lg">
-              {/* Review Header */}
-              <div className="flex items-center justify-between mb-4">
-                <div className="flex items-center space-x-2">
-                  <span className="font-medium text-gray-900">Maria Armendariz</span>
-                  <span className="text-gray-400">•</span>
-                  <span className="text-gray-600">3 days ago</span>
-                </div>
-                
-                {/* Verified Badge */}
-                <div className="flex items-center space-x-2 bg-[#FBAC18] bg-opacity-20 rounded-xl px-3 py-1">
-                  <svg className="w-4 h-4 text-[#FBAC18]" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M6.267 3.455a3.066 3.066 0 001.745-.723 3.066 3.066 0 013.976 0 3.066 3.066 0 001.745.723 3.066 3.066 0 012.812 2.812c.051.643.304 1.254.723 1.745a3.066 3.066 0 010 3.976 3.066 3.066 0 00-.723 1.745 3.066 3.066 0 01-2.812 2.812 3.066 3.066 0 00-1.745.723 3.066 3.066 0 01-3.976 0 3.066 3.066 0 00-1.745-.723 3.066 3.066 0 01-2.812-2.812 3.066 3.066 0 00-.723-1.745 3.066 3.066 0 010-3.976 3.066 3.066 0 00.723-1.745 3.066 3.066 0 012.812-2.812zm7.44 5.252a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                  </svg>
-                  <span className="text-sm text-[#FBAC18] font-medium">Verified</span>
-                </div>
-              </div>
-
-              {/* Star Rating */}
-              <div className="flex items-center space-x-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-5 h-5 text-[#FBAC18]" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-
-              {/* Review Title */}
-              <h3 className="font-bold text-xl text-gray-900 mb-4">Jacket spf sunscreen</h3>
-
-              {/* Review Text */}
-              <p className="text-gray-600 leading-relaxed mb-6">
-                I&apos;ve been using this sunscreen for a few weeks now, and I&apos;m genuinely impressed. Not only does it provide strong sun protection, but it also has anti-aging properties that make a real difference in how my skin looks and feels. Highly recommend for anyone looking for a multitasking product that protects and improves your skin at the same time!
-              </p>
-
-              {/* Helpful Section */}
-              <div className="flex items-center space-x-4">
-                <span className="text-gray-600">Was this helpful?</span>
-                <button className="flex items-center space-x-2 text-[#FBAC18] hover:text-[#e69b15] transition-colors">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 10h4.764a2 2 0 011.789 2.894l-3.5 7A2 2 0 0115.263 21h-4.017c-.163 0-.326-.02-.485-.06L7 20m7-10V5a2 2 0 00-2-2h-.095c-.5 0-.905.405-.905.905 0 .714-.211 1.412-.608 2.006L7 11v9m7-10h-2M7 20H5a2 2 0 01-2-2v-6a2 2 0 012-2h2.5" />
-                  </svg>
-                  <span>Yes</span>
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+            return (
+              <ProductReviews 
+                reviews={reviewsData.reviews} 
+                stats={reviewsData.stats} 
+                productName={product.title}
+                productId={productId}
+              />
+            );
+          }}
+        </Await>
+      </Suspense>
 
       {/* Product Recommendations */}
       <div className="py-12">
@@ -705,7 +642,6 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       amount
       currencyCode
     }
-    quantityAvailable
   }
 ` as const;
 
@@ -786,7 +722,6 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       nodes {
         id
         availableForSale
-        quantityAvailable
         price {
           amount
           currencyCode

@@ -20,6 +20,9 @@ declare global {
 
   interface Env extends HydrogenEnv {
     // declare additional Env parameter use in the fetch handler and Remix loader context here
+    JUDGE_ME_SHOP_DOMAIN?: string;
+    JUDGE_ME_PRIVATE_API_TOKEN?: string;
+    JUDGE_ME_PUBLIC_API_TOKEN?: string;
   }
 }
 

@@ -44,15 +44,15 @@ export async function loader(args: LoaderFunctionArgs) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
 async function loadCriticalData({context}: LoaderFunctionArgs) {
-  const [{collections}, {products}] = await Promise.all([
+  const [{collections}, featuredProductsCollection] = await Promise.all([
     context.storefront.query(FEATURED_COLLECTION_QUERY),
-    context.storefront.query(FEATURED_PRODUCTS_QUERY),
+    context.storefront.query(FEATURED_PRODUCTS_COLLECTION_QUERY),
     // Add other queries here, so that they are loaded in parallel
   ]);
 
   return {
     featuredCollection: collections.nodes[0],
-    featuredProducts: products.nodes,
+    featuredProducts: featuredProductsCollection.collection?.products.nodes || [],
   };
 }
 
@@ -218,6 +218,53 @@ const FEATURED_COLLECTION_QUERY = `#graphql
     collections(first: 1, sortKey: UPDATED_AT, reverse: true) {
       nodes {
         ...FeaturedCollection
+      }
+    }
+  }
+` as const;
+
+const FEATURED_PRODUCTS_COLLECTION_QUERY = `#graphql
+  fragment FeaturedProduct on Product {
+    id
+    title
+    handle
+    tags
+    createdAt
+    priceRange {
+      minVariantPrice {
+        amount
+        currencyCode
+      }
+    }
+    featuredImage {
+      id
+      url
+      altText
+      width
+      height
+    }
+    variants(first: 1) {
+      nodes {
+        id
+        availableForSale
+        quantityAvailable
+        price {
+          amount
+          currencyCode
+        }
+      }
+    }
+  }
+  query FeaturedProductsCollection($country: CountryCode, $language: LanguageCode)
+    @inContext(country: $country, language: $language) {
+    collection(handle: "featured-products") {
+      id
+      title
+      handle
+      products(first: 50) {
+        nodes {
+          ...FeaturedProduct
+        }
       }
     }
   }

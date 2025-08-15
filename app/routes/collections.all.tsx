@@ -1,5 +1,5 @@
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, useSearchParams, type MetaFunction} from 'react-router';
+import {Link, useLoaderData, useSearchParams, type MetaFunction} from 'react-router';
 import {getPaginationVariables, Image, Money} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {ProductItem} from '~/components/ProductItem';
@@ -72,6 +72,23 @@ export default function Collection() {
   const {products, availableProductTypes, selectedProductTypes} = useLoaderData<typeof loader>();
 
   return (
+    <div>
+      {/* breadcrumb */}
+        <div className="py-4 px-3 md:px-2 lg:px-6 mb-8">
+        <div className="max-w-7xl">
+          <nav className="flex items-center space-x-2 text-sm">
+            <Link 
+              to="/" 
+              className="text-gray-500 hover:text-[#FBAC18] transition-colors"
+            >
+              Home
+            </Link>
+            <span className="text-gray-400">/</span>
+            <span className="text-gray-900 font-medium">Shop All</span>
+          </nav>
+        </div>
+      </div>
+      
     <div className="collections-page px-8 pt-2">
       <ProductFilter 
         productTypes={availableProductTypes}
@@ -98,6 +115,7 @@ export default function Collection() {
           }}
         </PaginatedResourceSection>
       </div>
+    </div>
     </div>
   );
 }

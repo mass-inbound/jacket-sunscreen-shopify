@@ -49,7 +49,7 @@ export function ProductItem({
   const maxQuantity = Math.max(1, maxAddable);
 
   // Image dimensions based on variant
-  const imageHeight = variant === 'collection' ? '350px' : '346px';
+  const imageHeight = variant === 'collection' ? '450px' : '346px';
   const imageWidth = variant === 'collection' ? 'w-full max-w-[400px] mx-auto' : 'w-full';
 
   const incrementQuantity = () => {
@@ -210,7 +210,7 @@ export function ProductItem({
 
           {/* Quantity Selector */}
           <div className="mt-3">
-            <div className="flex items-center border border-gray-300 rounded-md w-full">
+            <div className="flex items-center rounded-md w-full">
               <button
                 type="button"
                 onClick={decrementQuantity}

@@ -22,6 +22,63 @@ import { Suspense } from 'react';
 import { Await } from 'react-router';
 import { RecommendedProductItem } from '~/components/RecommendedProductItem';
 import { ImageZoomModal } from '~/components/ImageZoomModal';
+import { useMemo } from 'react';
+
+// Function to process description HTML and extract sections
+function processDescriptionHtml(descriptionHtml: string): {
+  cleanDescription: string;
+  howToUse: string;
+  ingredients: string;
+} {
+  if (!descriptionHtml) return { cleanDescription: '', howToUse: '', ingredients: '' };
+  
+  // Step 1: Split into 2 main chunks based on "HOW TO USE" (case-insensitive)
+  const howToUseRegex = /HOW TO USE/i;
+  const howToUseMatch = descriptionHtml.match(howToUseRegex);
+  
+  if (!howToUseMatch) {
+    // No "HOW TO USE" found, return everything as description
+    return { 
+      cleanDescription: descriptionHtml.trim(), 
+      howToUse: '', 
+      ingredients: '' 
+    };
+  }
+  
+  const howToUseIndex = howToUseMatch.index!;
+  
+  // Chunk 1: Everything before "HOW TO USE" (this is the clean description)
+  const cleanDescription = descriptionHtml.substring(0, howToUseIndex).trim();
+  
+  // Chunk 2: Everything from "HOW TO USE" onwards
+  const chunk2 = descriptionHtml.substring(howToUseIndex).trim();
+  
+  // Step 2: Within chunk2, split by "INGREDIENTS" (case-insensitive)
+  const ingredientsRegex = /INGREDIENTS/i;
+  const ingredientsMatch = chunk2.match(ingredientsRegex);
+  
+  let howToUse = '';
+  let ingredients = '';
+  
+  if (ingredientsMatch) {
+    const ingredientsIndex = ingredientsMatch.index!;
+    
+    // How to use: From start of chunk2 to "INGREDIENTS"
+    howToUse = chunk2.substring(0, ingredientsIndex).trim();
+    
+    // Ingredients: Everything after "INGREDIENTS" 
+    ingredients = chunk2.substring(ingredientsIndex).trim();
+    
+    // Clean up headers
+    howToUse = howToUse.replace(/^HOW TO USE\s*/i, '').trim();
+    ingredients = ingredients.replace(/^INGREDIENTS\s*/i, '').trim();
+  } else {
+    // No "INGREDIENTS" found in chunk2, everything goes to how to use
+    howToUse = chunk2.replace(/^HOW TO USE\s*/i, '').trim();
+  }
+  
+  return { cleanDescription, howToUse, ingredients };
+}
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [
@@ -122,6 +179,11 @@ export default function Product() {
 
   const {title, descriptionHtml} = product;
 
+  // Process description once using useMemo
+  const processedDescription = useMemo(() => {
+    return processDescriptionHtml(descriptionHtml);
+  }, [descriptionHtml]);
+
   const toggleSection = (section: string) => {
     setExpandedSections(prev => ({
       ...prev,
@@ -201,7 +263,7 @@ export default function Product() {
 
             {/* Product Description - Moved here below the image */}
             <div className="prose prose-sm text-gray-600 leading-relaxed">
-              <div dangerouslySetInnerHTML={{__html: descriptionHtml}} />
+              <div dangerouslySetInnerHTML={{__html: processedDescription.cleanDescription}} />
             </div>
           </div>
 
@@ -297,7 +359,7 @@ export default function Product() {
 
               {/* Buy Now Button */}
               <button
-                className="w-full bg-[#FBAC18] text-black font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="w-full bg-black text-white font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 onClick={handleBuyNow}
                 disabled={!selectedVariant?.availableForSale || maxQuantity === 0}
               >
@@ -332,7 +394,11 @@ export default function Product() {
                 </button>
                 {expandedSections.howToUse && (
                   <div className="mt-4 text-gray-600">
-                    <p>Apply liberally 15 minutes before sun exposure. Reapply at least every 2 hours, after swimming, sweating, or towel drying.</p>
+                    {processedDescription.howToUse ? (
+                      <div dangerouslySetInnerHTML={{__html: processedDescription.howToUse}} />
+                    ) : (
+                      <p>Apply liberally 15 minutes before sun exposure. Reapply at least every 2 hours, after swimming, sweating, or towel drying.</p>
+                    )}
                   </div>
                 )}
               </div>
@@ -355,8 +421,11 @@ export default function Product() {
                 </button>
                 {expandedSections.ingredients && (
                   <div className="mt-4 text-gray-600">
-                    <p>Active Ingredients: Zinc Oxide 20%, Octinoxate 7.5%, Octisalate 5%, Avobenzone 3%, Octocrylene 2%</p>
-                    <p className="mt-2">Inactive Ingredients: Water, Glycerin, Cetearyl Alcohol, Dimethicone, and other natural ingredients.</p>
+                    {processedDescription.ingredients ? (
+                      <div dangerouslySetInnerHTML={{__html: processedDescription.ingredients}} />
+                    ) : (
+                      <p>No ingredients information available.</p>
+                    )}
                   </div>
                 )}
               </div>

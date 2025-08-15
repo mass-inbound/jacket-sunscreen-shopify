@@ -1178,6 +1178,26 @@ aside[data-type="mobile"] nav a:last-child {
   border-bottom: none;
 }
 
+/* Active state styling for mobile menu */
+aside[data-type="mobile"] nav a.text-\[#fbac17\] {
+  color: #fbac17 !important; /* Custom orange color with !important to override */
+}
+
+/* Also handle any submenu items with the custom color */
+aside[data-type="mobile"] nav .mobile-submenu a.text-\[#fbac17\] {
+  color: #fbac17 !important;
+}
+
+/* More specific rule for submenu items */
+aside[data-type="mobile"] .ml-4 a[style*="color"] {
+  color: #fbac17 !important;
+}
+
+/* Even more specific for our custom color class */
+aside[data-type="mobile"] a[class*="text-[#fbac17]"] {
+  color: #fbac17 !important;
+}
+
 /* Mobile menu specific item styling */
 .mobile-menu-item {
   display: flex;

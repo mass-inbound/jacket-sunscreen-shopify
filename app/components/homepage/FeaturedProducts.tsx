@@ -33,12 +33,12 @@ export function FeaturedProducts({
   };
 
   return (
-    <section className="py-8 md:py-12 lg:py-16 px-6 md:px-8 lg:px-9">
+    <section className="py-8 md:py-12 lg:py-16 px-24 md:px-72 lg:px-72 xl:px-72">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-center mb-8 md:mb-12 lg:mb-16 text-gray-900">
           Featured Products
         </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-8 lg:gap-12">
+        <div className="grid grid-cols-1 gap-y-8 sm:grid-cols-2">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} isNew={isNewProduct(product)} />
           ))}
@@ -195,7 +195,7 @@ function ProductCard({
               onClick={handleAddToCart}
               disabled={!firstVariant.availableForSale || maxQuantity === 0}
             >
-              <button className="w-[50%] bg-[#FBAC18] text-black font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+              <button className="w-[80%] bg-[#FBAC18] text-black font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
                 {!firstVariant.availableForSale ? 'Sold out' : 
                  maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
               </button>

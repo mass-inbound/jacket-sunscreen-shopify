@@ -62,29 +62,31 @@ export default function Contact() {
           <div className="flex flex-col lg:flex-row justify-between items-center text-white gap-4">
             {/* Left: Contact Form */}
             <div className="w-full lg:w-1/2 px-4 md:px-8 lg:pl-16 xl:pl-28">
-              <h3 className="text-[#FBAC18] text-xs md:text-sm text-center lg:text-left uppercase font-bold mb-2">
-                Contact Us
-              </h3>
-              <h2 className="text-white text-2xl md:text-3xl lg:text-4xl font-bold mb-6 md:mb-8 uppercase leading-tight text-center lg:text-left">
-                Thanks for <br className="hidden lg:block" />
-                reaching out!
-              </h2>
-              
+            <div className="text-center">
+              <div className="inline-block text-left">
+                <h3 className="text-[#FBAC18] text-xs md:text-[20px] uppercase font-bold mb-2">
+                  Contact Us
+                </h3>
+                <h2 className="text-white text-2xl md:[45px] lg:text-[45px] font-bold mb-6 md:mb-8 uppercase leading-tight">
+                  Thanks for <br className="hidden lg:block" />
+                  reaching out!
+                </h2>
+              </div>
+              </div>
               {/* JotForm Iframe with Custom Styling */}
-              <div className="w-full max-w-lg mx-auto lg:mx-0">
+              <div className="md:max-w-[750px] -mt-10">
                 <iframe
                   id="JotFormIFrame-252173395609059"
                   title="Contact Form"
                   onLoad={() => window.parent.scrollTo(0,0)}
                   allow="geolocation; microphone; camera; fullscreen; payment"
                   src="https://forms.inboundrequest.com/252173395609059"
-                  frameBorder="0"
+                 
                   style={{
                     minWidth: '100%',
                     maxWidth: '100%',
                     height: '600px',
-                    border: 'none !important',
-                    backgroundColor: 'transparent',
+                    
                   }}
                   scrolling="no"
                 />

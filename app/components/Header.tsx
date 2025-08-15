@@ -1,5 +1,5 @@
 import {Suspense, useState, useEffect} from 'react';
-import { Await, NavLink, useAsyncValue } from 'react-router';
+import { Await, NavLink, useAsyncValue, useLocation } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -56,12 +56,14 @@ export function Header({
               <HeaderMenuMobileToggle />
             </div>
             
-            {/* Center: Logo */}
-            <div className="flex-1 flex justify-center">
-              <NavLink prefetch="intent" to="/" className="flex items-center z-10 select-none" style={{ textDecoration: 'none' }} end>
-                <span className="block -mr-16 md:-mr-20 lg:-mr-28 w-[100px] h-[28px] md:w-[120px] md:h-[32px] lg:w-[160px] lg:h-[40px] xl:w-[180px] xl:h-[48px] rounded flex items-center justify-center font-bold text-white text-base md:text-lg lg:text-3xl xl:text-4xl">
-                  JA
-                </span>
+            {/* Center: Logo - Absolutely positioned for true center */}
+            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+              <NavLink prefetch="intent" to="/" className="flex items-center select-none" style={{ textDecoration: 'none' }} end>
+                <img 
+                  src="/assets/logo2.png" 
+                  alt="Logo" 
+                  className="block w-[100px] h-[28px] md:w-[120px] md:h-[32px] lg:w-[160px] lg:h-[40px] xl:w-[180px] xl:h-[48px] object-contain"
+                />
               </NavLink>
             </div>
             
@@ -92,12 +94,13 @@ export function HeaderMenu({
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [products, setProducts] = useState<ProductItemFragment[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
+  const location = useLocation();
 
-  // Fetch products dynamically
+  // Fetch products dynamically from nav-menu-products collection
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products?limit=20');
+        const response = await fetch('/api/nav-menu-products');
         const data = await response.json() as {products: ProductItemFragment[]};
         setProducts(data.products || []);
       } catch (error) {
@@ -122,7 +125,7 @@ export function HeaderMenu({
     setExpandedItems(newExpandedItems);
   };
 
-  // Generate dynamic shop items from products
+  // Generate dynamic shop items from nav-menu-products collection
   const generateShopItems = () => {
     if (productsLoading) {
       return [
@@ -134,13 +137,20 @@ export function HeaderMenu({
       { id: 'shop-all', title: 'SHOP ALL', url: '/collections/all' }
     ];
 
-    // Add dynamic products
+    // Add dynamic products from nav-menu-products collection
     products.forEach((product) => {
       shopItems.push({
         id: product.handle,
         title: product.title.toUpperCase(),
         url: `/products/${product.handle}`
       });
+    });
+
+    // Add EXTRAS as the last item
+    shopItems.push({
+      id: 'extras',
+      title: 'EXTRAS',
+      url: '/collections/extras'
     });
 
     return shopItems;
@@ -181,6 +191,31 @@ export function HeaderMenu({
     }
   ];
 
+  // Function to check if a menu item should be active based on current location
+  const isMenuItemActive = (item: any, pathname: string) => {
+    if (item.id === 'home' && pathname === '/') {
+      return true;
+    }
+    if (item.id === 'shop') {
+      // Shop is active for /collections/all, /collections/extras, or any /products/* route
+      return pathname === '/collections/all' || 
+             pathname === '/collections/extras' || 
+             pathname.startsWith('/products/');
+    }
+    if (item.id === 'explore') {
+      // Explore is active for any of its submenu items
+      return pathname === '/pages/retailers' || 
+             pathname === '/pages/reviews' || 
+             pathname === '/pages/contact' || 
+             pathname === '/pages/about';
+    }
+    if (item.id === 'education') {
+      // Education is active for FAQ
+      return pathname === '/pages/faq';
+    }
+    return false;
+  };
+
   return (
     <nav className={className} role="navigation">
       {staticMenuItems.map((item) => {
@@ -190,7 +225,30 @@ export function HeaderMenu({
         return (
           <div key={item.id} className={viewport === 'mobile' ? 'mb-0' : ''}>
             <NavLink
-              className={`${viewport === 'desktop' ? 'text-white font-semibold text-[14px] lg:text-[14px] tracking-widest hover:text-black transition-colors px-1 py-0.5 rounded' : 'block py-1 text-black font-bold text-[14px] tracking-wider border-0'} ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`}
+              className={({ isActive }) => {
+                // For parent items with submenus, never highlight them
+                // For direct menu items without submenus, use normal isActive
+                let shouldHighlight = false;
+                if (!hasSubItems) {
+                  shouldHighlight = isActive;
+                }
+                // Note: Parent items with submenus will never be highlighted
+                
+                const classes = `${viewport === 'desktop' 
+                  ? `font-semibold text-[14px] lg:text-[14px] tracking-widest transition-colors px-1 py-0.5 rounded ${
+                      shouldHighlight 
+                        ? 'text-[#fbac17] !important' 
+                        : 'text-white hover:text-black'
+                    }` 
+                  : `block py-1 font-bold text-[14px] tracking-wider border-0 ${
+                      shouldHighlight 
+                        ? 'text-[#fbac17] !important' 
+                        : 'text-black'
+                    }`
+                } ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`;
+                
+                return classes;
+              }}
               style={viewport === 'desktop' ? { letterSpacing: '0.12em', textDecoration: 'none' , fontSize:"14px"} : { textDecoration: 'none' }}
               end
               onClick={hasSubItems && viewport === 'mobile' ? (e) => toggleSubmenu(item.id, e) : close}
@@ -211,7 +269,14 @@ export function HeaderMenu({
                 {item.items.map((subItem) => (
                   <NavLink
                     key={subItem.id}
-                    className="block py-0.5 text-black text-[14px] tracking-wide"
+                    className={({ isActive }) => {
+                      
+                      return `block py-0.5 text-[14px] tracking-wide ${
+                        isActive 
+                          ? 'text-[#fbac17]' 
+                          : 'text-black'
+                      }`;
+                    }}
                     style={{ textDecoration: 'none', fontSize: '14px' }}
                     onClick={close}
                     prefetch="intent"
@@ -342,11 +407,10 @@ function ShopByImages() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/products?limit=6');
+        const response = await fetch('/api/nav-menu-products');
         const data = await response.json() as {products: ProductItemFragment[]};
-        // Sort products by id in ascending order (oldest first)
-        const sortedProducts = (data.products || []).sort((a, b) => a.id.localeCompare(b.id));
-        setProducts(sortedProducts);
+        // Use products in the order they appear in the collection (no sorting)
+        setProducts(data.products || []);
       } catch (error) {
         console.error('Failed to fetch products:', error);
       } finally {
@@ -385,7 +449,7 @@ function ShopByImages() {
               src={product.featuredImage?.url}
               alt={product.featuredImage?.altText || product.title}
               className="w-16 object-cover"
-              style={{ height: '230px' }}
+              style={{ height: '200px' }}
             />
           </NavLink>
         ))}

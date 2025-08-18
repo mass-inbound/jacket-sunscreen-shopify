@@ -28,17 +28,29 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
   const {storefront} = context;
   const url = new URL(request.url);
   const productTypes = url.searchParams.getAll('product_type');
+  const tags = url.searchParams.getAll('tag');
   
   const paginationVariables = getPaginationVariables(request, {
-    pageBy: 8,
+    pageBy: 20,
   });
 
   // Build filter query using the correct Shopify syntax
-  let query = '';
+  const queryParts: string[] = [];
   if (productTypes.length > 0) {
-    const typeFilters = productTypes.map(type => `product_type:${type}`).join(' OR ');
-    query = `(${typeFilters})`;
+    const typeFilters = productTypes
+      .filter((type) => type && type.trim() !== '')
+      .map((type) => `product_type:${type}`)
+      .join(' OR ');
+    if (typeFilters) queryParts.push(`(${typeFilters})`);
   }
+  if (tags.length > 0) {
+    const tagFilters = tags
+      .filter((tag) => tag && tag.trim() !== '')
+      .map((tag) => `tag:"${tag.replace(/"/g, '\\"')}"`)
+      .join(' OR ');
+    if (tagFilters) queryParts.push(`(${tagFilters})`);
+  }
+  const query = queryParts.join(' AND ');
 
   const [{products}, {productTypes: availableProductTypes}] = await Promise.all([
     storefront.query(CATALOG_QUERY, {
@@ -54,7 +66,10 @@ async function loadCriticalData({context, request}: LoaderFunctionArgs) {
   
   return {
     products,
-    availableProductTypes: availableProductTypes?.nodes || [],
+    availableProductTypes:
+      (availableProductTypes?.nodes || []).filter(
+        (type) => typeof type === 'string' && type.trim() !== ''
+      ),
     selectedProductTypes: productTypes,
   };
 }
@@ -108,7 +123,7 @@ export default function Collection() {
               <ProductItem
                 key={product.id}
                 product={product}
-                loading={index < 8 ? 'eager' : undefined}
+                loading={index < 20 ? 'eager' : undefined}
                 variant="collection"
               />
             );

@@ -10,6 +10,8 @@ export function ProductFilter({productTypes, selectedTypes}: ProductFilterProps)
   const [searchParams, setSearchParams] = useSearchParams();
   const [isExpanded, setIsExpanded] = useState(true);
 
+  const isNewSelected = searchParams.getAll('tag').includes('new');
+
   const handleTypeToggle = (productType: string) => {
     const newParams = new URLSearchParams(searchParams);
     const currentTypes = newParams.getAll('product_type');
@@ -27,9 +29,23 @@ export function ProductFilter({productTypes, selectedTypes}: ProductFilterProps)
     setSearchParams(newParams);
   };
 
+  const handleNewToggle = () => {
+    const newParams = new URLSearchParams(searchParams);
+    const currentTags = newParams.getAll('tag');
+    if (currentTags.includes('new')) {
+      const filtered = currentTags.filter((t) => t !== 'new');
+      newParams.delete('tag');
+      filtered.forEach((t) => newParams.append('tag', t));
+    } else {
+      newParams.append('tag', 'new');
+    }
+    setSearchParams(newParams);
+  };
+
   const clearAllFilters = () => {
     const newParams = new URLSearchParams(searchParams);
     newParams.delete('product_type');
+    newParams.delete('tag');
     setSearchParams(newParams);
   };
 
@@ -38,7 +54,7 @@ export function ProductFilter({productTypes, selectedTypes}: ProductFilterProps)
       <div className="filter-container">
         <div className="filter-header">
           <h2 className="filter-title">Filter by</h2>
-          {selectedTypes.length > 0 && (
+          {(selectedTypes.length > 0 || isNewSelected) && (
             <button 
               onClick={clearAllFilters}
               className="clear-filters-btn"
@@ -79,6 +95,16 @@ export function ProductFilter({productTypes, selectedTypes}: ProductFilterProps)
             
             <div className={`accordion-content ${isExpanded ? 'expanded' : ''}`}>
               <div className="filter-options">
+                <label className="filter-option">
+                  <input
+                    type="checkbox"
+                    checked={isNewSelected}
+                    onChange={handleNewToggle}
+                    className="filter-checkbox"
+                  />
+                  <span className="checkbox-custom"></span>
+                  <span className="filter-label">New</span>
+                </label>
                 {productTypes.map((type) => (
                   <label key={type} className="filter-option">
                     <input

@@ -7,6 +7,8 @@ interface ProductReviewsProps {
   stats: ReviewStats;
   productName?: string;
   productId?: string;
+  shopDomain: string;
+  apiToken: string;
 }
 
 type SortOption = 'relevant' | 'newest' | 'oldest' | 'highest' | 'lowest' | 'helpful';
@@ -436,7 +438,7 @@ function ReviewCard({review}: {review: ReviewForDisplay}) {
   );
 }
 
-export function ProductReviews({reviews, stats, productName, productId}: ProductReviewsProps) {
+export function ProductReviews({reviews, stats, productName, productId, shopDomain, apiToken}: ProductReviewsProps) {
   const [showReviewForm, setShowReviewForm] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('relevant');
   const [filterBy, setFilterBy] = useState<FilterOption>('all');
@@ -505,8 +507,8 @@ export function ProductReviews({reviews, stats, productName, productId}: Product
                   // In a real app, you'd refresh the reviews here
                   console.log('Review submitted successfully');
                 }}
-                shopDomain="jacket-sunscreen.myshopify.com"
-                apiToken="3ySpx789ET7EP9Fp1gBiPxssnQE"
+                shopDomain={shopDomain}
+                apiToken={apiToken}
               />
             </div>
           )}
@@ -585,8 +587,8 @@ export function ProductReviews({reviews, stats, productName, productId}: Product
                 // In a real app, you'd refresh the reviews here
                 console.log('Review submitted successfully');
               }}
-              shopDomain="jacket-sunscreen.myshopify.com"
-              apiToken="3ySpx789ET7EP9Fp1gBiPxssnQE"
+              shopDomain={shopDomain}
+              apiToken={apiToken}
             />
           )}
 

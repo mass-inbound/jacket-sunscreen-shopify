@@ -112,7 +112,7 @@ async function loadCriticalData({
   request,
 }: LoaderFunctionArgs) {
   const {handle} = params;
-  const {storefront} = context;
+  const {storefront, env} = context;
 
   if (!handle) {
     throw new Error('Expected product handle to be defined');
@@ -134,6 +134,10 @@ async function loadCriticalData({
 
   return {
     product,
+    judgeMeCredentials: {
+      shopDomain: env.JUDGE_ME_SHOP_DOMAIN || '',
+      apiToken: env.JUDGE_ME_PRIVATE_API_TOKEN || ''
+    }
   };
 }
 
@@ -185,7 +189,7 @@ function loadDeferredData({context, params}: LoaderFunctionArgs) {
 }
 
 export default function Product() {
-  const {product, recommendedProducts, productReviews} = useLoaderData<typeof loader>();
+  const {product, recommendedProducts, productReviews, judgeMeCredentials} = useLoaderData<typeof loader>();
   const [quantity, setQuantity] = useState(1);
   const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({});
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
@@ -525,6 +529,8 @@ export default function Product() {
                 stats={reviewsData.stats} 
                 productName={product.title}
                 productId={productId}
+                shopDomain={judgeMeCredentials.shopDomain}
+                apiToken={judgeMeCredentials.apiToken}
               />
             );
           }}

@@ -1,5 +1,5 @@
 import {redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import { useLoaderData, type MetaFunction, Link } from 'react-router';
+import { useLoaderData, type MetaFunction, Link, useLocation } from 'react-router';
 import {
   getSelectedProductOptions,
   Analytics,
@@ -25,6 +25,7 @@ import { ImageZoomModal } from '~/components/ImageZoomModal';
 import { useMemo } from 'react';
 import { fetchProductReviews, type ReviewForDisplay, type ReviewStats } from '~/lib/judge-me';
 import { ProductReviews } from '~/components/ProductReviews';
+import { getVariantUrl } from '~/lib/variants';
 
 // Function to process description HTML and extract sections
 function processDescriptionHtml(descriptionHtml: string): {
@@ -200,6 +201,7 @@ export default function Product() {
   const {open} = useAside();
   const rootData = useRouteLoaderData<RootLoader>('root');
   const cart = rootData?.cart as any;
+  const location = useLocation();
 
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
@@ -253,6 +255,14 @@ export default function Product() {
     // Redirect to the cart URL which will create a cart and redirect to checkout
     window.location.href = `/cart/${variantId}:${quantity}`;
   };
+
+  // Filter out default Title/Default Title option
+  const optionsToShow = (product as any).options?.filter((opt: any) => {
+    const name = (opt?.name || '').toLowerCase();
+    const values = (opt?.optionValues || []).map((v: any) => (v?.name || '').toLowerCase());
+    const isDefaultTitleOption = name === 'title' && values.length > 0 && values.every((v: string) => v === 'default title');
+    return !isDefaultTitleOption;
+  }) || [];
 
   return (
     <div className="min-h-screen bg-white">
@@ -362,6 +372,76 @@ export default function Product() {
           compareAtPrice={selectedVariant?.compareAtPrice}
         />
             </div>
+
+            {/* Product Options */}
+            {optionsToShow.length > 0 && (
+              <div className="space-y-4">
+                {optionsToShow.map((option: any) => (
+                  <div key={option?.name}>
+                    <div className="block text-sm font-medium text-gray-700 mb-2">
+                      {option?.name}
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {(option?.optionValues || []).map((value: any) => {
+                        const valueName = value?.name || '';
+                        const isSelected = (selectedVariant?.selectedOptions || []).some(
+                          (o: any) =>
+                            o?.name?.toLowerCase() === (option?.name || '').toLowerCase() &&
+                            o?.value?.toLowerCase() === valueName.toLowerCase(),
+                        );
+
+                        // Build next selected options set
+                        const nextSelected: Array<{name: string; value: string}> = [...(selectedVariant?.selectedOptions || [])].map(
+                          (o: any) =>
+                            o?.name?.toLowerCase() === (option?.name || '').toLowerCase()
+                              ? {name: o.name, value: valueName}
+                              : {name: o.name, value: o.value},
+                        );
+                        if (!nextSelected.find((o) => o.name.toLowerCase() === (option?.name || '').toLowerCase())) {
+                          nextSelected.push({name: option?.name, value: valueName});
+                        }
+
+                        const to = getVariantUrl({
+                          handle: (product as any).handle,
+                          pathname: location.pathname,
+                          searchParams: new URLSearchParams(),
+                          selectedOptions: nextSelected as any,
+                        });
+
+                        const available = value?.firstSelectableVariant?.availableForSale ?? true;
+                        const swatchColor = value?.swatch?.color as string | undefined;
+                        const swatchImg = value?.swatch?.image?.previewImage?.url as string | undefined;
+
+                        return (
+                          <Link
+                            key={valueName}
+                            to={to}
+                            replace
+                            className={`inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm transition-colors ${
+                              isSelected ? 'border-black' : 'border-gray-300'
+                            } ${available ? 'opacity-100' : 'opacity-40 pointer-events-none'}`}
+                            aria-disabled={!available}
+                            aria-current={isSelected ? 'true' : undefined}
+                          >
+                            {swatchImg ? (
+                              <img src={swatchImg} alt={valueName} className="w-5 h-5 rounded-full" />
+                            ) : swatchColor ? (
+                              <span
+                                className="w-5 h-5 rounded-full border"
+                                style={{backgroundColor: swatchColor}}
+                                aria-label={valueName}
+                              />
+                            ) : (
+                              <span>{valueName}</span>
+                            )}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             {/* Add to Cart Section */}
             <div className="space-y-4">

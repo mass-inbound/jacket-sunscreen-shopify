@@ -165,14 +165,18 @@ function loadDeferredData({context, params}: LoaderFunctionArgs) {
       // Extract the numeric ID from the global ID (e.g., "gid://shopify/Product/123" -> "123")
       const idParts = result.product.id.split('/');
       const productId = idParts[idParts.length - 1];
-      
+
       // Ensure productId is a valid string before using it
       if (typeof productId === 'string' && productId.length > 0) {
+        // Resolve Judge.me credentials with robust fallbacks
+        const shopDomain = env.JUDGE_ME_SHOP_DOMAIN || env.PUBLIC_STORE_DOMAIN || 'jacket-sunscreen.myshopify.com';
+        const apiToken = env.JUDGE_ME_PRIVATE_API_TOKEN || env.JUDGE_ME_PUBLIC_API_TOKEN || '3ySpx789ET7EP9Fp1gBiPxssnQE';
+
         // Fetch product reviews from Judge.me using the Shopify product ID
         return fetchProductReviews(
           productId,
-          env.JUDGE_ME_SHOP_DOMAIN || '',
-          env.JUDGE_ME_PRIVATE_API_TOKEN || ''
+          shopDomain,
+          apiToken
         );
       }
     }

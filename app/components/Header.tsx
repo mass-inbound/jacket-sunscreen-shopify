@@ -50,7 +50,7 @@ export function Header({
             }} 
           />
           {/* Content */}
-          <div className="relative flex items-center justify-between h-[44px] md:h-[52.3px] lg:h-[79.3px] px-24 md:px-32 lg:px-48 xl:px-64">
+          <div className="relative flex items-center justify-between h-[44px] md:h-[56px] lg:h-[77px]  px-24 md:px-32 lg:px-48 xl:px-64">
             {/* Left: Mobile Menu Toggle */}
             <div className="flex items-center z-10">
               <HeaderMenuMobileToggle />
@@ -62,7 +62,7 @@ export function Header({
                 <img 
                   src="/assets/logo2.png" 
                   alt="Logo" 
-                  className="block w-[100px] h-[28px] md:w-[120px] md:h-[32px] lg:w-[160px] lg:h-[40px] xl:w-[180px] xl:h-[48px] object-contain"
+                  className="block w-[100px] h-[28px] md:w-[167px] md:h-[57px] lg:w-[237px] lg:h-[77px] xl:w-[277px] xl:h-[85px] object-contain"
                 />
               </NavLink>
             </div>
@@ -324,11 +324,11 @@ function HeaderMenuMobileToggle() {
   
   return (
     <button
-      className="flex items-center justify-center w-8 h-8 md:w-10 md:h-10 text-black hover:text-gray-600 transition-colors"
+      className="flex items-center justify-center w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 text-black hover:text-gray-600 transition-colors"
       onClick={() => aside.open('mobile')}
       aria-label="Open menu"
     >
-      <img src="/assets/sandIcon.svg" alt="Menu" width="24" height="24" className="md:w-7 md:h-7" />
+      <img src="/assets/sandIcon.svg" alt="Menu" width="24" height="24" className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10" />
     </button>
   );
 }

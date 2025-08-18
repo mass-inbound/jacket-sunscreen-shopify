@@ -203,6 +203,9 @@ export default function Product() {
   const cart = rootData?.cart as any;
   const location = useLocation();
 
+  // Subscription/selling plan state
+  const [selectedSellingPlanId, setSelectedSellingPlanId] = useState<string | null>(null);
+
   // Optimistically selects a variant with given available variant information
   const selectedVariant = useOptimisticVariant(
     product.selectedOrFirstAvailableVariant,
@@ -219,7 +222,7 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
-  const {title, descriptionHtml} = product;
+  const {title, descriptionHtml} = product as any;
 
   // Process description once using useMemo
   const processedDescription = useMemo(() => {
@@ -263,6 +266,25 @@ export default function Product() {
     const isDefaultTitleOption = name === 'title' && values.length > 0 && values.every((v: string) => v === 'default title');
     return !isDefaultTitleOption;
   }) || [];
+
+  // Flatten selling plans across groups
+  const sellingPlans = ((product as any).sellingPlanGroups?.nodes || [])
+    .flatMap((g: any) => (g?.sellingPlans?.nodes || []));
+
+  const hasSubscriptions = sellingPlans.length > 0;
+
+  // Compute price to display depending on selling plan selection
+  const subscriptionAllocation = (selectedVariant as any)?.sellingPlanAllocations?.nodes?.find(
+    (a: any) => a?.sellingPlan?.id === selectedSellingPlanId,
+  );
+
+  const effectivePrice = selectedSellingPlanId
+    ? subscriptionAllocation?.priceAdjustments?.[0]?.price
+    : (selectedVariant as any)?.price;
+
+  const effectiveCompareAt = selectedSellingPlanId
+    ? subscriptionAllocation?.priceAdjustments?.[0]?.compareAtPrice
+    : (selectedVariant as any)?.compareAtPrice;
 
   return (
     <div className="min-h-screen bg-white">
@@ -368,10 +390,82 @@ export default function Product() {
             {/* Price */}
             <div className="text-xl font-semibold text-gray-900">
         <ProductPrice
-          price={selectedVariant?.price}
-          compareAtPrice={selectedVariant?.compareAtPrice}
+          price={effectivePrice}
+          compareAtPrice={effectiveCompareAt}
         />
             </div>
+
+            {/* Subscription Options */}
+            {hasSubscriptions && (
+              <div className="space-y-2">
+                <div className="block text-sm font-medium text-gray-700">Purchase Options</div>
+
+                {/* Container */}
+                <div role="radiogroup" aria-label="Purchase options" className="border rounded-lg overflow-hidden">
+                  {/* One-time row */}
+                  <label className="flex items-center justify-between gap-4 px-4 py-3 bg-white">
+                    <div className="flex items-center gap-3">
+                      <input
+                        type="radio"
+                        name="purchase-option"
+                        value="onetime"
+                        className="h-4 w-4"
+                        checked={!selectedSellingPlanId}
+                        onChange={() => setSelectedSellingPlanId(null)}
+                      />
+                      <span className="font-semibold tracking-widest text-gray-900">One Time Purchase</span>
+                    </div>
+                    <div className="text-sm font-semibold text-gray-900">
+                      <ProductPrice price={(selectedVariant as any)?.price} compareAtPrice={(selectedVariant as any)?.compareAtPrice} />
+                    </div>
+                  </label>
+
+                  {/* Plans */}
+                  {(sellingPlans || []).map((plan: any, idx: number) => {
+                    const allocation = (selectedVariant as any)?.sellingPlanAllocations?.nodes?.find(
+                      (a: any) => a?.sellingPlan?.id === plan?.id,
+                    );
+                    const planPrice = allocation?.priceAdjustments?.[0]?.price;
+                    const planCompareAt = allocation?.priceAdjustments?.[0]?.compareAtPrice;
+                    const oneTimeAmount = parseFloat((selectedVariant as any)?.price?.amount || '0');
+                    const subAmount = parseFloat(planPrice?.amount || '0');
+                    const hasSavings = oneTimeAmount > 0 && subAmount > 0 && subAmount < oneTimeAmount;
+                    const savingsPct = hasSavings ? Math.round(((oneTimeAmount - subAmount) / oneTimeAmount) * 100) : 0;
+                    const disabled = !allocation;
+
+                    return (
+                      <label
+                        key={plan?.id}
+                        className={`flex items-center justify-between gap-4 px-4 py-3 ${idx === 0 ? 'border-t' : 'border-t'} ${disabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+                      >
+                        <div className="flex items-center gap-3">
+                          <input
+                            type="radio"
+                            name="purchase-option"
+                            value={plan?.id}
+                            className="h-4 w-4"
+                            disabled={disabled}
+                            checked={selectedSellingPlanId === plan?.id}
+                            onChange={() => !disabled && setSelectedSellingPlanId(plan?.id)}
+                          />
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold tracking-widest text-gray-900">{plan?.name || 'Subscription'}</span>
+                            {hasSavings && (
+                              <span className="inline-flex items-center px-2 py-0.5 rounded-full bg-[#FBAC18] text-black text-xs font-semibold">
+                                Save {savingsPct}%
+                              </span>
+                            )}
+                          </div>
+                        </div>
+                        <div className="text-sm font-semibold text-gray-900">
+                          <ProductPrice price={planPrice || (selectedVariant as any)?.price} compareAtPrice={planCompareAt} />
+                        </div>
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            )}
 
             {/* Product Options */}
             {optionsToShow.length > 0 && (
@@ -490,7 +584,8 @@ export default function Product() {
                   {
                     merchandiseId: selectedVariant?.id,
                     quantity,
-                  },
+                    ...(selectedSellingPlanId ? {sellingPlanId: selectedSellingPlanId} : {}),
+                  } as any,
                 ]}
               >
                 <button className="w-full bg-[#FBAC18] text-black font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
@@ -679,7 +774,7 @@ export default function Product() {
             {
               id: product.id,
               title: product.title,
-              price: selectedVariant?.price.amount || '0',
+              price: (effectivePrice as any)?.amount || (selectedVariant as any)?.price?.amount || '0',
               vendor: product.vendor,
               variantId: selectedVariant?.id || '',
               variantTitle: selectedVariant?.title || '',
@@ -732,6 +827,16 @@ const PRODUCT_VARIANT_FRAGMENT = `#graphql
       amount
       currencyCode
     }
+    sellingPlanAllocations(first: 10) {
+      nodes {
+        sellingPlan { id name }
+        priceAdjustments {
+          price { amount currencyCode }
+          compareAtPrice { amount currencyCode }
+          perDeliveryPrice { amount currencyCode }
+        }
+      }
+    }
   }
 ` as const;
 
@@ -771,6 +876,13 @@ const PRODUCT_FRAGMENT = `#graphql
     seo {
       description
       title
+    }
+    sellingPlanGroups(first: 10) {
+      nodes {
+        name
+        appName
+        sellingPlans(first: 10) { nodes { id name } }
+      }
     }
   }
   ${PRODUCT_VARIANT_FRAGMENT}

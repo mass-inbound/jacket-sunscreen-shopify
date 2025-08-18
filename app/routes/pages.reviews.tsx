@@ -9,12 +9,15 @@ export const meta: MetaFunction = () => {
 
 export async function loader(args: LoaderFunctionArgs) {
   const {env} = args.context;
+
+  const shopDomain = env.JUDGE_ME_SHOP_DOMAIN || env.PUBLIC_STORE_DOMAIN || 'jacket-sunscreen.myshopify.com';
+  const apiToken = env.JUDGE_ME_PRIVATE_API_TOKEN || env.JUDGE_ME_PUBLIC_API_TOKEN || '3ySpx789ET7EP9Fp1gBiPxssnQE';
   
   // Fetch all reviews from Judge.me
   try {
     const reviews = await fetchAllReviews(
-      env.JUDGE_ME_SHOP_DOMAIN || '',
-      env.JUDGE_ME_PRIVATE_API_TOKEN || ''
+      shopDomain,
+      apiToken
     );
     
     return { reviews };

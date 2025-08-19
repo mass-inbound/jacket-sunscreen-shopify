@@ -44,13 +44,13 @@ export function InfoTabsSection() {
       <div className="max-w-7xl mx-auto">
         <div className="flex flex-col">
           {/* Tab Navigation */}
-          <div className="flex flex-wrap justify-center gap-2 md:gap-4 mb-4">
+          <div className="flex flex-col md:flex-row justify-center gap-2 md:gap-4 mb-4 w-full">
             {tabsData.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`
-                  px-3 md:px-6 lg:px-8 py-2 rounded text-xs md:text-sm font-semibold transition-all duration-200 min-h-[40px] md:min-h-auto
+                  w-full md:w-auto px-3 md:px-6 lg:px-8 py-2 rounded text-xs md:text-sm font-semibold transition-all duration-200 min-h-[40px] md:min-h-auto
                   ${activeTab === tab.id 
                     ? 'bg-black text-white' 
                     : 'bg-[#FBAC18] text-black hover:bg-[#e69b15]'

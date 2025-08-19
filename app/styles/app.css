@@ -500,6 +500,92 @@ button.reset:hover:not(:has(> *)) {
   font-weight: 400;
 }
 
+/* Mobile optimizations for cart items */
+@media (max-width: 768px) {
+  .cart-line {
+    padding: 8px 12px; /* Reduced padding */
+    gap: 8px; /* Reduced gap */
+    margin-bottom: 8px; /* Reduced margin */
+  }
+
+  .cart-line img {
+    width: 50px; /* Smaller image */
+    height: 50px; /* Smaller image */
+    border-radius: 4px;
+  }
+
+  /* Ensure image + product details take 80% of width */
+  .cart-line .product-details {
+    flex: 1;
+    max-width: calc(80% - 58px); /* 80% minus image width + gap */
+    margin-right: 8px; /* Reduced spacing */
+    gap: 4px; /* Reduced gap */
+  }
+
+  /* Price actions take remaining 20% */
+  .cart-line .price-actions {
+    min-width: 20%; /* Take 20% of width */
+    gap: 8px; /* Reduced gap */
+  }
+
+  /* Smaller text sizes for mobile */
+  .cart-line h3 {
+    font-size: 12px; /* Reduced from 14px */
+    line-height: 1.3;
+    font-weight: 500;
+  }
+
+  .cart-line p {
+    font-size: 11px; /* Reduced from 14px */
+    line-height: 1.3;
+  }
+
+  /* Smaller quantity controls */
+  .cart-line .product-details > div:last-child {
+    transform: scale(0.9);
+    transform-origin: left;
+  }
+
+  /* Smaller price text */
+  .cart-line .price-actions .text-sm {
+    font-size: 11px !important;
+  }
+
+  /* Remove button smaller */
+  .cart-line .price-actions button svg {
+    width: 16px !important;
+    height: 16px !important;
+  }
+}
+
+/* Extra small mobile devices */
+@media (max-width: 480px) {
+  .cart-line {
+    padding: 6px 8px; /* Even more reduced padding */
+    gap: 6px; /* Even more reduced gap */
+  }
+
+  .cart-line img {
+    width: 45px; /* Even smaller image */
+    height: 45px; /* Even smaller image */
+  }
+
+  .cart-line .product-details {
+    max-width: calc(80% - 51px); /* Adjust for smaller image */
+    margin-right: 6px;
+  }
+
+  .cart-line h3 {
+    font-size: 11px; /* Even smaller text */
+    line-height: 1.2;
+  }
+
+  .cart-line p {
+    font-size: 10px; /* Even smaller text */
+    line-height: 1.2;
+  }
+}
+
 /* Cart summary styling */
 .cart-summary-aside {
   background: white;
@@ -691,13 +777,14 @@ button.reset:hover:not(:has(> *)) {
   }
   
   @media (min-width: 64em) {
-    grid-template-columns: repeat(3, 1fr);
-    grid-gap: 3rem;
-    padding: 0 3rem;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+    padding: 0 2rem;
   }
   
   @media (min-width: 90em) {
     grid-template-columns: repeat(4, 1fr);
+    grid-gap: 3rem;
     padding: 0 4rem;
   }
 }
@@ -1041,6 +1128,14 @@ button.reset:hover:not(:has(> *)) {
   font-weight: 600;
   color: #1B1A1B;
   margin: 0 0 10px 0;
+}
+
+/* Tablet responsive - reduce filter width for 1024px screens */
+@media (max-width: 1024px) {
+  .product-filter-sidebar {
+    width: 220px;
+    margin-right: 20px;
+  }
 }
 
 /* Mobile responsive */

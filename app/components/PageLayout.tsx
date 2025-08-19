@@ -40,7 +40,7 @@ export function PageLayout({
       <Aside.Provider>
         <CartAside cart={cart} />
         <SearchAside />
-        <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} />
+        <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} isLoggedIn={isLoggedIn} />
         <AnnouncementBar cart={cart} />
         {header && (
           <Header
@@ -229,9 +229,11 @@ function SearchAside() {
 function MobileMenuAside({
   header,
   publicStoreDomain,
+  isLoggedIn,
 }: {
   header: PageLayoutProps['header'];
   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
+  isLoggedIn: PageLayoutProps['isLoggedIn'];
 }) {
   return (
     header.menu &&
@@ -242,6 +244,7 @@ function MobileMenuAside({
           viewport="mobile"
           primaryDomainUrl={header.shop.primaryDomain.url}
           publicStoreDomain={publicStoreDomain}
+          isLoggedIn={isLoggedIn}
         />
       </Aside>
     )

@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import {Link, useSearchParams} from 'react-router';
 
 interface ProductFilterProps {
@@ -8,7 +8,18 @@ interface ProductFilterProps {
 
 export function ProductFilter({productTypes, selectedTypes}: ProductFilterProps) {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [isExpanded, setIsExpanded] = useState(true);
+  
+  // Check if we're on mobile and set initial state accordingly
+  const [isExpanded, setIsExpanded] = useState(() => {
+    // Default to false for SSR/initial render, will be updated in useEffect
+    return false;
+  });
+
+  // Set the correct initial state based on screen size after component mounts
+  useEffect(() => {
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    setIsExpanded(!isMobile); // Open on desktop, closed on mobile
+  }, []);
 
   const isNewSelected = searchParams.getAll('tag').includes('new');
 

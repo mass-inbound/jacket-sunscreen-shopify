@@ -22,7 +22,7 @@ export function PaginatedResourceSection<NodesType>({
 
         return (
           <div>
-            <div className="flex justify-center my-6">
+            <div className="flex justify-center">
               <PreviousLink>
                 {isLoading ? (
                   <span className="px-6 py-3 rounded-md bg-gray-200 text-gray-700 cursor-not-allowed">Loading...</span>

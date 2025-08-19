@@ -61,7 +61,7 @@ export default function Contact() {
         <div className="mx-auto pt-12">
           <div className="flex flex-col lg:flex-row justify-between items-center text-white gap-4">
             {/* Left: Contact Form */}
-            <div className="w-full lg:w-1/2 px-4 md:px-8 lg:pl-16 xl:pl-28">
+            <div className="w-full lg:w-2/3 px-4 md:px-8 lg:pl-16 xl:pl-28">
             <div className="text-center">
               <div className="inline-block text-left">
                 <h3 className="text-[#FBAC18] text-xs md:text-[20px] uppercase font-bold mb-2">
@@ -74,7 +74,7 @@ export default function Contact() {
               </div>
               </div>
               {/* JotForm Iframe with Custom Styling */}
-              <div className="md:max-w-[750px] -mt-10">
+              <div className="w-full md:max-w-[750px] md:-mt-10">
                 <iframe
                   id="JotFormIFrame-252173395609059"
                   title="Contact Form"
@@ -93,23 +93,23 @@ export default function Contact() {
               </div>
             </div>
 
-            {/* Right: Product Images */}
-            <div className="w-full lg:w-1/2 relative hidden lg:block">
+            {/* Right: Product Images - Hidden on mobile */}
+            <div className="hidden lg:block lg:w-1/3 relative">
                 <img
                   src="/assets/contact1.png"
                   alt="Jacket Product 1"
-                className="absolute -top-[18.5rem] -right-1"
+                className="absolute -top-[18.5rem] -right-16"
                 />
              
                 <img
                   src="/assets/contact3.png"
                   alt="Jacket Product 3"
-                className="absolute top-40 -right-1"
+                className="absolute top-40 -right-16"
                 />
                 <img
                   src="/assets/contact2.png"
                   alt="Jacket Product 2"
-                className="absolute -top-28 -right-1"
+                className="absolute -top-[48px] -right-16"
                 />
               </div>
             </div>

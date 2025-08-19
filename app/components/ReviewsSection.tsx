@@ -27,16 +27,16 @@ function ReviewCard({review}: {review: ReviewForDisplay}) {
         <div className="flex items-center gap-2">
           <StarRating rating={review.rating} />
           {review.title && (
-            <span className="text-sm font-normal text-[#1B1A1B] leading-relaxed">
+            <h3 className="text-xs sm:text-sm lg:text-base font-bold text-[#1B1A1B] leading-relaxed">
               {review.title}
-            </span>
+            </h3>
           )}
         </div>
       </div>
 
       {/* Review Content */}
       <div className="mb-2">
-        <p className="text-base leading-relaxed text-[#1B1A1B] font-normal">
+        <p className="text-xs sm:text-sm lg:text-base leading-relaxed text-[#1B1A1B] font-normal">
           {review.content}
         </p>
       </div>
@@ -86,13 +86,13 @@ export function ReviewsSection({reviews}: ReviewsSectionProps) {
         {/* Header Section with Yellow Background */}
         <div className="py-4 text-center">
           <div className="bg-[#FBAC18] px-8 py-2 inline-block rounded">
-            <div className="text-5xl font-normal text-white">REVIEWS</div>
+            <div className="text-3xl sm:text-4xl lg:text-5xl font-normal text-white">REVIEWS</div>
           </div>
         </div>
 
         {/* No Reviews Message */}
         <div className="w-full bg-white">
-          <div className="max-w-7xl mx-auto px-[230px] py-12">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24 xl:px-[230px] py-12">
             <div className="text-center text-gray-500">
               <p className="text-xl mb-4">No reviews yet</p>
               <p>Be the first to share your thoughts about our products!</p>
@@ -107,14 +107,14 @@ export function ReviewsSection({reviews}: ReviewsSectionProps) {
     <div className="">
       {/* Header Section with Yellow Background */}
       <div className="py-4 text-center">
-        <div className="bg-[#FBAC18] px-8 py-2 inline-block rounded">
-          <div className="text-5xl font-normal text-white">REVIEWS</div>
+        <div className="bg-[#FBAC18] w-[90%] md:w-auto px-8 py-2 inline-block rounded">
+          <div className="text-3xl sm:text-4xl lg:text-5xl font-normal text-white">REVIEWS</div>
         </div>
       </div>
 
       {/* Reviews Content */}
       <div className="w-full bg-white">
-        <div className="max-w-7xl mx-auto px-[230px] py-6">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-24 xl:px-[230px] py-6">
           <div className="max-w-4xl">
             {reviews.map((review) => (
               <ReviewCard key={review.id} review={review} />

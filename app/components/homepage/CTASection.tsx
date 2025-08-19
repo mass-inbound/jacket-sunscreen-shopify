@@ -14,8 +14,8 @@ export const CTASection = () => {
             className="object-contain w-auto max-w-[250px] md:max-w-[350px] lg:max-w-none h-auto"
           />
         </div>
-        <Link to="/collections/all">
-          <button className="bg-black text-white px-6 md:px-8 lg:px-[32px] py-3 md:py-4 lg:py-[14px] font-bold text-sm md:text-base lg:text-[15px] hover:bg-gray-800 transition-colors rounded-none">
+        <Link to="/collections/all" className="w-[70%] md:w-auto">
+          <button className="w-full md:w-auto text-center bg-black text-white px-6 md:px-8 lg:px-[32px] py-3 md:py-4 lg:py-[14px] font-bold text-sm md:text-base lg:text-[15px] hover:bg-gray-800 transition-colors rounded-none">
             SHOP NOW
           </button>
         </Link>

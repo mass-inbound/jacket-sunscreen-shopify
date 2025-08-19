@@ -31,10 +31,21 @@ export function ProductItem({
   const [isHovered, setIsHovered] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
   
   // Fix hydration by only enabling interactions after mounting
   useEffect(() => {
     setMounted(true);
+    // Set initial window width
+    setWindowWidth(window.innerWidth);
+    
+    // Add resize listener
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
   
   const {open} = useAside();
@@ -48,8 +59,12 @@ export function ProductItem({
   const maxAddable = getMaxAddableQuantity(cart, firstVariant?.id, firstVariant);
   const maxQuantity = Math.max(1, maxAddable);
 
-  // Image dimensions based on variant
-  const imageHeight = variant === 'collection' ? '450px' : '346px';
+  // Image dimensions based on variant and screen size
+  const imageHeight = windowWidth < 768 
+    ? '373px' 
+    : variant === 'collection' 
+      ? (windowWidth === 1024 ? '250px' : '450px') 
+      : '346px';
   const imageWidth = variant === 'collection' ? 'w-full max-w-[400px] mx-auto' : 'w-full';
 
   const incrementQuantity = () => {
@@ -254,7 +269,11 @@ export function ProductItem({
               onClick={handleAddToCart}
               disabled={!firstVariant.availableForSale || maxQuantity === 0}
             >
-              <button className="w-full bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+              <button className={`${
+                variant === 'collection' && windowWidth === 1024 
+                  ? 'w-full' 
+                  : 'w-full'
+              } bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}>
                 {!firstVariant.availableForSale ? 'Sold out' : 
                  maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
               </button>
@@ -263,7 +282,11 @@ export function ProductItem({
             <button 
               onClick={handleAddToCart}
               disabled={!mounted}
-              className="w-full bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              className={`${
+                variant === 'collection' && windowWidth === 1024 
+                  ? 'w-full' 
+                  : 'w-full'
+              } bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
             >
               {!mounted ? 'Loading...' : 'ADD TO CART'}
             </button>

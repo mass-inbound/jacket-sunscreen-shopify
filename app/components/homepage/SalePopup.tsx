@@ -128,7 +128,7 @@ export function SalePopup({ onClose, isVisible }: SalePopupProps) {
             </div>
 
             {/* Image Section */}
-            <div className="lg:w-1/2 flex justify-center items-center p-4 lg:p-0">
+            <div className="hidden lg:flex lg:w-1/2 justify-center items-center p-4 lg:p-0">
               <img
                 src="/assets/promo.png"
                 alt="JACKET Sunscreen"

@@ -39,7 +39,7 @@ export function Header({
 
   return (
     <header className={`w-full z-40 transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0' : ''}`}>
-      <div className={`flex px-2 md:px-2 justify-center items-center py-2 md:py-[15px] ${isScrolled ? 'pt-4 md:pt-[40px]' : ''} bg-transparent`}>
+      <div className={`flex md:px-2 justify-center items-center py-2 md:py-[15px] ${isScrolled ? 'pt-4 md:pt-[40px]' : ''} bg-transparent`}>
         <div className="relative w-full mx-auto">
           {/* Overlay + Shadow + Background */}
           <div 
@@ -50,7 +50,7 @@ export function Header({
             }} 
           />
           {/* Content */}
-          <div className="relative flex items-center justify-between h-[44px] md:h-[56px] lg:h-[77px]  px-24 md:px-32 lg:px-48 xl:px-64">
+          <div className="relative flex items-center justify-between h-[44px] md:h-[56px] lg:h-[77px] px-3 md:px-32 lg:px-48 xl:px-64">
             {/* Left: Mobile Menu Toggle */}
             <div className="flex items-center z-10">
               <HeaderMenuMobileToggle />
@@ -62,13 +62,13 @@ export function Header({
                 <img 
                   src="/assets/logo2.png" 
                   alt="Logo" 
-                  className="block w-[100px] h-[28px] md:w-[167px] md:h-[57px] lg:w-[237px] lg:h-[77px] xl:w-[277px] xl:h-[85px] object-contain"
+                  className="block w-[80px] h-[32px] md:w-[167px] md:h-[57px] lg:w-[237px] lg:h-[77px] xl:w-[277px] xl:h-[85px] object-contain"
                 />
               </NavLink>
             </div>
             
             {/* Right: CTAs */}
-            <div className="flex items-center z-10">
+            <div className="flex items-center z-10 gap-1 md:gap-3 lg:gap-4">
               <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
             </div>
           </div>
@@ -83,11 +83,13 @@ export function HeaderMenu({
   primaryDomainUrl,
   viewport,
   publicStoreDomain,
+  isLoggedIn,
 }: {
   menu: HeaderProps['header']['menu'];
   primaryDomainUrl: HeaderProps['header']['shop']['primaryDomain']['url'];
   viewport: Viewport;
   publicStoreDomain: HeaderProps['publicStoreDomain'];
+  isLoggedIn?: Promise<boolean>;
 }) {
   const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-4 lg:gap-6 items-center z-10' : 'flex flex-col'} `;
   const {close} = useAside();
@@ -218,6 +220,24 @@ export function HeaderMenu({
 
   return (
     <nav className={className} role="navigation">
+      {/* Add login/account link for mobile at the top */}
+      {viewport === 'mobile' && isLoggedIn && (
+        <div className="mb-4 pb-4 block md:hidden border-b border-gray-200">
+          <NavLink 
+            prefetch="intent" 
+            to="/account" 
+            className=" py-2 font-bold text-[16px] tracking-wider text-black hover:text-[#fbac17] transition-colors"
+            style={{ textDecoration: 'none' }}
+            onClick={close}
+          >
+            <Suspense fallback="Log In">
+              <Await resolve={isLoggedIn} errorElement="Sign in">
+                {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Log In')}
+              </Await>
+            </Suspense>
+          </NavLink>
+        </div>
+      )}
       {staticMenuItems.map((item) => {
         const hasSubItems = item.items && item.items.length > 0;
         const isExpanded = expandedItems.has(item.id);
@@ -300,19 +320,22 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas text-white flex items-center gap-2 md:gap-3 lg:gap-4" role="navigation">
-      <NavLink 
-        prefetch="intent" 
-        to="/account" 
-        className="text-white font-bold hover:text-gray-200 transition-colors text-xs md:text-sm lg:text-base"
-        style={{ textDecoration: 'none' }}
-      >
-        <Suspense fallback="Log In">
-          <Await resolve={isLoggedIn} errorElement="Sign in">
-            {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Log In')}
-          </Await>
-        </Suspense>
-      </NavLink>
+    <nav className="header-ctas text-white flex items-center gap-1 md:gap-3 lg:gap-4" role="navigation">
+      {/* Hide login on mobile, show on desktop */}
+      <div className="hidden md:block">
+        <NavLink 
+          prefetch="intent" 
+          to="/account" 
+          className="text-white font-bold hover:text-gray-200 transition-colors text-xs md:text-sm lg:text-base"
+          style={{ textDecoration: 'none' }}
+        >
+          <Suspense fallback="Log In">
+            <Await resolve={isLoggedIn} errorElement="Sign in">
+              {(isLoggedIn) => (isLoggedIn ? 'Account' : 'Log In')}
+            </Await>
+          </Suspense>
+        </NavLink>
+      </div>
       <SearchToggle />
       <CartToggle cart={cart} />
     </nav>
@@ -324,11 +347,11 @@ function HeaderMenuMobileToggle() {
   
   return (
     <button
-      className="flex items-center justify-center w-8 h-8 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 text-black hover:text-gray-600 transition-colors"
+      className="flex items-center justify-center w-7 h-7 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 text-black hover:text-gray-600 transition-colors"
       onClick={() => aside.open('mobile')}
       aria-label="Open menu"
     >
-      <img src="/assets/sandIcon.svg" alt="Menu" width="24" height="24" className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10" />
+      <img src="/assets/sandIcon.svg" alt="Menu" width="20" height="20" className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10" />
     </button>
   );
 }
@@ -338,7 +361,7 @@ function SearchToggle() {
   
   return (
     <button className="reset text-black hover:text-gray-600 transition-colors p-1" onClick={() => aside.open('search')}>
-      <img src="/assets/searchIcon.svg" alt="Search" width="18" height="18" className="md:w-5 md:h-5" />
+      <img src="/assets/searchIcon.svg" alt="Search" width="16" height="16" className="md:w-5 md:h-5" />
     </button>
   );
 }
@@ -364,11 +387,11 @@ function CartBadge({count}: {count: number | null}) {
       className="text-black font-semibold hover:text-gray-600 transition-colors relative"
     >
        {count !== null && count > 0 && (
-          <span className="absolute -top-[8px] left-[5px] transform translate-x-1 text-black text-xs font-bold">
+          <span className="absolute -top-[6px] left-[4px] transform translate-x-1 text-black text-xs font-bold">
             {count}
           </span>
         )}
-      <svg width="18" height="18" className="md:w-5 md:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      <svg width="16" height="16" className="md:w-5 md:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
         <circle cx="9" cy="21" r="1"></circle>
         <circle cx="20" cy="21" r="1"></circle>
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6"></path>

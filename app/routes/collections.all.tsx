@@ -89,7 +89,7 @@ export default function Collection() {
   return (
     <div>
       {/* breadcrumb */}
-        <div className="py-4 px-3 md:px-2 lg:px-6 mb-8">
+        <div className="pt-4 px-3 md:px-2 lg:px-6 mb-8">
         <div className="max-w-7xl">
           <nav className="flex items-center space-x-2 text-sm">
             <Link 
@@ -110,7 +110,7 @@ export default function Collection() {
         selectedTypes={selectedProductTypes}
       />
       
-      <div className="collections-content">
+      <div className="">
        
         
         <PaginatedResourceSection

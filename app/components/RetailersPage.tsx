@@ -27,12 +27,12 @@ export function RetailersPage({retailers}: RetailersPageProps) {
       </div>
 
       {/* Full Width Map Section */}
-      <div className="w-[60%] h-[800px] px-8 mx-auto flex justify-center relative overflow-hidden">
+      <div className="w-[100%] xl:w-[60%] md:h-[800px] h-[400px] px-1 mx-auto flex justify-center relative overflow-hidden">
         <iframe 
           title="Store Locations Map"
           src="https://www.google.com/maps/d/u/0/embed?mid=1YbXA4l3dCpjwHq5IPx3BvzeG4SbEzQg&ehbc=2E312F&theme=dark&z=9&gestureHandling=cooperative"
           width="100%" 
-          height="100%" 
+          // height="100%" 
           style={{ border: 0, marginTop: '-100px' }}
           allowFullScreen
           loading="lazy"

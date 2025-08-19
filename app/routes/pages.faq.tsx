@@ -175,7 +175,12 @@ export default function FAQ() {
             </button>
           )}
           <h1 className="text-5xl lg:text-6xl font-bold text-black uppercase tracking-wide">
-            {selectedFaq ? selectedFaq.question : 'Frequently Asked Questions'}
+            {selectedFaq ? selectedFaq.question : (
+              <>
+                <span className="block lg:hidden text-[22px] -mb-4">Frequently Asked Questions</span>
+                <span className="hidden lg:block text-[45px]">Frequently Asked Questions</span>
+              </>
+            )}
           </h1>
         </div>
 

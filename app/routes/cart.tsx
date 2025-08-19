@@ -112,14 +112,14 @@ export default function Cart() {
 
   return (
     <div className="cart min-h-screen bg-gray-50">
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 md:px-4 md:py-8 px-2 py-4">
         <div className="bg-white rounded-lg shadow-sm">
-          <div className="border-b border-gray-200 px-6 py-4">
-            <h1 className="text-2xl font-bold text-gray-900">
+          <div className="border-b border-gray-200 px-6 py-4 md:px-6 md:py-4 px-3 py-3">
+            <h1 className="text-2xl font-bold text-gray-900 md:text-2xl text-lg">
               Cart ({itemCount} {itemCount === 1 ? 'item' : 'items'})
             </h1>
           </div>
-          <div className="p-6">
+          <div className="p-6 md:p-6 p-3">
             <CartMain layout="page" cart={cart} />
           </div>
         </div>

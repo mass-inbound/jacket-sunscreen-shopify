@@ -5,7 +5,7 @@ interface PGAPartnerProps {
 }
 
 export function PGAPartner({
-  title = "PROUD SUNSCREEN PARTNER OF",
+  title = "PROUD SUNSCREEN PARTNER OF -updated",
 }: PGAPartnerProps) {
   return (
     <div className="w-full bg-[#1B1A1B] py-4 md:py-[18px] mx-0 md:mx-2 rounded">

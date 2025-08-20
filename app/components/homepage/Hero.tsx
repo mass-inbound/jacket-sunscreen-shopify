@@ -42,7 +42,7 @@ export function Hero({
         <div className="absolute top-0 left-0 right-0 z-10">
           {/* "IT'S ALWAYS" */}
           <div className="absolute top-[43px] left-[19px] w-[280px]">
-            <h1 className="text-[26px] leading-[1.1] font-[400] text-[#FBAC18] text-center">IT&apos;S ALWAYS</h1>
+            <h1 className="text-[26px] leading-[1.1] font-[400] text-[#FBAC18] text-center">IT&apos;S ALWAYSs</h1>
             <img
                 src="/assets/jacket.png"
                 alt="Main Sunscreen Product"

@@ -22,7 +22,7 @@ export default function About() {
         {/*banner*/}
         <div className="relative">
         <img
-                src="/assets/about1-color.png"
+                src="/assets/about1.png"
                 alt="JACKET Sunscreen"
                 className="w-full h-[300px] md:h-[400px] lg:h-auto object-cover rounded-none"
               />
@@ -104,7 +104,7 @@ export default function About() {
            {/* Left Column - Image */}
            <div className="flex-1 lg:max-w-md">
              <img
-               src="/assets/about4.png"
+               src="/assets/about1-color.png"
                alt="Dr. Thomas Balshi"
                className="w-full h-auto object-cover rounded-none"
              />

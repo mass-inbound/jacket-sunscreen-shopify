@@ -104,7 +104,7 @@ export default function About() {
            {/* Left Column - Image */}
            <div className="flex-1 lg:max-w-md">
              <img
-               src="/assets/about1-color.png"
+               src="/assets/about4.png"
                alt="Dr. Thomas Balshi"
                className="w-full h-auto object-cover rounded-none"
              />

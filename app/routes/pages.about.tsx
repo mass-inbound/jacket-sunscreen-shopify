@@ -54,67 +54,26 @@ export default function About() {
               {/* Text Content */}
               <div className="space-y-3 md:space-y-4 text-sm md:text-base leading-relaxed text-black">
                 <p>
-                  JACKET is a small batch sunscreen featuring exclusive
-                  premium-grade ingredients that deliver maximum protection,
-                  patented anti-aging benefits, and ultimate performance.
+                  JACKET is a sunscreen company for those who care enough to invest in their skin. 
+                  Created in 2017 by a South Florida dermatologist and cosmetic surgeon, JACKET is 
+                  a small-batch sunscreen featuring exclusive premium-grade ingredients and antioxidants 
+                  that deliver maximum protection, patented anti-aging benefits, and ultimate performance.
                 </p>
 
                 <p>
-                  Created by a longtime South Florida dermatologist and cosmetic
-                  surgeon, JACKET provides comfort and confidence without
-                  compromise.
+                  As a Florida company, we love living in the sunshine. We also understand the challenges 
+                  that presents to our skin, such as premature aging and skin cancer. We’re also aware of 
+                  the many (bad) excuses for not wearing sunscreen — oily, greasy, smelly, sticky, breakouts, etc.
                 </p>
 
                 <p>
-                  Zinc-enriched, JACKET blocks 98% of both UVA and UVB rays and
-                  is water resistant up to 80 minutes. It protects as well or
-                  better than any sunscreen on the market today, but what truly
-                  makes JACKET unique is its functionality and reparative
-                  properties.
+                  Born and Bottled in The Sunshine State, JACKET eliminates those excuses by offering weightless, gentle formulas that are easy and comfortable to wear, defend against harmful UV rays, and also heal and repair damaged skin by acting at the cellular level to clean up DNA-altering free radicals, allowing you to maximize the action, minimize the risk, and truly embrace the SPF Life+Style.
                 </p>
 
                 <p>
-                  A lightweight, mineral/chemical blend sunscreen, JACKET
-                  includes a collection of natural antioxidants that are proven
-                  to heal damaged skin, including the ability to fade dark spots
-                  and smooth lines and wrinkles. Hydrating and moisturizing
-                  elements also leave skin looking and feeling better, and
-                  JACKET is healthy and effective for all skin types, tones and
-                  ages, including those with sensitive skin.
+                  Comfort and confidence without compromise.
                 </p>
 
-                <p>
-                  If you spend time in the sun, the focus shouldn&apos;t just be
-                  about protecting against new damage, but also reversing the
-                  signs of previous and existing damage.
-                </p>
-
-                <p>
-                  We know sunscreen is typically not fun to wear for a variety
-                  of reasons — it&apos;s often greasy, gross and sticky, smells or
-                  leaves your face shiny or with a white residue, clogs your
-                  pores, wears off too quickly, etc. Those are all
-                  understandable, but entirely unacceptable — our skin and
-                  overall health are far too important.
-                </p>
-
-                <p>
-                  Did you know that wearing sunscreen as recommended reduces the
-                  risk of developing melanoma, the deadliest form of skin
-                  cancer, by 50 percent? If you could cut your cancer risk in
-                  half, would you do it?
-                </p>
-
-                <p>
-                  We&apos;ve heard them all, and JACKET was created to eliminate the
-                  excuses for not wearing sunscreen, allowing you to maximize
-                  the action and minimize the risk.
-                </p>
-
-                <p>
-                  Remember, everyday is sun day, so put on your sun day best and
-                  JACKET UP!
-                </p>
               </div>
             </div>
           </div>

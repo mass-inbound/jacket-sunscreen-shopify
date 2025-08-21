@@ -48,9 +48,7 @@ export default function About() {
             <div className="space-y-4 md:space-y-6">
               {/* Main Heading */}
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-black leading-tight">
-                THE NEW FACE OF
-                <br />
-                SUNSCREEN
+                THE GOLD STANDARD
               </h1>
 
               {/* Text Content */}

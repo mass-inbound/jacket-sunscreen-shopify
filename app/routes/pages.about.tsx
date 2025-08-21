@@ -22,7 +22,7 @@ export default function About() {
         {/*banner*/}
         <div className="relative">
         <img
-                src="/assets/about1.png"
+                src="/assets/about1-color.png"
                 alt="JACKET Sunscreen"
                 className="w-full h-[300px] md:h-[400px] lg:h-auto object-cover rounded-none"
               />

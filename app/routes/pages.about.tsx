@@ -123,11 +123,13 @@ export default function About() {
                {/* Body Text */}
                <div className="space-y-3 md:space-y-4 text-sm md:text-base leading-relaxed text-black">
                  <p>
-                   JACKET was created by Dr. Thomas Balshi, MD, a dermatologist and founder of Balshi Dermatology & Cosmetic Surgery in Delray Beach, Florida. As a South Floridian, Dr. Balshi has spent the majority of his life in the sunshine. In fact, that relationship ultimately fueled him to develop JACKET sunscreen.
-                 </p>
-                 
+                   Thomas Balshi has been a dermatologist and cosmetic surgeon in South Florida for more than 20 years, and is all too familiar with the dangerous impact the sun has on our skin. From aesthetic issues associated with premature aging — dark spots and wrinkles — to deadly skin cancers, he has seen it all. In 2017, he decided he had seen enough, and decided to do something about it.                 
+                  </p>
                  <p>
-                   Thomas Balshi is not only a dermatologist, he&apos;s an avid golfer and outdoors enthusiast, just like those who JACKET was created for. When it comes to protecting and repairing your skin, Dr. Balshi understands the needs and concerns from both the health, safety and medical side as well as the functionality side of sunscreen. If JACKET didn&apos;t work for him, we wouldn&apos;t share it with you.
+                   Having grown dissatisfied with the other sunscreen options available at the time, he created his own. As a family man with five children and an endless archive of patients’ horror stories, Dr. Balshi sought to develop a sunscreen that was safe and effective for all ages and skin types, including those with sensitivities, and that not only protected against sun damage but repaired existing damage. JACKET was born.                 
+                  </p>
+                 <p>
+                   An avid golfer and outdoors enthusiast himself, Dr. Balshi understands the medical and health demands of sunscreen as well as the desired user functionality and experience relationship. If JACKET didn't work for him, we wouldn't share it with you.
                  </p>
                </div>
              </div>

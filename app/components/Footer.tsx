@@ -28,7 +28,7 @@ export function Footer({
                   </div>
                   <div className="text-center">
                     <h6 className="text-[12px] leading-[1.4em] font-bold text-white">
-                      MAXIMIZE THE ACTION. MINIMIZE THE RISK.
+                      The Gold Standard.
                     </h6>
                   </div>
                 </div>

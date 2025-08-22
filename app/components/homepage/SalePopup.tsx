@@ -83,9 +83,9 @@ export function SalePopup({ onClose, isVisible }: SalePopupProps) {
               </div>
 
               {/* Heading */}
-              <h2 className="text-xl md:text-2xl lg:text-3xl mb-2">
+              <h3 className="text-xl md:text-2xl lg:text-3xl mb-2">
                 Jacket Up!
-              </h2>
+              </h3>
                <h2 className="text-xl md:text-2xl lg:text-3xl mb-2">
                 Stay Protected 
               </h2>

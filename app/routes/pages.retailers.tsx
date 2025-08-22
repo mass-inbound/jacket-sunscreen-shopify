@@ -143,6 +143,14 @@ export async function loader({context}: LoaderFunctionArgs) {
         coordinates: {lat: 26.5317, lng: -80.0905},
         isActive: false
       }
+      {
+        id: 18,
+        name: 'Keys Boating Center',
+        address: '90800 Overseas Highway',
+        city: 'Tavernier, Florida',
+        coordinates: {lat: 25.0039, lng: -80.5311},
+        isActive: false
+      }
     ]
   };
 }

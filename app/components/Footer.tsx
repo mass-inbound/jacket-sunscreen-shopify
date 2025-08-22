@@ -261,8 +261,7 @@ export function Footer({
                       {/* Tagline */}
                       <div className="absolute left-[237px] top-[51px] w-[198px]">
                         <h6 className="text-[13px] leading-[1.4em] font-bold text-white pb-[11px]">
-                          MAXIMIZE THE ACTION.<br />
-                          MINIMIZE THE RISK.
+                          The Gold Standard.
                         </h6>
                       </div>
                       

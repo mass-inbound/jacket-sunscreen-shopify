@@ -95,13 +95,13 @@ export function Hero({
             <div className="w-full">
               {/* Title Stack */}
               <div className="flex flex-col items-start mb-6 lg:mb-[28px]">
-                <h1 className="text-4xl lg:text-[52px] leading-[1.1] font-[500] text-[#FBAC18] mb-2 lg:mb-[9px]">
+                <h1 className="text-4xl lg:text-[52px] leading-[1.1] font-[500] text-white mb-2 lg:mb-[9px]">
                   THE
                 </h1>
-                <h1 className="text-6xl lg:text-[86px] leading-[1.1] font-[800] text-white mb-2 lg:mb-[9px]">
+                <h1 className="text-6xl lg:text-[86px] leading-[1.1] font-[800] text-[#FBAC18] mb-2 lg:mb-[9px]">
                   GOLD
                 </h1>
-                <h1 className="text-4xl lg:text-[52px] leading-[1.1] font-[500] text-[#FBAC18] mb-2 lg:mb-[9px]">
+                <h1 className="text-4xl lg:text-[52px] leading-[1.1] font-[500] text-white mb-2 lg:mb-[9px]">
                   STANDARD
                 </h1>
               </div>

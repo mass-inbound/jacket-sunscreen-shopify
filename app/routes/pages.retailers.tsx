@@ -142,7 +142,7 @@ export async function loader({context}: LoaderFunctionArgs) {
         city: 'Boynton Beach, Florida',
         coordinates: {lat: 26.5317, lng: -80.0905},
         isActive: false
-      }
+      },
       {
         id: 18,
         name: 'Keys Boating Center',

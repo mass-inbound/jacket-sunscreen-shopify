@@ -11,7 +11,7 @@ const tabsData: TabData[] = [
   {
     id: 'what-is-jacket',
     label: 'WHAT IS JACKET?',
-    heading: 'ANTI-AGING SUNSCREEN',
+    heading: 'THE NEW FACE OF SUNSCREEN',
     description: 'JACKET is a dermatologist-developed, anti-aging sunscreen. Featuring a patented formula enriched with zinc and natural antioxidants, JACKET delivers maximum broad-spectrum protection and also repairs sun-damaged skin. It\'s the only sunscreen that fades dark spots and smooths wrinkles while worn. An SPF 50+ sunscreen, JACKET blocks 98% of both UVA and UVB ultraviolet rays, and is water and sweat resistant for up to 80 minutes.'
   },
   {

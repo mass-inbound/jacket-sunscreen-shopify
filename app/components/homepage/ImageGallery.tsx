@@ -71,7 +71,7 @@ export function ImageGallery() {
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div className="text-center px-4 md:px-8">
             <h2 className="text-white text-lg sm:text-xl md:text-2xl lg:text-3xl xl:text-4xl 2xl:text-5xl font-bold leading-tight drop-shadow-2xl">
-              MAXIMIZE THE ACTION. MINIMIZE THE RISK.
+              IT’S ALWAYS JACKET WEATHER.
             </h2>
           </div>
         </div>

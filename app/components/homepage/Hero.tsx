@@ -10,7 +10,7 @@ interface HeroProps {
 }
 
 export function Hero({
-  title = "IT'S ALWAYS WEATHER",
+  title = "THE STANDARD",
   subtitle = "ULTIMATE PERFORMANCE, ANTI-AGING SUNSCREEN THAT PROTECTS + REPAIRS",
   ctaText = "SHOP NOW",
   ctaLink = "/products"
@@ -96,13 +96,13 @@ export function Hero({
               {/* Title Stack */}
               <div className="flex flex-col items-start mb-6 lg:mb-[28px]">
                 <h1 className="text-4xl lg:text-[52px] leading-[1.1] font-[500] text-[#FBAC18] mb-2 lg:mb-[9px]">
-                  IT&apos;S ALWAYS
+                  THE
                 </h1>
                 <h1 className="text-6xl lg:text-[86px] leading-[1.1] font-[800] text-white mb-2 lg:mb-[9px]">
-                  JACKET
+                  GOLD
                 </h1>
                 <h1 className="text-4xl lg:text-[52px] leading-[1.1] font-[500] text-[#FBAC18] mb-2 lg:mb-[9px]">
-                  WEATHER
+                  STANDARD
                 </h1>
               </div>
             </div>

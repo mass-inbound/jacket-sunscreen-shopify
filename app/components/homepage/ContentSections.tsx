@@ -38,31 +38,34 @@ export function ContentSections() {
                 <div className="flex-1 ml-2">
                   <div className="text-left">
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
+                      • ANTIOXIDANT AND ZINC ENRICHED
+                    </p>
+                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
+                      • ANTI-AGING INGREDIENTS
+                    </p>
+                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
+                      • SMOOTHS WRINKLES AND FADES AGE SPOTS
+                    </p>
+                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
+                      • WEIGHTLESS FORMULA
+                    </p>
+                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
+                      • BOOSTS COLLAGEN PRODUCTION
+                    </p>
+                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
                       • BROAD-SPECTRUM PROTECTION
                     </p>
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • REDUCES DARK SPOTS
+                      • WATER AND SWEAT RESISTANT
                     </p>
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • ANTI-AGING FORMULA
+                      • NON-GREASY, WON’T CLOG PORES
                     </p>
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • SMOOTHS LINES AND WRINKLES
+                      • SUPPORTS MOISTURE BARRIER
                     </p>
-                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • WATER-RESISTANT
-                    </p>
-                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • NON-GREASY & LIGHTWEIGHT
-                    </p>
-                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • SAFE FOR ALL SKIN TYPES
-                    </p>
-                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • NATURAL INGREDIENTS
-                    </p>
-                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • REEF-SAFE FORMULA
+                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
+                      • BLOCKS BLUE LIGHT
                     </p>
                   </div>
                 </div>
@@ -100,31 +103,34 @@ export function ContentSections() {
                   </div>
                   <div className="text-left">
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • ANTIOXIDANT AND ZINC ENRICHED
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[17.86px] font-normal leading-[1.4em] md:leading-[1.61em] mb-0.5 md:mb-1">
+                      • ANTI-AGING INGREDIENTS
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • SMOOTHS WRINKLES AND FADES AGE SPOTS
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • WEIGHTLESS FORMULA
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • BOOSTS COLLAGEN PRODUCTION
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
                       • BROAD-SPECTRUM PROTECTION
                     </p>
-                    <p className="text-[10px] md:text-sm lg:text-[17.86px] font-normal leading-[1.4em] md:leading-[1.61em] mb-0.5 md:mb-1">
-                      • REDUCES DARK SPOTS
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • WATER AND SWEAT RESISTANT
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • ANTI-AGING FORMULA
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • SMOOTHS LINES AND WRINKLES
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • WATER-RESISTANT
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • NON-GREASY & LIGHTWEIGHT
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • SAFE FOR ALL SKIN TYPES
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • NATURAL INGREDIENTS
+                      • NON-GREASY, WON’T CLOG PORES
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[17.86px] font-normal leading-[1.4em] md:leading-[1.61em] mb-0.5 md:mb-1">
-                      • REEF-SAFE FORMULA
+                      • SUPPORTS MOISTURE BARRIER
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[17.86px] font-normal leading-[1.4em] md:leading-[1.61em] mb-0.5 md:mb-1">
+                      • BLOCKS BLUE LIGHT
                     </p>
                   </div>
                   </div>
@@ -183,31 +189,34 @@ export function ContentSections() {
                 <div className="flex-1 ml-2">
                   <div className="text-left">
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • UVA/UVB PROTECTION
+                      • ANTIOXIDANT ENRICHED
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • ANTI-AGING PEPTIDES
+                      • ANTI-AGING INGREDIENTS
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • HYDRATES AND NOURISHES
+                      • FADES AGE SPOTS
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • LIGHTWEIGHT SPRAY FORMULA
+                      • WEIGHTLESS, SUPER-FINE MIST
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • REFRESHING SCENT
+                      • PREVENTS COLLAGEN BREAKDOWN
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • WATER-RESISTANT
+                      • BROAD-SPECTRUM PROTECTION
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • SAFE FOR SENSITIVE SKIN
+                      • WATER AND SWEAT RESISTANT
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • FADES DARK SPOTS
+                      • NON-GREASY, WON’T CLOG PORES
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • VERSATILE USE
+                      • SUPPORTS MOISTURE BARRIER
+                    </p>
+                    <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
+                      • BLOCKS BLUE LIGHT
                     </p>
                   </div>
                 </div>
@@ -245,31 +254,34 @@ export function ContentSections() {
                   </div>
                   <div className="text-left">
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • UVA/UVB PROTECTION
+                      • ANTIOXIDANT ENRICHED
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • ANTI-AGING PEPTIDES
+                      • ANTI-AGING INGREDIENTS
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • HYDRATES AND NOURISHES
+                      • FADES AGE SPOTS
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • LIGHTWEIGHT SPRAY FORMULA
+                      • WEIGHTLESS, SUPER-FINE MIST
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[17.72px] font-normal text-white leading-[1.4em] md:leading-[1.63em] mb-0.5 md:mb-1">
-                      • REFRESHING SCENT
+                      • PREVENTS COLLAGEN BREAKDOWN
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • WATER-RESISTANT
+                      • BROAD-SPECTRUM PROTECTION
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • SAFE FOR SENSITIVE SKIN
+                      • WATER AND SWEAT RESISTANT
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • FADES DARK SPOTS
+                      • NON-GREASY, WON’T CLOG PORES
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[17.86px] font-normal text-white leading-[1.4em] md:leading-[1.61em] mb-0.5 md:mb-1">
-                      • VERSATILE USE
+                      • SUPPORTS MOISTURE BARRIER
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[17.86px] font-normal text-white leading-[1.4em] md:leading-[1.61em] mb-0.5 md:mb-1">
+                      • BLOCKS BLUE LIGHT
                     </p>
                   </div>
                   </div>
@@ -314,28 +326,28 @@ export function ContentSections() {
                 <div className="flex-1 ml-2">
                   <div className="text-left">
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • HYDRATING SERUM
-                    </p>
-                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
                       • POST-SUN RECOVERY
                     </p>
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • CALMS AND SOOTHES
+                      • ANTIOXIDANT INFUSED
                     </p>
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • ANTI-AGING INGREDIENTS
-                    </p>
-                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • ANTIOXIDANT-INFUSED
+                      • CALMS AND SOOTHES IRRITATION
                     </p>
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
                       • RESTORES MOISTURE
                     </p>
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • ALOE + ALGIN ENRICHED
+                      • ALOE AND ALGIN ENRICHED
                     </p>
                     <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
-                      • IMMEDIATE RELIEF
+                      • PROVIDES IMMEDIATE RELIEF
+                    </p>
+                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
+                      • ANTI-AGING INGREDIENTS
+                    </p>
+                    <p className="text-[10px] font-normal leading-[1.4em] mb-0.5">
+                      • IDEAL FOR DAILY USE
                     </p>
                   </div>
                 </div>
@@ -373,28 +385,28 @@ export function ContentSections() {
                   </div>
                   <div className="text-left">
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • HYDRATING SERUM
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[17.86px] font-normal leading-[1.4em] md:leading-[1.61em] mb-0.5 md:mb-1">
                       • POST-SUN RECOVERY
                     </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • CALMS AND SOOTHES
+                    <p className="text-[10px] md:text-sm lg:text-[17.86px] font-normal leading-[1.4em] md:leading-[1.61em] mb-0.5 md:mb-1">
+                      • ANTIOXIDANT INFUSED
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • ANTI-AGING INGREDIENTS
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • ANTIOXIDANT-INFUSED
+                      • CALMS AND SOOTHES IRRITATION
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
                       • RESTORES MOISTURE
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • ALOE + ALGIN ENRICHED
+                      • ALOE AND ALGIN ENRICHED
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • IMMEDIATE RELIEF
+                      • PROVIDES IMMEDIATE RELIEF
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • ANTI-AGING INGREDIENTS
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • IDEAL FOR DAILY USE
                     </p>
                   </div>
                   </div>
@@ -453,28 +465,28 @@ export function ContentSections() {
                 <div className="flex-1 ml-2">
                   <div className="text-left">
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • MOISTURIZER + SUNSCREEN
+                      • MOISTURIZING SUNSCREEN
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • SPF 15 PROTECTION
-                    </p>
-                    <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • BROAD-SPECTRUM DEFENSE
+                      • BROAD-SPECTRUM PROTECTION
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
                       • WATER RESISTANT
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
+                      • ANTIOXIDANT ENRICHED
+                    </p>
+                    <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
+                      • LIGHTWEIGHT AND NON-GREASY
+                    </p>
+                    <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
                       • SOOTHES IRRITATION
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • ANTIOXIDANTS + VITAMINS
+                      • BEESWAX AND SHEA BUTTER
                     </p>
                     <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • BEESWAX + SHEA BUTTER
-                    </p>
-                    <p className="text-[10px] font-normal text-white leading-[1.4em] mb-0.5">
-                      • COCONUT + SUNFLOWER OIL
+                      • COCONUT AND SUNFLOWER OIL
                     </p>
                   </div>
                 </div>
@@ -512,28 +524,28 @@ export function ContentSections() {
                   </div>
                   <div className="text-left">
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • MOISTURIZER + SUNSCREEN
+                      • MOISTURIZING SUNSCREEN
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • SPF 15 PROTECTION
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • BROAD-SPECTRUM DEFENSE
+                      • BROAD-SPECTRUM PROTECTION
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
                       • WATER RESISTANT
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • ANTIOXIDANT ENRICHED
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • LIGHTWEIGHT AND NON-GREASY
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
                       • SOOTHES IRRITATION
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • ANTIOXIDANTS + VITAMINS
+                      • BEESWAX AND SHEA BUTTER
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • BEESWAX + SHEA BUTTER
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-white leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • COCONUT + SUNFLOWER OIL
+                      • COCONUT AND SUNFLOWER OIL
                     </p>
                   </div>
                   </div>
@@ -578,31 +590,31 @@ export function ContentSections() {
                 <div className="flex-1 ml-2">
                   <div className="text-left">
                     <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
+                      • FACE FIRMING CREAM
+                    </p>
+                    <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
                       • ADVANCED PEPTIDE FORMULA
                     </p>
                     <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
                       • BOOSTS COLLAGEN PRODUCTION
                     </p>
                     <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
+                      • ANTI-AGING ANTIOXIDANT ENRICHED
+                    </p>
+                    <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
                       • SMOOTHS LINES AND WRINKLES
                     </p>
                     <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
-                      • ENHANCES SKIN ELASTICITY
+                      • IMPROVES SKIN ELASTICITY
                     </p>
                     <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
-                      • ANTI-AGING ANTIOXIDANTS
-                    </p>
-                    <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
-                      • RETAINS AND RESTORES MOISTURE
-                    </p>
-                    <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
-                      • HYDRATES FOR HEALTHIER SKIN
+                      • HYDRATES AND MOISTURIZES
                     </p>
                     <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
                       • PROTECTS AGAINST ENVIRONMENTAL STRESSORS
                     </p>
                     <p className="text-[10px] font-normal text-[#1B1A1B] leading-[1.4em] mb-0.5">
-                      • SUITS ADVENTURE AND DAILY USE
+                      • IDEAL FOR DAILY USE
                     </p>
                   </div>
                 </div>
@@ -640,31 +652,31 @@ export function ContentSections() {
                   </div>
                   <div className="text-left">
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • FACE FIRMING CREAM
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
                       • ADVANCED PEPTIDE FORMULA
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
                       • BOOSTS COLLAGEN PRODUCTION
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
+                      • ANTI-AGING ANTIOXIDANT ENRICHED
+                    </p>
+                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
                       • SMOOTHS LINES AND WRINKLES
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • ENHANCES SKIN ELASTICITY
+                      • IMPROVES SKIN ELASTICITY
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • ANTI-AGING ANTIOXIDANTS
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • RETAINS AND RESTORES MOISTURE
-                    </p>
-                    <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • HYDRATES FOR HEALTHIER SKIN
+                      • HYDRATES AND MOISTURIZES
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
                       • PROTECTS AGAINST ENVIRONMENTAL STRESSORS
                     </p>
                     <p className="text-[10px] md:text-sm lg:text-[18px] font-normal text-[#1B1A1B] leading-[1.4em] md:leading-[1.6em] mb-0.5 md:mb-1">
-                      • SUITS ADVENTURE AND DAILY USE
+                      • IDEAL FOR DAILY USE
                     </p>
                   </div>
                   </div>

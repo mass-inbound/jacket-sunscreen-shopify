@@ -208,6 +208,7 @@ export const contentSectionsData: ContentSectionData[] = [
       textColorClass: 'text-[#1B1A1B]',
     },
   },
+  //test
   {
     id: 'spf-40-tinted-moisturizer',
     bgColorClass: 'bg-[#8d8d8d]',

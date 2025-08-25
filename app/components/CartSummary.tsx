@@ -3,7 +3,6 @@ import type {CartLayout} from '~/components/CartMain';
 import {CartForm, Money, type OptimisticCart} from '@shopify/hydrogen';
 import {useRef} from 'react';
 import { FetcherWithComponents } from 'react-router';
-import { Link } from 'react-router';
 import { useAside } from './Aside';
 
 type CartSummaryProps = {
@@ -72,8 +71,7 @@ function ViewCartButton({layout}: {layout: CartLayout}) {
   const {close} = useAside();
   
   return (
-    <Link
-      to="/cart"
+    <button
       onClick={() => {
         if (layout === 'aside') {
           close();
@@ -81,8 +79,8 @@ function ViewCartButton({layout}: {layout: CartLayout}) {
       }}
       className="w-full bg-white text-[#FBAC18] font-bold py-3 px-4 rounded-md border border-[#FBAC18] hover:bg-[#FBAC18] hover:text-white transition-colors text-center block"
     >
-      View Cart
-    </Link>
+      Continue Shopping
+    </button>
   );
 }
 

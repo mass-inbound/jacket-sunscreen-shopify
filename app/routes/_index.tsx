@@ -119,8 +119,6 @@ export default function Homepage() {
       {/* Hero Section */}
       <Hero />
       
-      {/* PGA Partner Section */}
-      <PGAPartner />
       
       {/* Featured Products Section */}
       <FeaturedProducts 
@@ -130,6 +128,10 @@ export default function Homepage() {
       
       {/* Info Tabs Section */}
       <InfoTabsSection />
+
+      {/* PGA Partner Section */}
+      <PGAPartner />
+      
       
       {/* Content Sections */}
       <ContentSections />

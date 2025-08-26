@@ -52,7 +52,7 @@ export const contentSectionsData: ContentSectionData[] = [
       {text: '• NON-GREASY & LIGHTWEIGHT'},
       {text: '• SAFE FOR ALL SKIN TYPES'},
       {text: '• NATURAL INGREDIENTS'},
-      {text: '• REEF-SAFE FORMULA'},
+      {text: '• HAWAII ACT 104 COMPLIANT'},
     ],
     button: {
       label: 'LEARN MORE',

@@ -67,7 +67,7 @@ export const contentSectionsData: ContentSectionData[] = [
     imageSide: 'left',
     sideImageSrc: '/assets/contentImage2.png',
     sideImageAlt: 'JACKET Sunscreen',
-    productImageSrc: '/assets/contentProduct2.png',
+    productImageSrc: '/assets/spray-contentsections.jpg',
     productImageAlt: 'JACKET Sunscreen',
     titlePrimary: 'JACKET',
     titleSecondary: 'SPRAY SUNSCREEN',

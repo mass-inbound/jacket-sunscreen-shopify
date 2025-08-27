@@ -1,5 +1,11 @@
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import { Await, useLoaderData, Link, type MetaFunction, useRouteLoaderData } from 'react-router';
+import {
+  Await,
+  useLoaderData,
+  Link,
+  type MetaFunction,
+  useRouteLoaderData,
+} from 'react-router';
 import {Suspense} from 'react';
 import {Image, Money} from '@shopify/hydrogen';
 import type {
@@ -19,11 +25,11 @@ import {
   CookiePreferencesModal,
   ContentSections,
   ImageGallery,
-  OverlaySection
+  OverlaySection,
 } from '~/components/homepage';
-import { PGAPartner } from '~/components/homepage/PGAPartner';
-import type { RootLoader } from '~/root';
-import { useFirstVisit } from '~/hooks/useFirstVisit';
+import {PGAPartner} from '~/components/homepage/PGAPartner';
+import type {RootLoader} from '~/root';
+import {useFirstVisit} from '~/hooks/useFirstVisit';
 
 export const meta: MetaFunction = () => {
   return [{title: 'Jacket Sunscreen | Premium Sun Protection'}];
@@ -52,7 +58,8 @@ async function loadCriticalData({context}: LoaderFunctionArgs) {
 
   return {
     featuredCollection: collections.nodes[0],
-    featuredProducts: featuredProductsCollection.collection?.products.nodes || [],
+    featuredProducts:
+      featuredProductsCollection.collection?.products.nodes || [],
   };
 }
 
@@ -97,50 +104,46 @@ export default function Homepage() {
     {
       id: 'all',
       label: 'All Products',
-      content: <RecommendedProducts products={data.recommendedProducts} />
+      content: <RecommendedProducts products={data.recommendedProducts} />,
     },
     {
       id: 'sunscreen',
       label: 'Sunscreen',
-      content: <div className="text-center py-8">Sunscreen products coming soon...</div>
+      content: (
+        <div className="text-center py-8">
+          Sunscreen products coming soon...
+        </div>
+      ),
     },
     {
       id: 'skincare',
       label: 'Skincare',
-      content: <div className="text-center py-8">Skincare products coming soon...</div>
-    }
+      content: (
+        <div className="text-center py-8">Skincare products coming soon...</div>
+      ),
+    },
   ];
 
   return (
     <div className="homepage">
-     
-     
-      
       {/* Hero Section */}
       <Hero />
-      
-      
+
       {/* Featured Products Section */}
-      <FeaturedProducts 
-       
-        products={data.featuredProducts}
-      />
-      
+      <FeaturedProducts products={data.featuredProducts} />
+
       {/* Info Tabs Section */}
       <InfoTabsSection />
 
-      {/* PGA Partner Section */}
-      <PGAPartner />
-      
-      
       {/* Content Sections */}
       <ContentSections />
-      
+
+      {/* PGA Partner Section */}
+      <PGAPartner />
+
       {/* Image Gallery */}
       <ImageGallery />
-      
-   
-      
+
       {/* CTA Section */}
       <CTASection />
 
@@ -153,13 +156,10 @@ export default function Homepage() {
       </button>
 
       {/* Sale Popup */}
-      <SalePopup 
-        isVisible={showPopup}
-        onClose={closePopup}
-      />
+      <SalePopup isVisible={showPopup} onClose={closePopup} />
 
       {/* Region Bar */}
-      <RegionBar 
+      <RegionBar
         isVisible={showRegionBar}
         onClose={closeRegionBar}
         onAccept={acceptCookies}
@@ -185,15 +185,25 @@ function RecommendedProducts({
 }) {
   return (
     <div className="recommended-products">
-      <Suspense fallback={<div className="text-center py-4 md:py-6 lg:py-8">Loading products...</div>}>
+      <Suspense
+        fallback={
+          <div className="text-center py-4 md:py-6 lg:py-8">
+            Loading products...
+          </div>
+        }
+      >
         <Await resolve={products}>
           {(response) => (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 lg:gap-8 px-4 md:px-6 lg:px-8">
-              {response
-                ? response.products.nodes.map((product) => (
-                    <ProductItem key={product.id} product={product} />
-                  ))
-                : <div className="col-span-full text-center py-4 md:py-6 lg:py-8 text-sm md:text-base">No products available</div>}
+              {response ? (
+                response.products.nodes.map((product) => (
+                  <ProductItem key={product.id} product={product} />
+                ))
+              ) : (
+                <div className="col-span-full text-center py-4 md:py-6 lg:py-8 text-sm md:text-base">
+                  No products available
+                </div>
+              )}
             </div>
           )}
         </Await>

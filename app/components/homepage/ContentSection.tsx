@@ -1,17 +1,20 @@
 import React from 'react';
-import type { ContentSectionData } from './ContentSections.data';
+import type {ContentSectionData} from './ContentSections.data';
 
 interface Props {
   section: ContentSectionData;
 }
 
-export function ContentSection({ section }: Props) {
+export function ContentSection({section}: Props) {
   const isImageLeft = section.imageSide === 'left';
   const sideImageHeights = 'h-[220px] md:h-[440px] lg:h-[560px] xl:h-[600px]';
-  const contentMinHeights = 'min-h-[220px] md:min-h-[440px] lg:min-h-[560px] xl:min-h-[600px]';
+  const contentMinHeights =
+    'min-h-[220px] md:min-h-[440px] lg:min-h-[560px] xl:min-h-[600px]';
 
   return (
-    <div className={`flex rounded-none flex-col lg:flex-row ${section.bgColorClass} mb-4 md:mb-8 rounded-lg lg:rounded-none`}>
+    <div
+      className={`flex rounded-none flex-col lg:flex-row ${section.bgColorClass} mb-4 md:mb-8 rounded-lg lg:rounded-none`}
+    >
       {isImageLeft && (
         <div className={`w-full lg:w-1/2 ${sideImageHeights} order-first`}>
           <img
@@ -26,16 +29,20 @@ export function ContentSection({ section }: Props) {
         <div className="text-white flex flex-col lg:flex-row lg:gap-12 px-4 py-3 md:px-8 md:py-6 xl:px-16 xl:py-10 h-full">
           {/* Mobile: Title at top */}
           <div className="flex flex-row lg:hidden items-center justify-center gap-2 mb-4">
-            <span className={`text-sm font-bold ${section.titlePrimaryColorClass}`}>
+            <span
+              className={`text-sm font-bold ${section.titlePrimaryColorClass}`}
+            >
               {section.titlePrimary}
             </span>
-            <span className={`text-xs font-bold ${section.titleSecondaryColorClass}`}>
+            <span
+              className={`text-xs font-bold ${section.titleSecondaryColorClass}`}
+            >
               {section.titleSecondary}
             </span>
           </div>
 
           {/* Mobile: Image and description side by side */}
-          <div className="flex flex-row lg:hidden justify-between gap-2 mb-4">
+          <div className="flex flex-row lg:hidden justify-between gap-2 mb-4 mx-auto">
             <div className="flex justify-center">
               <img
                 src={section.productImageSrc}
@@ -46,7 +53,10 @@ export function ContentSection({ section }: Props) {
             <div className="flex-1 ml-2">
               <div className="text-left">
                 {section.bullets.map((b, idx) => (
-                  <p key={idx} className={`text-[10px] font-normal leading-[1.4em] mb-0.5 ${b.color ?? ''}`}>
+                  <p
+                    key={idx}
+                    className={`text-[10px] font-normal leading-[1.4em] mb-0.5 ${b.color ?? ''}`}
+                  >
                     {b.text}
                   </p>
                 ))}
@@ -71,16 +81,20 @@ export function ContentSection({ section }: Props) {
             <img
               src={section.productImageSrc}
               alt={section.productImageAlt}
-              className="object-contain w-auto max-w-full max-h-[200px] md:max-h-[260px] lg:max-h-[320px] xl:max-h-[360px]"
+              className="object-cover w-auto max-w-full max-h-[200px] md:max-h-[260px] lg:max-h-[320px] xl:max-h-[360px] pt-4"
             />
           </div>
           <div className="hidden lg:flex flex-1 flex-col justify-between lg:ml-8">
             <div>
               <div className="flex flex-col md:flex-row items-start mb-2 md:mb-4 lg:mb-6 text-left">
-                <span className={`text-sm md:text-xl lg:text-2xl xl:text-[27px] font-bold ${section.titlePrimaryColorClass} mr-0 lg:mr-[15px]`}>
+                <span
+                  className={`text-sm md:text-xl lg:text-2xl xl:text-[27px] font-bold ${section.titlePrimaryColorClass} mr-0 lg:mr-[10px]`}
+                >
                   {section.titlePrimary}
                 </span>
-                <span className={`text-xs md:text-base lg:text-lg xl:text-[18px] font-bold ${section.titleSecondaryColorClass}`}>
+                <span
+                  className={`text-xs md:text-base lg:text-lg xl:text-[18px] font-bold ${section.titleSecondaryColorClass}`}
+                >
                   {section.titleSecondary}
                 </span>
               </div>
@@ -110,7 +124,9 @@ export function ContentSection({ section }: Props) {
       </div>
 
       {!isImageLeft && (
-        <div className={`w-full lg:w-1/2 ${sideImageHeights} order-last lg:order-last`}>
+        <div
+          className={`w-full lg:w-1/2 ${sideImageHeights} order-last lg:order-last`}
+        >
           <img
             src={section.sideImageSrc}
             alt={section.sideImageAlt}
@@ -123,5 +139,3 @@ export function ContentSection({ section }: Props) {
 }
 
 export default ContentSection;
-
-

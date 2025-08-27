@@ -94,7 +94,7 @@ export default function Contact() {
             </div>
 
             {/* Right: Product Images - Hidden on mobile */}
-            <div className="hidden lg:block lg:w-1/3 relative">
+            {/* <div className="hidden lg:block lg:w-1/3 relative">
                 <img
                   src="/assets/contact1.png"
                   alt="Jacket Product 1"
@@ -111,7 +111,7 @@ export default function Contact() {
                   alt="Jacket Product 2"
                 className="absolute -top-[48px] -right-16"
                 />
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

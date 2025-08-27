@@ -20,7 +20,7 @@ export default function About() {
   return (
     <div className="bg-white">
         {/*banner*/}
-        <div className="relative">
+        {/* <div className="relative">
         <img
                 src="/assets/about1.png"
                 alt="JACKET Sunscreen"
@@ -39,7 +39,7 @@ export default function About() {
             </h4>
           </div>
         </div>
-        </div>
+        </div> */}
         {/* content 1 */}
       <div className="max-w-7xl mx-auto px-4 md:px-6 lg:px-8 py-8 md:py-12 lg:py-16 xl:py-24">
         <div className="flex flex-col md:flex-row gap-8 md:gap-10 lg:gap-12">

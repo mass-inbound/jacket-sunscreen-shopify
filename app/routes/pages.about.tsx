@@ -115,7 +115,7 @@ export default function About() {
              <div className="space-y-4 md:space-y-6">
                {/* Heading */}
                <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-black leading-tight">
-                 FOR THE DOCTOR BEHIND<br className="hidden md:block" />
+                 FOR THE DOCTOR BEHIND <br className="hidden md:block" />
                  JACKET, SUNSCREEN IS<br className="hidden md:block" />
                  PERSONAL
                </h2>

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 
 export function ImageGallery() {
   const [translateX, setTranslateX] = useState(0);
@@ -6,9 +6,12 @@ export function ImageGallery() {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const images = [
-    '/assets/carousel1.jpg',
-    '/assets/carousel2.jpg',
-    '/assets/carousel3.jpg',
+    '/assets/Family Hiking BW.jpg',
+    '/assets/Female Runner_Tired BW.jpg',
+    '/assets/Female Tennis_Black BW.jpg',
+    '/assets/Girl With Surfboard BW.jpg',
+    '/assets/Male Runner On Beach BW.jpg',
+    '/assets/Male Snowboarder BW.jpg',
   ];
 
   // Create multiple copies of images for seamless infinite scroll
@@ -17,7 +20,7 @@ export function ImageGallery() {
 
   useEffect(() => {
     const animate = () => {
-      setTranslateX(prev => {
+      setTranslateX((prev) => {
         const newValue = prev - scrollSpeed;
         // Reset position when we've scrolled through one complete set of images
         // Each image is 60vw wide, so reset when we've moved beyond the original set
@@ -40,7 +43,7 @@ export function ImageGallery() {
     <section className="w-full bg-white py-2 md:py-4 lg:py-6 xl:py-8 relative">
       <div className="w-full relative overflow-hidden">
         {/* Scrolling Background Images */}
-        <div 
+        <div
           ref={containerRef}
           className="flex"
           style={{
@@ -49,10 +52,10 @@ export function ImageGallery() {
           }}
         >
           {extendedImages.map((image, index) => (
-            <div 
+            <div
               key={`${image}-${index}`}
               className="relative flex-shrink-0"
-              style={{ width: '60vw' }}
+              style={{width: '60vw'}}
             >
               <div className="relative w-full h-[200px] sm:h-[250px] md:h-[350px] lg:h-[500px] xl:h-[629px]">
                 <img
@@ -78,4 +81,4 @@ export function ImageGallery() {
       </div>
     </section>
   );
-} 
+}

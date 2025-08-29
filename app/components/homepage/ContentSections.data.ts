@@ -252,7 +252,7 @@ export const contentSectionsData: ContentSectionData[] = [
     imageSide: 'left',
     sideImageSrc: '/assets/JACKET Refine Homepage Image.png',
     sideImageAlt: 'Refine Face Wash',
-    productImageSrc: '/assets/refine-facewash-transparent.png',
+    productImageSrc: '/assets/refine-size-fixed.png',
     productImageAlt: 'Refine Face Wash',
     titlePrimary: 'REFINE',
     titleSecondary: 'FACE WASH',

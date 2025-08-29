@@ -160,7 +160,7 @@ export const contentSectionsData: ContentSectionData[] = [
     imageSide: 'right',
     sideImageSrc: '/assets/TINTED MOISTURIZER HOMEPAGE IMAGE BW.jpg',
     sideImageAlt: 'SPF 40+ Tinted Moisturizer',
-    productImageSrc: '/assets/contentProduct7.png',
+    productImageSrc: '/assets/Tinted-size-fixed.png',
     productImageAlt: 'SPF 40+ Tinted Moisturizer',
     titlePrimary: 'SPF 40+ TINTED',
     titleSecondary: 'MOISTURIZER',

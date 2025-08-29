@@ -67,7 +67,7 @@ export const contentSectionsData: ContentSectionData[] = [
     imageSide: 'left',
     sideImageSrc: '/assets/SPRAY SUNSCREEN HOMEPAGE IMAGE BW.jpg',
     sideImageAlt: 'JACKET Sunscreen',
-    productImageSrc: '/assets/contentProduct2.png.',
+    productImageSrc: '/assets/contentProduct2.png',
     productImageAlt: 'JACKET Sunscreen',
     titlePrimary: 'SPF 30+',
     titleSecondary: 'SPRAY SUNSCREEN',

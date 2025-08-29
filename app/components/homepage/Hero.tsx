@@ -41,15 +41,14 @@ export function Hero({
         {/* Mobile text elements over video background */}
         <div className="absolute top-0 left-0 right-0 z-10">
           {/* "IT'S ALWAYS" */}
-        
           <div className="absolute top-[43px] left-[19px] w-[280px]">
-            <h1 className="text-[26px] leading-[1.1] font-[400] text-[#FBAC18] text-center">IT&apos;S ALWAYS</h1>
-            <img
-                src="/assets/jacket.png"
-                alt="Main Sunscreen Product"
-                className="object-contain"
-              />
-            <h1 className="text-[29px] leading-[1.1] font-[400] text-[#FBAC18] text-center">WEATHER</h1>
+            <h1 className="text-[26px] leading-[1.1] font-[400] text-[#FBAC18] text-center">THE
+            </h1>
+            <h1 className="text-6xl lg:text-[86px] leading-[1.1] font-[800] text-[#FBAC18] mb-2 lg:mb-[9px]">
+                  GOLD
+            </h1>
+            <h1 className="text-[29px] leading-[1.1] font-[400] text-[#FBAC18] text-center">STANDARD
+            </h1>
           </div>
 
          

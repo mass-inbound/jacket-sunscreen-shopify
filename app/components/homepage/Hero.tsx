@@ -42,12 +42,12 @@ export function Hero({
         <div className="absolute top-0 left-0 right-0 z-10">
           {/* "IT'S ALWAYS" */}
           <div className="absolute top-[43px] left-[19px] w-[280px]">
-            <h1 className="text-[26px] leading-[1.1] font-[400] text-[#FBAC18] text-center">THE
+            <h1 className="text-[26px] leading-[1.1] font-[400] text-white text-center">THE
             </h1>
             <h1 className="text-6xl lg:text-[86px] leading-[1.1] font-[800] text-[#FBAC18] mb-2 lg:mb-[9px]">
                   GOLD
             </h1>
-            <h1 className="text-[29px] leading-[1.1] font-[400] text-[#FBAC18] text-center">STANDARD
+            <h1 className="text-[29px] leading-[1.1] font-[400] text-white text-center">STANDARD
             </h1>
           </div>
 

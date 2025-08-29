@@ -41,17 +41,7 @@ export function Hero({
         {/* Mobile text elements over video background */}
         <div className="absolute top-0 left-0 right-0 z-10">
           {/* "IT'S ALWAYS" */}
-          <div className="flex flex-col items-center mb-4">
-           <h1 className="text-[30px] leading-[1.1] font-[500] text-white mb-[6px]">
-           THE
-           </h1>
-           <h1 className="text-[54px] leading-[1.1] font-[800] text-[#FBAC18] mb-[6px]">
-           GOLD
-           </h1>
-           <h1 className="text-[30px] leading-[1.1] font-[500] text-white">
-           STANDARD
-           </h1>
-          </div>
+        
           <div className="absolute top-[43px] left-[19px] w-[280px]">
             <h1 className="text-[26px] leading-[1.1] font-[400] text-[#FBAC18] text-center">IT&apos;S ALWAYS</h1>
             <img

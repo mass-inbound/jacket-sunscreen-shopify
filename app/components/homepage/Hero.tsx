@@ -58,7 +58,10 @@ export function Hero({
 
           {/* "THE NEW FACE OF SUNSCREEN" */}
           <div className="absolute top-[184.4px] left-[5px] w-[310px] pb-[10px]">
-            <h6 className="text-[17.75px] leading-[1.15] font-[700] text-white text-center">THE NEW FACE OF SUNSCREEN</h6>
+            <h6 className="text-[17.75px] leading-[1.15] font-[700] text-white text-center">
+              ULTIMATE PERFORMANCE,<br />
+              ANTI-AGING SUNSCREEN<br />
+              THAT PROTECTS + REPAIRS</h6>
           </div>
         </div>
 

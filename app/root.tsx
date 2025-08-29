@@ -13,6 +13,7 @@ import {
 } from 'react-router';
 import {Suspense} from 'react';
 import favicon from '~/assets/favicon.svg';
+import JacketFavicon from '~/assets/Jacket-Favicon.jpg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
 import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
@@ -59,7 +60,7 @@ export function links() {
       rel: 'preconnect',
       href: 'https://shop.app',
     },
-    {rel: 'icon', type: 'image/svg+xml', href: favicon},
+    {rel: 'icon', type: 'image/jpeg', href: JacketFavicon},
   ];
 }
 
@@ -203,8 +204,8 @@ export function ErrorBoundary() {
         </fieldset>
       )}
       {/* Add a button to reload the page */}
-      <button 
-        onClick={() => window.location.reload()} 
+      <button
+        onClick={() => window.location.reload()}
         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
       >
         Reload Page

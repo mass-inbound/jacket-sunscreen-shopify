@@ -153,7 +153,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={appStyles}></link>
         <Meta />
         <Links />
-        <!-- Meta Pixel Code -->
+      {/* Meta Pixel Code */}
         <script>
         !function(f,b,e,v,n,t,s)
        {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -169,7 +169,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
        <noscript><img height="1" width="1" style="display:none"
        src="https://www.facebook.com/tr?id=612071937741103&ev=PageView&noscript=1"
        /></noscript>
-      <!-- End Meta Pixel Code -->
+      {/* End Meta Pixel Code */}
       </head>
       <body>
         {data ? (

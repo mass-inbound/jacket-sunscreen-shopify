@@ -17,6 +17,7 @@ import {
   Hero,
   FeaturedProducts,
   InfoTabsSection,
+  ComparisionChart,
   TabsSection,
   CTASection,
   HomePageLayout,
@@ -134,6 +135,9 @@ export default function Homepage() {
 
       {/* Info Tabs Section */}
       <InfoTabsSection />
+
+      {/* Comparison Chart */}
+      <ComparisionChart />
 
       {/* Content Sections */}
       <ContentSections />

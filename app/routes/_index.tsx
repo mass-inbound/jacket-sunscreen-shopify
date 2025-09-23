@@ -137,7 +137,7 @@ export default function Homepage() {
       <InfoTabsSection />
 
       {/* Comparison Chart */}
-      <ComparisionChart />
+      {/* <ComparisionChart />*/}
 
       {/* Content Sections */}
       <ContentSections />

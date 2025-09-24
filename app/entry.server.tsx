@@ -26,6 +26,7 @@ export default async function handleRequest(
       "https://*.shopifycdn.com",
       "https://judge.me",
       "https://*.judge.me",
+      "https://connect.facebook.net",
     ],
     styleSrc: [
       "'self'",

@@ -12,4 +12,4 @@ export { CookiePreferencesModal } from './CookiePreferencesModal';
 export { ContentSections } from './ContentSections';
 export { ImageGallery } from './ImageGallery';
 export { OverlaySection } from './OverlaySection'; 
-export { ComparisionChart } from './ComparisionChart';
+export { ComparisonChart } from './ComparisionChart';

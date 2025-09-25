@@ -117,6 +117,9 @@ export function ComparisonChart() {
             </span>
             <span className="ml-2">: The Gold Standard</span>
           </h2>
+          <p className="mt-3 text-sm font-normal">
+        Compare our features and see why we set the standard in performance and quality.
+      </p>
         </div>
 
         <div className="relative">

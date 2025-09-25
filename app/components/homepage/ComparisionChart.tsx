@@ -60,7 +60,7 @@ function GreyCrossIcon() {
 }
 
 const initialRows: FeatureRow[] = [
-  { label: "SPF 50 Defense", rightText: "No SPF 50 Defense", rightHas: true },
+  { label: "SPF 50 Defense", rightText: "SPF 50 Defense", rightHas: true },
   { label: "Broad Spectrum", rightText: "Broad Spectrum", rightHas: true },
   { label: "Blocks Blue Light", rightText: "Blocks Blue Light", rightHas: false },
   { label: "Water Resistant", rightText: "Water Resistant", rightHas: true },
@@ -88,15 +88,15 @@ const moreRows: FeatureRow[] = [
   { label: "Protects Natural Moisture Barrier", rightText: "Protects Natural Moisture Barrier", rightHas: true },
   { label: "Naturally Hydrates", rightText: "Naturally Hydrates", rightHas: true },
   { label: "No White Cast or Residue", rightText: "No White Cast or Residue", rightHas: false },
-  { label: "Artificial-Fragrance Free", rightText: "Artificial-Fragrance Free", rightHas: true },
-  { label: "Mild, Natural Lemongrass Scent", rightText: "Mild, Natural Lemongrass Scent", rightHas: true },
+  { label: "Artificial-Fragrance Free", rightText: "Artificial-Fragrance Free", rightHas: false },
+  { label: "Mild, Natural Lemongrass Scent", rightText: "Mild, Natural Lemongrass Scent", rightHas: false },
   { label: "Naturally Repels Insects", rightText: "Naturally Repels Insects", rightHas: false },
   { label: "Easy to Conceal Under Makeup", rightText: "Easy to Conceal Under Makeup", rightHas: true },
   { label: "Ideal for Daily Use", rightText: "Ideal for Daily Use", rightHas: true },
   { label: "Hawaii Act 104 Compliant", rightText: "Hawaii Act 104 Compliant", rightHas: true },
   { label: "PABA Free", rightText: "PABA Free", rightHas: true },
   { label: "Paraben Free", rightText: "Paraben Free", rightHas: true },
-  { label: "Phthalate Free", rightText: "Phthalate Free", rightHas: true },
+  { label: "Phthalate Free", rightText: "Phthalate Free", rightHas: false },
   { label: "Sulfate Free", rightText: "Sulfate Free", rightHas: true },
   { label: "Animal Cruelty Free", rightText: "Animal Cruelty Free", rightHas: true },
   { label: "Small Batch Production", rightText: "Small Batch Production", rightHas: true },

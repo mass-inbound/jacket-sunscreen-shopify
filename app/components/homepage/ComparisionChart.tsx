@@ -110,7 +110,7 @@ export function ComparisonChart() {
   return (
     <section className="w-full bg-[#FFFCF7] py-8 md:py-12">
       <div className="mx-auto max-w-6xl px-4 md:px-6">
-        <div className="mb-28 text-center">
+        <div className="mb-12 text-center">
           <h2 className="text-2xl font-extrabold tracking-tight md:text-3xl">
             <span className="bg-[#FBAC18] px-2 py-1 rounded font-black text-black">
               JACKET

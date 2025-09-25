@@ -60,7 +60,7 @@ function GreyCrossIcon() {
 }
 
 const initialRows: FeatureRow[] = [
-  { label: "SPF 50 Defense", rightText: "No SPF 50 Defense", rightHas: false },
+  { label: "SPF 50 Defense", rightText: "No SPF 50 Defense", rightHas: true },
   { label: "Broad Spectrum", rightText: "Broad Spectrum", rightHas: true },
   { label: "Blocks Blue Light", rightText: "Blocks Blue Light", rightHas: false },
   { label: "Water Resistant", rightText: "Water Resistant", rightHas: true },

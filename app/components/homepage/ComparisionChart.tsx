@@ -8,54 +8,19 @@ type FeatureRow = {
 
 function GoldCheckIcon() {
   return (
-    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-[#FBAC18] text-black">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="h-3.5 w-3.5"
-      >
-        <path
-          fillRule="evenodd"
-          d="M16.707 6.293a1 1 0 0 1 0 1.414l-6.25 6.25a1 1 0 0 1-1.414 0l-3.25-3.25A1 1 0 1 1 7.207 9.543l2.543 2.543 5.543-5.543a1 1 0 0 1 1.414 0z"
-          clipRule="evenodd"
-        />
-      </svg>
-    </span>
+    <img src="/assets/table-a-tick.svg" alt="Tick" className="h-5 w-5" />
   );
 }
 
 function GreyCheckIcon() {
   return (
-    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-neutral-300 text-neutral-700">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="h-3.5 w-3.5"
-      >
-        <path
-          fillRule="evenodd"
-          d="M16.707 6.293a1 1 0 0 1 0 1.414l-6.25 6.25a1 1 0 0 1-1.414 0l-3.25-3.25A1 1 0 1 1 7.207 9.543l2.543 2.543 5.543-5.543a1 1 0 0 1 1.414 0z"
-          clipRule="evenodd"
-        />
-      </svg>
-    </span>
+    <img src="/assets/table-b-tick.svg" alt="Tick" className="h-5 w-5" />
   );
 }
 
 function GreyCrossIcon() {
   return (
-    <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-neutral-300 text-neutral-700">
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 20 20"
-        fill="currentColor"
-        className="h-3.5 w-3.5"
-      >
-        <path d="M6.225 4.811a1 1 0 0 1 1.414 0L10 7.172l2.361-2.361a1 1 0 1 1 1.414 1.414L11.414 8.586l2.361 2.361a1 1 0 0 1-1.414 1.414L10 10l-2.361 2.361a1 1 0 1 1-1.414-1.414L8.586 8.586 6.225 6.225a1 1 0 0 1 0-1.414z" />
-      </svg>
-    </span>
+    <img src="/assets/table-b-cancel.svg" alt="Cancel" className="h-5 w-5" />
   );
 }
 
@@ -143,10 +108,10 @@ export function ComparisonChart() {
               <table className="w-full border-collapse">
               <thead>
                 <tr>
-                  <th className="w-1/2 bg-[#FBAC18] px-2 pr-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-black md:text-base rounded-tl-lg">
+                  <th className="w-1/2 bg-[#FBAC18] px-2 pr-4 pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-black md:text-base rounded-tl-lg">
                     JACKET SUNSCREEN
                   </th>
-                  <th className="w-1/2 bg-black px-2 pr-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-white md:text-base rounded-tr-lg">
+                  <th className="w-1/2 bg-black px-2 pr-4 l pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-white md:text-base rounded-tr-lg">
                     OTHER SUNSCREENS
                   </th>
                 </tr>
@@ -154,15 +119,15 @@ export function ComparisonChart() {
               <tbody>
                 {rows.map((row) => (
                   <tr key={row.label} className="border-t border-[#121212]">
-                    <td className="bg-[#FFF8EB] px-2 md:px-4 py-2 md:py-3 text-[10px] md:text-[11px] font-bold">
-                      <div className="flex items-center gap-2 md:gap-3 text-neutral-900">
+                    <td className="bg-[#FFF8EB] pl-4 pr-2 md:pl-6 md:pr-4 py-2 md:py-3 text-[15px] font-bold">
+                      <div className="flex items-center gap-2 md:gap-3 text-[#000000]">
                         <GoldCheckIcon />
                         <span>{row.label}</span>
                       </div>
                     </td>
-                    <td className="bg-[#E0E0E0] px-2 md:px-4 py-2 md:py-3 text-[10px] md:text-[11px] font-bold">
+                    <td className="bg-[#E0E0E0] pl-4 pr-2 md:pl-6 md:pr-4 py-2 md:py-3 text-[15px] font-bold">
                       <div
-                        className={`flex items-center gap-2 md:gap-3 text-neutral-700 ${
+                        className={`flex items-center gap-2 md:gap-3 text-[#000000] ${
                           row.rightHas ? "opacity-100" : "opacity-60"
                         }`}
                       >

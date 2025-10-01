@@ -43,12 +43,6 @@ export const shouldRevalidate: ShouldRevalidateFunction = ({
 /**
  * The main and reset stylesheets are added in the Layout component
  * to prevent a bug in development HMR updates.
- *
- * This avoids the "failed to execute 'insertBefore' on 'Node'" error
- * that occurs after editing and navigating to another page.
- *
- * It's a temporary fix until the issue is resolved.
- * https://github.com/remix-run/remix/issues/9242
  */
 export function links() {
   return [
@@ -85,7 +79,6 @@ export async function loader(args: LoaderFunctionArgs) {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
       withPrivacyBanner: false,
-      // localize the privacy banner
       country: args.context.storefront.i18n.country,
       language: args.context.storefront.i18n.language,
     },
@@ -93,8 +86,7 @@ export async function loader(args: LoaderFunctionArgs) {
 }
 
 /**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
+ * Load data necessary for rendering content above the fold.
  */
 async function loadCriticalData({context}: LoaderFunctionArgs) {
   const {storefront} = context;
@@ -103,33 +95,28 @@ async function loadCriticalData({context}: LoaderFunctionArgs) {
     storefront.query(HEADER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
-        headerMenuHandle: 'main-menu', // Adjust to your header menu handle
+        headerMenuHandle: 'main-menu',
       },
     }),
-    // Add other queries here, so that they are loaded in parallel
   ]);
 
   return {header};
 }
 
 /**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
+ * Load data for rendering content below the fold.
  */
 function loadDeferredData({context}: LoaderFunctionArgs) {
   const {storefront, customerAccount, cart} = context;
 
-  // defer the footer query (below the fold)
   const footer = storefront
     .query(FOOTER_QUERY, {
       cache: storefront.CacheLong(),
       variables: {
-        footerMenuHandle: 'footer', // Adjust to your footer menu handle
+        footerMenuHandle: 'footer',
       },
     })
     .catch((error) => {
-      // Log query errors, but don't throw them so the page can still render
       console.error(error);
       return null;
     });
@@ -153,34 +140,14 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={appStyles}></link>
         <Meta />
         <Links />
-      {/* Meta Pixel (Facebook) */}
-        <script
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s){
-                if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)
-              }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '612071937741103');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{display: 'none'}}
-            src="https://www.facebook.com/tr?id=612071937741103&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
-        {/* /Meta Pixel */}
+
+        {/*
+          The hardcoded Meta Pixel script has been removed from here.
+          It MUST be added via the Shopify Admin under:
+          Settings > Customer events > Add custom pixel.
+          This is the correct method for headless storefronts.
+        */}
+
       </head>
       <body>
         {data ? (
@@ -219,7 +186,6 @@ export function ErrorBoundary() {
     errorMessage = error.message;
   }
 
-  // Log the error for debugging
   console.error('Root Error Boundary caught:', error);
 
   return (
@@ -231,7 +197,6 @@ export function ErrorBoundary() {
           <pre>{errorMessage}</pre>
         </fieldset>
       )}
-      {/* Add a button to reload the page */}
       <button
         onClick={() => window.location.reload()}
         className="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"

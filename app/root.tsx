@@ -141,28 +141,21 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <Meta />
         <Links />
 
-        {/*
-          The hardcoded Meta Pixel script has been removed from here.
-          It MUST be added via the Shopify Admin under:
-          Settings > Customer events > Add custom pixel.
-          This is the correct method for headless storefronts.
-        */}
-
-      </head>
-      <body>
+        {/* This is the corrected placement for the Analytics Provider */}
         {data ? (
           <Analytics.Provider
             cart={data.cart}
             shop={data.shop}
             consent={data.consent}
-          >
-            <Suspense fallback={<div>Loading...</div>}>
-              <PageLayout {...data}>{children}</PageLayout>
-            </Suspense>
-          </Analytics.Provider>
-        ) : (
-          children
-        )}
+          />
+        ) : null}
+      </head>
+      <body>
+        {/* The provider has been moved from here to the <head> */}
+        <Suspense fallback={<div>Loading...</div>}>
+          <PageLayout {...data}>{children}</PageLayout>
+        </Suspense>
+
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />
       </body>

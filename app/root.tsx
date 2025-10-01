@@ -67,18 +67,21 @@ export async function loader(args: LoaderFunctionArgs) {
 
   const {storefront, env} = args.context;
 
+  // 1. Define the 'shop' variable first.
+  const shop = getShopAnalytics({
+    storefront,
+    publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
+  });
+
+  // 2. Log the variable to the console for debugging.
+  console.log('--- SHOP ANALYTICS DATA ---', JSON.stringify(shop, null, 2));
+
+  // 3. Return all the data.
   return {
     ...deferredData,
     ...criticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
-    shop: getShopAnalytics({
-      storefront,
-      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
-    }),
-
-  // ----> ADD THIS LINE TO DEBUG <----
-  console.log('--- SHOP ANALYTICS DATA ---', JSON.stringify(shop, null, 2));
-    
+    shop: shop,
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,

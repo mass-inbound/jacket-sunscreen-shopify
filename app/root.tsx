@@ -75,6 +75,10 @@ export async function loader(args: LoaderFunctionArgs) {
       storefront,
       publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
     }),
+
+  // ----> ADD THIS LINE TO DEBUG <----
+  console.log('--- SHOP ANALYTICS DATA ---', JSON.stringify(shop, null, 2));
+    
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,

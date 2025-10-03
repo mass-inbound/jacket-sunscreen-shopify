@@ -148,6 +148,35 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <Meta />
         <Links />
 
+         {/* --- PASTE META PIXEL CODE START --- */}
+        <script
+          nonce={nonce}
+          dangerouslySetInnerHTML={{
+            __html: `
+              !function(f,b,e,v,n,t,s)
+              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+              n.queue=[];t=b.createElement(e);t.async=!0;
+              t.src=v;s=b.getElementsByTagName(e)[0];
+              s.parentNode.insertBefore(t,s)}(window, document,'script',
+              'https://connect.facebook.net/en_US/fbevents.js');
+              fbq('init', '612071937741103');
+              fbq('track', 'PageView');
+            `,
+          }}
+        />
+        <noscript>
+          <img
+            height="1"
+            width="1"
+            style={{display: 'none'}}
+            src="https://www.facebook.com/tr?id=612071937741103&ev=PageView&noscript=1"
+            alt=""
+          />
+        </noscript>
+        {/* --- PASTE META PIXEL CODE END --- */}
+
         {/* This is the corrected placement for the Analytics Provider */}
         {data ? (
           <Analytics.Provider

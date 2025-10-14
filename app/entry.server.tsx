@@ -27,6 +27,7 @@ export default async function handleRequest(
       "https://judge.me",
       "https://*.judge.me",
       "https://connect.facebook.net",
+      "https://*.googletagmanager.com", //added rc
     ],
     styleSrc: [
       "'self'",
@@ -43,6 +44,8 @@ export default async function handleRequest(
       "https://*.shopifycdn.com",
       "https://judge.me",
       "https://*.judge.me",
+      "https://*.googletagmanager.com", //added rc
+      "https://*.google-analytics.com", //added rc
     ],
     connectSrc: [
       "'self'",
@@ -58,11 +61,15 @@ export default async function handleRequest(
       "ws://localhost:*",
       "ws://127.0.0.1:*",
       "ws://*.tryhydrogen.dev:*",
+      "https://*.googletagmanager.com", //added rc
+      "https://*.google-analytics.com", //added rc
+
     ],
     frameSrc: [
       "'self'",
       "https://forms.inboundrequest.com",
       "https://www.google.com",
+      "https://*.googletagmanager.com", //added rc
     ],
     fontSrc: [
       "'self'",

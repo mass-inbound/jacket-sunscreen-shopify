@@ -1,5 +1,4 @@
-import type { CartApiQueryFragment } from 'storefrontapi.generated';
-import type { OptimisticCart } from '@shopify/hydrogen';
+import type {CartReturn, OptimisticCart} from '@shopify/hydrogen';
 
 /**
  * Get the available quantity for a product variant
@@ -26,7 +25,10 @@ export function getAvailableQuantity(variant: any): number {
 /**
  * Get the current quantity of a variant in the cart
  */
-export function getCartQuantity(cart: CartApiQueryFragment | OptimisticCart<CartApiQueryFragment> | null, variantId: string): number {
+export function getCartQuantity(
+  cart: CartReturn | OptimisticCart<CartReturn | null> | null,
+  variantId: string,
+): number {
   if (!cart?.lines?.nodes) return 0;
   
   const line = cart.lines.nodes.find(
@@ -40,7 +42,7 @@ export function getCartQuantity(cart: CartApiQueryFragment | OptimisticCart<Cart
  * Check if adding a quantity would exceed available inventory
  */
 export function canAddToCart(
-  cart: CartApiQueryFragment | OptimisticCart<CartApiQueryFragment> | null,
+  cart: CartReturn | OptimisticCart<CartReturn | null> | null,
   variantId: string,
   quantityToAdd: number,
   variant: any
@@ -55,7 +57,7 @@ export function canAddToCart(
  * Get the maximum quantity that can be added to cart
  */
 export function getMaxAddableQuantity(
-  cart: CartApiQueryFragment | OptimisticCart<CartApiQueryFragment> | null,
+  cart: CartReturn | OptimisticCart<CartReturn | null> | null,
   variantId: string,
   variant: any
 ): number {
@@ -68,7 +70,9 @@ export function getMaxAddableQuantity(
 /**
  * Get the number of unique products in the cart (not total quantity)
  */
-export function getCartItemCount(cart: CartApiQueryFragment | OptimisticCart<CartApiQueryFragment> | null): number {
+export function getCartItemCount(
+  cart: CartReturn | OptimisticCart<CartReturn | null> | null,
+): number {
   if (!cart?.lines?.nodes) return 0;
   return cart.lines.nodes.length;
 }
@@ -76,6 +80,8 @@ export function getCartItemCount(cart: CartApiQueryFragment | OptimisticCart<Car
 /**
  * Get the total quantity of all items in the cart
  */
-export function getCartTotalQuantity(cart: CartApiQueryFragment | OptimisticCart<CartApiQueryFragment> | null): number {
+export function getCartTotalQuantity(
+  cart: CartReturn | OptimisticCart<CartReturn | null> | null,
+): number {
   return cart?.totalQuantity || 0;
 } 

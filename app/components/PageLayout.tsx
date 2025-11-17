@@ -1,11 +1,8 @@
 import {Suspense, useId} from 'react';
 import React from 'react';
-import { Await, Link } from 'react-router';
-import type {
-  CartApiQueryFragment,
-  FooterQuery,
-  HeaderQuery,
-} from 'storefrontapi.generated';
+import {Await, Link} from 'react-router';
+import type {CartReturn} from '@shopify/hydrogen';
+import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import {Aside, useAside} from '~/components/Aside';
 import {CartMain} from '~/components/CartMain';
 import {Footer} from '~/components/Footer';
@@ -19,7 +16,7 @@ import {SearchResultsPredictive} from '~/components/SearchResultsPredictive';
 import {getCartItemCount} from '~/lib/inventory';
 
 interface PageLayoutProps {
-  cart: Promise<CartApiQueryFragment | null>;
+  cart: Promise<CartReturn | null>;
   footer: Promise<FooterQuery | null>;
   header: HeaderQuery;
   isLoggedIn: Promise<boolean>;
@@ -40,7 +37,11 @@ export function PageLayout({
       <Aside.Provider>
         <CartAside cart={cart} />
         <SearchAside />
-        <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} isLoggedIn={isLoggedIn} />
+        <MobileMenuAside
+          header={header}
+          publicStoreDomain={publicStoreDomain}
+          isLoggedIn={isLoggedIn}
+        />
         <AnnouncementBar cart={cart} />
         {header && (
           <Header
@@ -86,7 +87,7 @@ class ErrorBoundary extends React.Component<
         <div className="min-h-screen flex items-center justify-center">
           <div className="text-center">
             <h2 className="text-xl font-bold mb-4">Something went wrong</h2>
-            <button 
+            <button
               onClick={() => window.location.reload()}
               className="px-4 py-2 bg-[#FBAC18] text-white rounded hover:bg-[#e69b15]"
             >
@@ -134,8 +135,18 @@ function SearchAside() {
               <div className="relative">
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <svg className="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <svg
+                      className="h-5 w-5 text-gray-400"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
                     </svg>
                   </div>
                   <input
@@ -178,11 +189,25 @@ function SearchAside() {
               if (!term.current) {
                 return (
                   <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
-                    <svg className="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    <svg
+                      className="w-16 h-16 text-gray-300 mb-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                      />
                     </svg>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">Search Products</h3>
-                    <p className="text-gray-500">Start typing to find your perfect products</p>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      Search Products
+                    </h3>
+                    <p className="text-gray-500">
+                      Start typing to find your perfect products
+                    </p>
                   </div>
                 );
               }
@@ -190,14 +215,31 @@ function SearchAside() {
               if (!total) {
                 return (
                   <div className="flex flex-col items-center justify-center py-12 px-6 text-center">
-                    <svg className="w-16 h-16 text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.291-1.1-5.5-2.709" />
+                    <svg
+                      className="w-16 h-16 text-gray-300 mb-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={1.5}
+                        d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.291-1.1-5.5-2.709"
+                      />
                     </svg>
-                    <h3 className="text-lg font-medium text-gray-900 mb-2">No Products Found</h3>
+                    <h3 className="text-lg font-medium text-gray-900 mb-2">
+                      No Products Found
+                    </h3>
                     <p className="text-gray-500">
-                      No results found for <span className="font-medium">&ldquo;{term.current}&rdquo;</span>
+                      No results found for{' '}
+                      <span className="font-medium">
+                        &ldquo;{term.current}&rdquo;
+                      </span>
                     </p>
-                    <p className="text-sm text-gray-400 mt-1">Try adjusting your search terms</p>
+                    <p className="text-sm text-gray-400 mt-1">
+                      Try adjusting your search terms
+                    </p>
                   </div>
                 );
               }
@@ -208,7 +250,7 @@ function SearchAside() {
                     queries={queries}
                     queriesDatalistId={queriesDatalistId}
                   />
-                  
+
                   {products.length > 0 && (
                     <SearchResultsPredictive.Products
                       products={products}

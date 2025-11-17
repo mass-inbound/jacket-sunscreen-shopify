@@ -1,14 +1,14 @@
 import type {CartLineUpdateInput} from '@shopify/hydrogen/storefront-api-types';
 import type {CartLayout} from '~/components/CartMain';
 import {CartForm, Image, type OptimisticCartLine} from '@shopify/hydrogen';
+import type {CartReturn} from '@shopify/hydrogen';
 import {useVariantUrl} from '~/lib/variants';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 import {ProductPrice} from './ProductPrice';
 import {useAside} from './Aside';
-import type {CartApiQueryFragment} from 'storefrontapi.generated';
-import { getAvailableQuantity } from '~/lib/inventory';
+import {getAvailableQuantity} from '~/lib/inventory';
 
-type CartLine = OptimisticCartLine<CartApiQueryFragment>;
+type CartLine = OptimisticCartLine<CartReturn>;
 
 /**
  * A single line item in the cart. It displays the product image, title, price.
@@ -59,24 +59,23 @@ export function CartLineItem({
             {product.title}
           </h3>
         </Link>
-        
+
         {/* Product Variants */}
-       
-        
+
         {/* Individual Price */}
         <div className="text-sm text-gray-900 text-500">
           <ProductPrice price={line?.cost?.amountPerQuantity} />
         </div>
-        
+
         {/* Quantity Controls */}
         <CartLineQuantity line={line} />
       </div>
-      
+
       {/* Price and Actions (Right Section) */}
       <div className="price-actions">
         {/* Remove Button */}
         <CartLineRemoveButton lineIds={[id]} disabled={!!line.isOptimistic} />
-        
+
         {/* Total Price */}
         <div className="text-sm font-medium text-gray-900">
           <ProductPrice price={line?.cost?.totalAmount} />
@@ -96,7 +95,7 @@ function CartLineQuantity({line}: {line: CartLine}) {
   const {id: lineId, quantity, isOptimistic, merchandise} = line;
   const prevQuantity = Number(Math.max(0, quantity - 1).toFixed(0));
   const nextQuantity = Number((quantity + 1).toFixed(0));
-  
+
   // Get available quantity for this variant
   const availableQuantity = getAvailableQuantity(merchandise);
   const canIncrease = nextQuantity <= availableQuantity;
@@ -111,16 +110,26 @@ function CartLineQuantity({line}: {line: CartLine}) {
           value={prevQuantity}
           className="px-1 py-0.5 text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 12H4" />
+          <svg
+            className="w-2.5 h-2.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M20 12H4"
+            />
           </svg>
         </button>
       </CartLineUpdateButton>
-      
+
       <span className="px-1 py-0.5 text-xs font-medium text-gray-900 min-w-[1rem] text-center">
         {quantity}
       </span>
-      
+
       <CartLineUpdateButton lines={[{id: lineId, quantity: nextQuantity}]}>
         <button
           aria-label="Increase quantity"
@@ -129,8 +138,18 @@ function CartLineQuantity({line}: {line: CartLine}) {
           disabled={!!isOptimistic || !canIncrease}
           className="px-1 py-0.5 text-gray-600 hover:text-gray-800 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          <svg className="w-2.5 h-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+          <svg
+            className="w-2.5 h-2.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2}
+              d="M12 4v16m8-8H4"
+            />
           </svg>
         </button>
       </CartLineUpdateButton>
@@ -157,14 +176,24 @@ function CartLineRemoveButton({
       action={CartForm.ACTIONS.LinesRemove}
       inputs={{lineIds}}
     >
-      <button 
-        disabled={disabled} 
+      <button
+        disabled={disabled}
         type="submit"
         className="text-gray-700 hover:text-red-500 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
         aria-label="Remove item"
       >
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+          />
         </svg>
       </button>
     </CartForm>

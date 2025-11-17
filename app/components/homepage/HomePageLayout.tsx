@@ -1,19 +1,15 @@
-import React from 'react';
-import { Await } from 'react-router';
-import { Suspense } from 'react';
-import type { CartApiQueryFragment } from 'storefrontapi.generated';
-import { Aside } from '~/components/Aside';
-import { CartMain } from '~/components/CartMain';
+import React, {Suspense} from 'react';
+import {Await} from 'react-router';
+import type {CartReturn} from '@shopify/hydrogen';
+import {Aside} from '~/components/Aside';
+import {CartMain} from '~/components/CartMain';
 
 interface HomePageLayoutProps {
-  cart: Promise<CartApiQueryFragment | null>;
+  cart: Promise<CartReturn | null>;
   children?: React.ReactNode;
 }
 
-export function HomePageLayout({
-  cart,
-  children = null,
-}: HomePageLayoutProps) {
+export function HomePageLayout({cart, children = null}: HomePageLayoutProps) {
   return (
     <Aside.Provider>
       <CartAside cart={cart} />
@@ -38,4 +34,4 @@ function CartAside({cart}: {cart: HomePageLayoutProps['cart']}) {
       </Await>
     </Suspense>
   );
-} 
+}

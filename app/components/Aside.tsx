@@ -5,8 +5,8 @@ import {
   useEffect,
   useState,
 } from 'react';
-import type { CartApiQueryFragment } from 'storefrontapi.generated';
-import { getCartItemCount } from '~/lib/inventory';
+import type {CartReturn} from '@shopify/hydrogen';
+import {getCartItemCount} from '~/lib/inventory';
 
 type AsideType = 'search' | 'cart' | 'mobile' | 'closed';
 type AsideContextValue = {
@@ -34,11 +34,11 @@ export function Aside({
   children?: React.ReactNode;
   type: AsideType;
   heading: React.ReactNode;
-  cart?: CartApiQueryFragment | null;
+  cart?: CartReturn | null;
 }) {
   const {type: activeType, close} = useAside();
   const expanded = type === activeType;
-  
+
   // Get cart count for cart header
   const getCartHeading = () => {
     if (type === 'cart' && cart) {
@@ -72,7 +72,10 @@ export function Aside({
       role="dialog"
     >
       <button className="close-outside" onClick={close} />
-      <aside className={`aside ${type === 'cart' ? 'cart-aside' : ''}`} data-type={type}>
+      <aside
+        className={`aside ${type === 'cart' ? 'cart-aside' : ''}`}
+        data-type={type}
+      >
         <header className="aside-header">
           <h3 className="aside-heading">{getCartHeading()}</h3>
           <button className="close reset" onClick={close} aria-label="Close">
@@ -109,8 +112,8 @@ export function useAside() {
     // More descriptive error for debugging
     throw new Error(
       'useAside must be used within an AsideProvider. ' +
-      'Make sure your component is wrapped with <Aside.Provider>. ' +
-      'This error often occurs during hydration mismatches in production.'
+        'Make sure your component is wrapped with <Aside.Provider>. ' +
+        'This error often occurs during hydration mismatches in production.',
     );
   }
   return aside;

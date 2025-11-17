@@ -1,4 +1,5 @@
 import {Analytics, getShopAnalytics, useNonce} from '@shopify/hydrogen';
+import type {CartReturn} from '@shopify/hydrogen';
 import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
 import {
   Outlet,
@@ -12,6 +13,7 @@ import {
   useRouteLoaderData,
 } from 'react-router';
 import {Suspense} from 'react';
+import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
 import favicon from '~/assets/favicon.svg';
 import JacketFavicon from '~/assets/Jacket-Favicon.jpg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
@@ -88,7 +90,19 @@ export async function loader(args: LoaderFunctionArgs) {
 /**
  * Load data necessary for rendering content above the fold.
  */
-async function loadCriticalData({context}: LoaderFunctionArgs) {
+interface CriticalData {
+  header: HeaderQuery;
+}
+
+interface DeferredData {
+  cart: Promise<CartReturn | null>;
+  footer: Promise<FooterQuery | null>;
+  isLoggedIn: Promise<boolean>;
+}
+
+async function loadCriticalData({
+  context,
+}: LoaderFunctionArgs): Promise<CriticalData> {
   const {storefront} = context;
 
   const [header] = await Promise.all([
@@ -106,7 +120,7 @@ async function loadCriticalData({context}: LoaderFunctionArgs) {
 /**
  * Load data for rendering content below the fold.
  */
-function loadDeferredData({context}: LoaderFunctionArgs) {
+function loadDeferredData({context}: LoaderFunctionArgs): DeferredData {
   const {storefront, customerAccount, cart} = context;
 
   const footer = storefront
@@ -119,9 +133,9 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
     .catch((error) => {
       console.error(error);
       return null;
-    });
+    }) as Promise<FooterQuery | null>;
   return {
-    cart: cart.get(),
+    cart: cart.get() as Promise<CartReturn | null>,
     isLoggedIn: customerAccount.isLoggedIn(),
     footer,
   };
@@ -130,6 +144,10 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
 export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
   const data = useRouteLoaderData<RootLoader>('root');
+
+  if (!data) {
+    throw new Error('Root loader data is unavailable');
+  }
 
   return (
     <html lang="en">
@@ -142,18 +160,24 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <Links />
 
         {/* This is the corrected placement for the Analytics Provider */}
-        {data ? (
-          <Analytics.Provider
-            cart={data.cart}
-            shop={data.shop}
-            consent={data.consent}
-          />
-        ) : null}
+        <Analytics.Provider
+          cart={data.cart}
+          shop={data.shop}
+          consent={data.consent}
+        />
       </head>
       <body>
         {/* The provider has been moved from here to the <head> */}
         <Suspense fallback={<div>Loading...</div>}>
-          <PageLayout {...data}>{children}</PageLayout>
+          <PageLayout
+            cart={data.cart}
+            footer={data.footer}
+            header={data.header}
+            isLoggedIn={data.isLoggedIn}
+            publicStoreDomain={data.publicStoreDomain}
+          >
+            {children}
+          </PageLayout>
         </Suspense>
 
         <ScrollRestoration nonce={nonce} />

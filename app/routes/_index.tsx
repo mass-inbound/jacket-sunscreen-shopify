@@ -51,17 +51,29 @@ export async function loader(args: LoaderFunctionArgs) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
 async function loadCriticalData({context}: LoaderFunctionArgs) {
-  const [{collections}, featuredProductsCollection] = await Promise.all([
-    context.storefront.query(FEATURED_COLLECTION_QUERY),
-    context.storefront.query(FEATURED_PRODUCTS_COLLECTION_QUERY),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
+  try {
+    const [{collections}, featuredProductsCollection] = await Promise.all([
+      context.storefront.query(FEATURED_COLLECTION_QUERY),
+      context.storefront.query(FEATURED_PRODUCTS_COLLECTION_QUERY),
+      // Add other queries here, so that they are loaded in parallel
+    ]);
 
-  return {
-    featuredCollection: collections.nodes[0],
-    featuredProducts:
-      featuredProductsCollection.collection?.products.nodes || [],
-  };
+    return {
+      featuredCollection: collections.nodes[0],
+      featuredProducts:
+        featuredProductsCollection.collection?.products.nodes || [],
+    };
+  } catch (error) {
+    // Log the error for debugging
+    console.error('Error loading critical data in _index:', error);
+    
+    // Return fallback data to prevent the app from crashing
+    // This allows the app to render even if the queries fail
+    return {
+      featuredCollection: null,
+      featuredProducts: [],
+    };
+  }
 }
 
 /**

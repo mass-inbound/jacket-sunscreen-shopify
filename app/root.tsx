@@ -11,7 +11,7 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import {Suspense} from 'react';
+import {Suspense, useEffect} from 'react';
 import favicon from '~/assets/favicon.svg';
 import JacketFavicon from '~/assets/Jacket-Favicon.jpg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
@@ -73,14 +73,34 @@ export async function loader(args: LoaderFunctionArgs) {
 
   const {storefront, env} = args.context;
 
+  // Try to get shop analytics, fallback to null if API fails
+  // getShopAnalytics may return a promise that rejects, so we need to handle both sync and async errors
+  let shop = null;
+  try {
+    const shopResult = getShopAnalytics({
+      storefront,
+      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
+    });
+
+    // If it returns a promise, catch promise rejections
+    if (shopResult && typeof shopResult.then === 'function') {
+      shop = await shopResult.catch((error: Error) => {
+        console.error('Error loading shop analytics (async):', error);
+        return null;
+      });
+    } else {
+      shop = shopResult;
+    }
+  } catch (error) {
+    console.error('Error loading shop analytics (sync):', error);
+    // Continue without shop analytics - the app can still function
+  }
+
   return {
     ...deferredData,
     ...criticalData,
     publicStoreDomain: env.PUBLIC_STORE_DOMAIN,
-    shop: getShopAnalytics({
-      storefront,
-      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
-    }),
+    shop,
     consent: {
       checkoutDomain: env.PUBLIC_CHECKOUT_DOMAIN,
       storefrontAccessToken: env.PUBLIC_STOREFRONT_API_TOKEN,
@@ -97,19 +117,43 @@ export async function loader(args: LoaderFunctionArgs) {
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
 async function loadCriticalData({context}: LoaderFunctionArgs) {
-  const {storefront} = context;
+  const {storefront, env} = context;
 
-  const [header] = await Promise.all([
-    storefront.query(HEADER_QUERY, {
-      cache: storefront.CacheLong(),
-      variables: {
-        headerMenuHandle: 'main-menu', // Adjust to your header menu handle
+  try {
+    const [header] = await Promise.all([
+      storefront.query(HEADER_QUERY, {
+        cache: storefront.CacheLong(),
+        variables: {
+          headerMenuHandle: 'main-menu', // Adjust to your header menu handle
+        },
+      }),
+      // Add other queries here, so that they are loaded in parallel
+    ]);
+
+    return {header};
+  } catch (error) {
+    // Log the error for debugging
+    console.error('Error loading critical data:', error);
+
+    // Return fallback data to prevent the app from crashing
+    // This allows the app to render even if the menu query fails
+    // Provide minimal valid structure matching HeaderQuery type
+    const storeDomain = env.PUBLIC_STORE_DOMAIN || 'myshopify.com';
+    const fallbackHeader = {
+      shop: {
+        id: 'fallback',
+        name: 'Store',
+        description: '',
+        primaryDomain: {
+          url: `https://${storeDomain}`,
+        },
+        brand: null,
       },
-    }),
-    // Add other queries here, so that they are loaded in parallel
-  ]);
+      menu: null,
+    };
 
-  return {header};
+    return {header: fallbackHeader};
+  }
 }
 
 /**
@@ -140,6 +184,72 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
   };
 }
 
+// Extend Window interface for TypeScript
+declare global {
+  interface Window {
+    fbq?: (...args: any[]) => void;
+    _fbq?: any;
+  }
+}
+
+/**
+ * Client-side Facebook Pixel component to avoid hydration mismatch
+ */
+function FacebookPixel() {
+  useEffect(() => {
+    // Only run on client side
+    if (typeof window === 'undefined') return;
+
+    // Check if script already exists to avoid duplicates
+    if (window.fbq) return;
+
+    // Initialize Facebook Pixel
+    (function (f: any, b: Document, e: string, v: string) {
+      let n: any, t: any, s: any;
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod
+          ? n.callMethod.apply(n, arguments)
+          : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = '2.0';
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(
+      window,
+      document,
+      'script',
+      'https://connect.facebook.net/en_US/fbevents.js',
+    );
+
+    // Initialize and track
+    const fbq = (window as any).fbq as (...args: any[]) => void;
+    if (fbq) {
+      fbq('init', '612071937741103');
+      fbq('track', 'PageView');
+    }
+  }, []);
+
+  return (
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style={{display: 'none'}}
+        src="https://www.facebook.com/tr?id=612071937741103&ev=PageView&noscript=1"
+        alt=""
+      />
+    </noscript>
+  );
+}
+
 export function Layout({children}: {children?: React.ReactNode}) {
   const nonce = useNonce();
   const data = useRouteLoaderData<RootLoader>('root');
@@ -153,36 +263,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
         <link rel="stylesheet" href={appStyles}></link>
         <Meta />
         <Links />
-      {/* Meta Pixel (Facebook) */}
-        <script
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s){
-                if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-                n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-                if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-                n.queue=[];t=b.createElement(e);t.async=!0;
-                t.src=v;s=b.getElementsByTagName(e)[0];
-                s.parentNode.insertBefore(t,s)
-              }(window, document,'script','https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '612071937741103');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{display: 'none'}}
-            src="https://www.facebook.com/tr?id=612071937741103&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
-        {/* /Meta Pixel */}
       </head>
-      <body>
+      <body suppressHydrationWarning>
+        <FacebookPixel />
         {data ? (
           <Analytics.Provider
             cart={data.cart}

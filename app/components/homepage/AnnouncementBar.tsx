@@ -13,7 +13,7 @@ interface AnnouncementBarContentProps {
 }
 
 function AnnouncementBarContent({
-  message = "Black Friday: 30% Off Sitewide + Free Mineral Stick When You Buy 3 Sunscreens",
+  message = "Black Friday: 30% Off Sitewide + Exclusive Black Friday Specials",
   cart
 }: AnnouncementBarContentProps) {
 
@@ -47,7 +47,7 @@ function AnnouncementBarContent({
 
 
 export function AnnouncementBar({
-  message = "Black Friday: 30% Off Sitewide + Free Mineral Stick When You Buy 3 Sunscreens",
+  message = "Black Friday: 30% Off Sitewide + Exclusive Black Friday Specials",
   cart
 }: AnnouncementBarProps) {
   if (!cart) {

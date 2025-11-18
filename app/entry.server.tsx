@@ -30,6 +30,7 @@ export default async function handleRequest(
       'https://*.googletagmanager.com', //added rc
       'https://*.clarity.ms',
       'https://scripts.clarity.ms',
+      'https://cdn.shopify.com',
     ],
     styleSrc: [
       "'self'",

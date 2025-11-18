@@ -1,5 +1,5 @@
 import {useOptimisticCart} from '@shopify/hydrogen';
-import { Link } from 'react-router';
+import {Link} from 'react-router';
 import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import {CartLineItem} from '~/components/CartLineItem';
@@ -22,12 +22,12 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
   const cart = useOptimisticCart(originalCart);
 
   // Temporary debugging - remove this after confirming the fix works
-  console.log('CartMain Debug:', {
-    totalQuantity: cart?.totalQuantity,
-    linesCount: cart?.lines?.nodes?.length,
-    lines: cart?.lines?.nodes,
-    cart
-  });
+  // console.log('CartMain Debug:', {
+  //   totalQuantity: cart?.totalQuantity,
+  //   linesCount: cart?.lines?.nodes?.length,
+  //   lines: cart?.lines?.nodes,
+  //   cart
+  // });
 
   const linesCount = cart?.lines?.nodes?.length || 0;
   const withDiscount =
@@ -40,7 +40,11 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
     <div className={className}>
       <CartEmpty hidden={linesCount > 0} layout={layout} />
       <div className="cart-details flex flex-col h-full">
-        <div className="cart-lines flex-1 overflow-y-auto" aria-labelledby="cart-lines" style={{maxHeight: 'calc(100vh - 60px - 329px)'}}>
+        <div
+          className="cart-lines flex-1 overflow-y-auto"
+          aria-labelledby="cart-lines"
+          style={{maxHeight: 'calc(100vh - 60px - 329px)'}}
+        >
           <ul className="space-y-0">
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} layout={layout} />
@@ -66,9 +70,9 @@ function CartEmpty({
         Looks like you haven&rsquo;t added anything yet, let&rsquo;s get you
         started!
       </p>
-      <Link 
-        to="/collections" 
-        onClick={close} 
+      <Link
+        to="/collections"
+        onClick={close}
         prefetch="viewport"
         className="text-[#FBAC18] hover:text-[#e69b15] transition-colors"
       >

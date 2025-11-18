@@ -36,6 +36,4 @@ jobs:
         run: npm ci --legacy-peer-deps
 
       - name: Build and Publish to Oxygen
-        run: npx shopify hydrogen deploy
-        env:
-          SHOPIFY_HYDROGEN_DEPLOYMENT_TOKEN: ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000042083 }}
+        run: npx shopify hydrogen deploy --token ${{ secrets.OXYGEN_DEPLOYMENT_TOKEN_1000042083 }}

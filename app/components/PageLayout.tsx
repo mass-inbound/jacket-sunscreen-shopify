@@ -235,18 +235,18 @@ function MobileMenuAside({
   publicStoreDomain: PageLayoutProps['publicStoreDomain'];
   isLoggedIn: PageLayoutProps['isLoggedIn'];
 }) {
+  if (!header || !header.menu || !header.shop || !header.shop.primaryDomain || !header.shop.primaryDomain.url) {
+    return null;
+  }
   return (
-    header.menu &&
-    header.shop.primaryDomain?.url && (
-      <Aside type="mobile" heading="MENU">
-        <HeaderMenu
-          menu={header.menu}
-          viewport="mobile"
-          primaryDomainUrl={header.shop.primaryDomain.url}
-          publicStoreDomain={publicStoreDomain}
-          isLoggedIn={isLoggedIn}
-        />
-      </Aside>
-    )
+    <Aside type="mobile" heading="MENU">
+      <HeaderMenu
+        menu={header.menu}
+        viewport="mobile"
+        primaryDomainUrl={header.shop.primaryDomain.url}
+        publicStoreDomain={publicStoreDomain}
+        isLoggedIn={isLoggedIn}
+      />
+    </Aside>
   );
 }

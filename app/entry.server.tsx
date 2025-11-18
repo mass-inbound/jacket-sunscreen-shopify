@@ -19,63 +19,62 @@ export default async function handleRequest(
     scriptSrc: [
       "'self'",
       "'unsafe-inline'",
-      "https://cdn.shopify.com",
-      "https://shopify.com",
-      "https://forms.inboundrequest.com",
-      "https://*.myshopify.com",
-      "https://*.shopifycdn.com",
-      "https://judge.me",
-      "https://*.judge.me",
-      "https://connect.facebook.net",
-      "https://*.googletagmanager.com", //added rc
+      'https://cdn.shopify.com',
+      'https://shopify.com',
+      'https://forms.inboundrequest.com',
+      'https://*.myshopify.com',
+      'https://*.shopifycdn.com',
+      'https://judge.me',
+      'https://*.judge.me',
+      'https://connect.facebook.net',
+      'https://*.googletagmanager.com', //added rc
+      'https://*.clarity.ms',
+      'https://scripts.clarity.ms',
     ],
     styleSrc: [
       "'self'",
       "'unsafe-inline'",
-      "https://cdn.shopify.com",
-      "https://fonts.googleapis.com",
-      "https://judge.me",
-      "https://*.judge.me",
+      'https://cdn.shopify.com',
+      'https://fonts.googleapis.com',
+      'https://judge.me',
+      'https://*.judge.me',
     ],
     imgSrc: [
       "'self'",
-      "data:",
-      "https://cdn.shopify.com",
-      "https://*.shopifycdn.com",
-      "https://judge.me",
-      "https://*.judge.me",
-      "https://*.googletagmanager.com", //added rc
-      "https://*.google-analytics.com", //added rc
+      'data:',
+      'https://cdn.shopify.com',
+      'https://*.shopifycdn.com',
+      'https://judge.me',
+      'https://*.judge.me',
+      'https://*.googletagmanager.com', //added rc
+      'https://*.google-analytics.com', //added rc
     ],
     connectSrc: [
       "'self'",
-      "https://monorail-edge.shopifysvc.com",
-      "https://jacket-sunscreen.myshopify.com",
-      "https://api.shop.app",
-      "https://*.myshopify.com",
-      "https://rxmqy789nf.execute-api.us-east-2.amazonaws.com",
-      "https://judge.me",
-      "https://api.judge.me",
-      "https://*.judge.me",
-      "http://localhost:*",
-      "ws://localhost:*",
-      "ws://127.0.0.1:*",
-      "ws://*.tryhydrogen.dev:*",
-      "https://*.googletagmanager.com", //added rc
-      "https://*.google-analytics.com", //added rc
-
+      'https://monorail-edge.shopifysvc.com',
+      'https://jacket-sunscreen.myshopify.com',
+      'https://api.shop.app',
+      'https://*.myshopify.com',
+      'https://rxmqy789nf.execute-api.us-east-2.amazonaws.com',
+      'https://judge.me',
+      'https://api.judge.me',
+      'https://*.judge.me',
+      'http://localhost:*',
+      'ws://localhost:*',
+      'ws://127.0.0.1:*',
+      'ws://*.tryhydrogen.dev:*',
+      'https://*.googletagmanager.com', //added rc
+      'https://*.google-analytics.com', //added rc
+      'https://*.clarity.ms',
+      'https://scripts.clarity.ms',
     ],
     frameSrc: [
       "'self'",
-      "https://forms.inboundrequest.com",
-      "https://www.google.com",
-      "https://*.googletagmanager.com", //added rc
+      'https://forms.inboundrequest.com',
+      'https://www.google.com',
+      'https://*.googletagmanager.com', //added rc
     ],
-    fontSrc: [
-      "'self'",
-      "https://fonts.gstatic.com",
-      "https://cdn.shopify.com",
-    ],
+    fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https://cdn.shopify.com'],
   });
 
   const body = await renderToReadableStream(
@@ -98,7 +97,7 @@ export default async function handleRequest(
 
   responseHeaders.set('Content-Type', 'text/html');
   responseHeaders.set('Content-Security-Policy', header);
-  
+
   return new Response(body, {
     headers: responseHeaders,
     status: responseStatusCode,

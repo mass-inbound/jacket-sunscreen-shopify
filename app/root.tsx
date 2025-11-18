@@ -11,7 +11,8 @@ import {
   ScrollRestoration,
   useRouteLoaderData,
 } from 'react-router';
-import {Suspense} from 'react';
+import {Suspense, useEffect} from 'react';
+import type {HeaderQuery} from 'storefrontapi.generated';
 import favicon from '~/assets/favicon.svg';
 import JacketFavicon from '~/assets/Jacket-Favicon.jpg';
 import {FOOTER_QUERY, HEADER_QUERY} from '~/lib/fragments';
@@ -19,6 +20,7 @@ import resetStyles from '~/styles/reset.css?url';
 import appStyles from '~/styles/app.css?url';
 import {PageLayout} from './components/PageLayout';
 import {GoogleTagManager} from '~/components/GoogleTagManager';
+import React from 'react';
 
 export type RootLoader = typeof loader;
 
@@ -68,16 +70,20 @@ export async function loader(args: LoaderFunctionArgs) {
 
   const {storefront, env} = args.context;
 
-  // 1. Define the 'shop' variable first.
-  const shop = getShopAnalytics({
-    storefront,
-    publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
-  });
+  let shop = null;
+  try {
+    const analyticsResult = getShopAnalytics({
+      storefront,
+      publicStorefrontId: env.PUBLIC_STOREFRONT_ID,
+    });
+    shop =
+      typeof analyticsResult?.then === 'function'
+        ? await analyticsResult
+        : analyticsResult;
+  } catch (error) {
+    console.error('Error loading shop analytics:', error);
+  }
 
-  // 2. Log the variable to the console for debugging.
-  console.log('--- SHOP ANALYTICS DATA ---', JSON.stringify(shop, null, 2));
-
-  // 3. Return all the data.
   return {
     ...deferredData,
     ...criticalData,
@@ -97,18 +103,40 @@ export async function loader(args: LoaderFunctionArgs) {
  * Load data necessary for rendering content above the fold.
  */
 async function loadCriticalData({context}: LoaderFunctionArgs) {
-  const {storefront} = context;
+  const {storefront, env} = context;
 
-  const [header] = await Promise.all([
-    storefront.query(HEADER_QUERY, {
-      cache: storefront.CacheLong(),
-      variables: {
-        headerMenuHandle: 'main-menu',
+  try {
+    const [header] = await Promise.all([
+      storefront.query(HEADER_QUERY, {
+        cache: storefront.CacheLong(),
+        variables: {
+          headerMenuHandle: 'main-menu',
+        },
+      }),
+    ]);
+
+    return {header};
+  } catch (error) {
+    console.error('Error loading critical header data:', error);
+
+    const fallbackHeader: HeaderQuery = {
+      shop: {
+        id: 'fallback-shop',
+        name: 'Store',
+        description: '',
+        primaryDomain: {
+          url: `https://${env?.PUBLIC_STORE_DOMAIN ?? 'example.myshopify.com'}`,
+        },
+        brand: null,
       },
-    }),
-  ]);
+      menu: {
+        id: 'fallback-menu',
+        items: [],
+      },
+    };
 
-  return {header};
+    return {header: fallbackHeader};
+  }
 }
 
 /**
@@ -160,32 +188,7 @@ export function Layout({children}: {children?: React.ReactNode}) {
          }}
         ></Script>
          {/* --- PASTE META PIXEL CODE START --- */}
-        <script
-          nonce={nonce}
-          dangerouslySetInnerHTML={{
-            __html: `
-              !function(f,b,e,v,n,t,s)
-              {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-              n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-              if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-              n.queue=[];t=b.createElement(e);t.async=!0;
-              t.src=v;s=b.getElementsByTagName(e)[0];
-              s.parentNode.insertBefore(t,s)}(window, document,'script',
-              'https://connect.facebook.net/en_US/fbevents.js');
-              fbq('init', '612071937741103');
-              fbq('track', 'PageView');
-            `,
-          }}
-        />
-        <noscript>
-          <img
-            height="1"
-            width="1"
-            style={{display: 'none'}}
-            src="https://www.facebook.com/tr?id=612071937741103&ev=PageView&noscript=1"
-            alt=""
-          />
-        </noscript>
+        {/* REMOVED Facebook Pixel <script> from head to avoid hydration mismatch */}
         {/* --- PASTE META PIXEL CODE END --- */}
 
         {/* This is the corrected placement for the Analytics Provider */}
@@ -197,7 +200,9 @@ export function Layout({children}: {children?: React.ReactNode}) {
           />
         ) : null}
       </head>
-      <body>
+      <body suppressHydrationWarning>
+        {/* Facebook Pixel client-only injection */}
+        <FacebookPixel />
         {/* @description Add Google Tag Manager noscript iframe for users without JavaScript */}
         <noscript>
           <iframe
@@ -259,5 +264,43 @@ export function ErrorBoundary() {
         Reload Page
       </button>
     </div>
+  );
+}
+
+function FacebookPixel() {
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    if (window.fbq) return;
+    (function (f, b, e, v, n, t, s) {
+      if (f.fbq) return;
+      n = f.fbq = function () {
+        n.callMethod ? n.callMethod.apply(n, arguments) : n.queue.push(arguments);
+      };
+      if (!f._fbq) f._fbq = n;
+      n.push = n;
+      n.loaded = !0;
+      n.version = '2.0';
+      n.queue = [];
+      t = b.createElement(e);
+      t.async = !0;
+      t.src = v;
+      s = b.getElementsByTagName(e)[0];
+      s.parentNode.insertBefore(t, s);
+    })(window, document, 'script', 'https://connect.facebook.net/en_US/fbevents.js');
+    if (window.fbq) {
+      window.fbq('init', '612071937741103');
+      window.fbq('track', 'PageView');
+    }
+  }, []);
+  return (
+    <noscript>
+      <img
+        height="1"
+        width="1"
+        style={{ display: 'none' }}
+        src="https://www.facebook.com/tr?id=612071937741103&ev=PageView&noscript=1"
+        alt=""
+      />
+    </noscript>
   );
 }

@@ -1,47 +1,41 @@
 import {redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, type MetaFunction} from 'react-router';
+import {Link, useLoaderData, type MetaFunction} from 'react-router';
 import {getPaginationVariables, Analytics} from '@shopify/hydrogen';
 import {PaginatedResourceSection} from '~/components/PaginatedResourceSection';
 import {redirectIfHandleIsLocalized} from '~/lib/redirect';
 import {ProductItem} from '~/components/ProductItem';
+import type {
+  CollectionItemFragment,
+  CollectionQuery,
+} from 'storefrontapi.generated';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
   return [{title: `Hydrogen | ${data?.collection.title ?? ''} Collection`}];
 };
 
 export async function loader(args: LoaderFunctionArgs) {
-  // Start fetching non-critical data without blocking time to first byte
-  const deferredData = loadDeferredData(args);
-
-  // Await the critical data required to render initial state of the page
-  const criticalData = await loadCriticalData(args);
-
-  return {...deferredData, ...criticalData};
+  // Only handle non shop-all collections!
+  return await loadStandardCollectionData(args);
 }
 
-/**
- * Load data necessary for rendering content above the fold. This is the critical data
- * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
- */
-async function loadCriticalData({
+async function loadStandardCollectionData({
   context,
   params,
   request,
 }: LoaderFunctionArgs) {
-  const {handle} = params;
+  const handle = params.handle as string;
+  if (handle === 'shop-all') {
+    // Defensive: explicit 404 if someone hits /collections/shop-all here
+    throw redirect('/collections/shop-all');
+  }
   const {storefront} = context;
   const paginationVariables = getPaginationVariables(request, {
     pageBy: 8,
   });
 
-  if (!handle) {
-    throw redirect('/collections');
-  }
-
   const [{collection}] = await Promise.all([
-    storefront.query(COLLECTION_QUERY, {
+    storefront.query<CollectionQuery>(COLLECTION_QUERY, {
       variables: {handle, ...paginationVariables},
-      // Add other queries here, so that they are loaded in parallel
     }),
   ]);
 
@@ -51,7 +45,6 @@ async function loadCriticalData({
     });
   }
 
-  // The API handle might be localized, so redirect to the localized handle
   redirectIfHandleIsLocalized(request, {handle, data: collection});
 
   return {
@@ -59,18 +52,8 @@ async function loadCriticalData({
   };
 }
 
-/**
- * Load data for rendering content below the fold. This data is deferred and will be
- * fetched after the initial page load. If it's unavailable, the page should still 200.
- * Make sure to not throw any errors here, as it will cause the page to 500.
- */
-function loadDeferredData({context}: LoaderFunctionArgs) {
-  return {};
-}
-
 export default function Collection() {
   const {collection} = useLoaderData<typeof loader>();
-
   return (
     <div className="collection">
       <h1>{collection.title}</h1>
@@ -79,13 +62,16 @@ export default function Collection() {
         connection={collection.products}
         resourcesClassName="products-grid"
       >
-        {({node: product, index}) => (
-          <ProductItem
-            key={product.id}
-            product={product}
-            loading={index < 8 ? 'eager' : undefined}
-          />
-        )}
+        {({node, index}) => {
+          const product = node as CollectionItemFragment;
+          return (
+            <ProductItem
+              key={product.id}
+              product={product}
+              loading={index < 8 ? 'eager' : undefined}
+            />
+          );
+        }}
       </PaginatedResourceSection>
       <Analytics.CollectionView
         data={{

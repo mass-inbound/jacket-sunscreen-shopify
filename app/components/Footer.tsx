@@ -99,7 +99,7 @@ export function Footer({
                   {/* Right Column - Shop/Blog/Contact/Cart */}
                   <div className="absolute left-[240px] top-[26px] w-[51px]">
                     <div className="flex flex-col gap-0">
-                      <NavLink to="/collections/all" className="text-[12px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
+                      <NavLink to="/collections/shop-all" className="text-[12px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
                         Shop
                       </NavLink>
                       <NavLink to="/pages/blog" className="text-[12px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
@@ -210,7 +210,7 @@ export function Footer({
                       {/* Shop/Blog/Contact/Cart Navigation */}
                       <div className="absolute left-[173px] top-[33px] w-[69px]">
                         <div className="flex flex-col gap-0 pb-[28px]">
-                          <NavLink to="/collections/all" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
+                          <NavLink to="/collections/shop-all" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
                             Shop
                           </NavLink>
                           <NavLink to="/pages/blog" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">

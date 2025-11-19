@@ -1,13 +1,18 @@
 import {Suspense, useState, useEffect} from 'react';
-import { Await, NavLink, useAsyncValue, useLocation } from 'react-router';
+import {Await, NavLink, useAsyncValue, useLocation} from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
   useOptimisticCart,
 } from '@shopify/hydrogen';
-import type {HeaderQuery, CartApiQueryFragment, CollectionFragment, ProductItemFragment} from 'storefrontapi.generated';
+import type {
+  HeaderQuery,
+  CartApiQueryFragment,
+  CollectionFragment,
+  ProductItemFragment,
+} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
-import { getCartItemCount } from '~/lib/inventory';
+import {getCartItemCount} from '~/lib/inventory';
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -38,16 +43,20 @@ export function Header({
   }, []);
 
   return (
-    <header className={`w-full z-40 transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0' : ''}`}>
-      <div className={`flex md:px-2 justify-center items-center py-2 md:py-[15px] ${isScrolled ? 'pt-4 md:pt-[40px]' : ''} bg-transparent`}>
+    <header
+      className={`w-full z-40 transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0' : ''}`}
+    >
+      <div
+        className={`flex md:px-2 justify-center items-center py-2 md:py-[15px] ${isScrolled ? 'pt-4 md:pt-[40px]' : ''} bg-transparent`}
+      >
         <div className="relative w-full mx-auto">
           {/* Overlay + Shadow + Background */}
-          <div 
-            className={`absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)] transition-opacity duration-300`} 
-            style={{ 
+          <div
+            className={`absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)] transition-opacity duration-300`}
+            style={{
               background: '#FBAC18',
-              opacity: isScrolled ? 0.8 : 1
-            }} 
+              opacity: isScrolled ? 0.8 : 1,
+            }}
           />
           {/* Content */}
           <div className="relative flex items-center justify-between h-[44px] md:h-[56px] lg:h-[77px] px-3 md:px-32 lg:px-48 xl:px-64">
@@ -55,18 +64,24 @@ export function Header({
             <div className="flex items-center z-10">
               <HeaderMenuMobileToggle />
             </div>
-            
+
             {/* Center: Logo - Absolutely positioned for true center */}
             <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
-              <NavLink prefetch="intent" to="/" className="flex items-center select-none" style={{ textDecoration: 'none' }} end>
-                <img 
-                  src="/assets/logo2.png" 
-                  alt="Logo" 
+              <NavLink
+                prefetch="intent"
+                to="/"
+                className="flex items-center select-none"
+                style={{textDecoration: 'none'}}
+                end
+              >
+                <img
+                  src="/assets/logo2.png"
+                  alt="Logo"
                   className="block w-[80px] h-[32px] md:w-[167px] md:h-[57px] lg:w-[237px] lg:h-[77px] xl:w-[277px] xl:h-[85px] object-contain"
                 />
               </NavLink>
             </div>
-            
+
             {/* Right: CTAs */}
             <div className="flex items-center z-10 gap-1 md:gap-3 lg:gap-4">
               <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
@@ -98,12 +113,14 @@ export function HeaderMenu({
   const [productsLoading, setProductsLoading] = useState(true);
   const location = useLocation();
 
-  // Fetch products dynamically from nav-menu-products collection
+  // Fetch products dynamically from the shop-all collection
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/nav-menu-products');
-        const data = await response.json() as {products: ProductItemFragment[]};
+        const response = await fetch('/api/shop-all-products');
+        const data = (await response.json()) as {
+          products: ProductItemFragment[];
+        };
         setProducts(data.products || []);
       } catch (error) {
         console.error('Failed to fetch products:', error);
@@ -127,16 +144,16 @@ export function HeaderMenu({
     setExpandedItems(newExpandedItems);
   };
 
-  // Generate dynamic shop items from nav-menu-products collection
+  // Generate dynamic shop items from the shop-all collection
   const generateShopItems = () => {
     if (productsLoading) {
       return [
-        { id: 'shop-all', title: 'SHOP ALL', url: '/collections/all' }
+        {id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all'},
       ];
     }
 
     const shopItems = [
-      { id: 'shop-all', title: 'SHOP ALL', url: '/collections/all' }
+      {id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all'},
     ];
 
     // Add dynamic products from nav-menu-products collection
@@ -144,7 +161,7 @@ export function HeaderMenu({
       shopItems.push({
         id: product.handle,
         title: product.title.toUpperCase(),
-        url: `/products/${product.handle}`
+        url: `/products/${product.handle}`,
       });
     });
 
@@ -152,7 +169,7 @@ export function HeaderMenu({
     shopItems.push({
       id: 'extras',
       title: 'EXTRAS',
-      url: '/collections/extras'
+      url: '/collections/extras',
     });
 
     return shopItems;
@@ -164,33 +181,31 @@ export function HeaderMenu({
       id: 'home',
       title: 'HOME',
       url: '/',
-      items: []
+      items: [],
     },
     {
       id: 'shop',
       title: 'SHOP',
-      url: '/collections/all',
-      items: generateShopItems()
+      url: '/collections/shop-all',
+      items: generateShopItems(),
     },
     {
       id: 'explore',
       title: 'EXPLORE',
       url: '#',
       items: [
-        { id: 'retailers', title: 'RETAILERS', url: '/pages/retailers' },
-        { id: 'reviews', title: 'REVIEWS', url: '/pages/reviews' },
-        { id: 'contact', title: 'CONTACT', url: '/pages/contact' },
-        { id: 'about', title: 'ABOUT', url: '/pages/about' }
-      ]
+        {id: 'retailers', title: 'RETAILERS', url: '/pages/retailers'},
+        {id: 'reviews', title: 'REVIEWS', url: '/pages/reviews'},
+        {id: 'contact', title: 'CONTACT', url: '/pages/contact'},
+        {id: 'about', title: 'ABOUT', url: '/pages/about'},
+      ],
     },
     {
       id: 'education',
       title: 'EDUCATION',
       url: '#',
-      items: [
-        { id: 'faq', title: 'FAQ', url: '/pages/faq' }
-      ]
-    }
+      items: [{id: 'faq', title: 'FAQ', url: '/pages/faq'}],
+    },
   ];
 
   // Function to check if a menu item should be active based on current location
@@ -199,17 +214,22 @@ export function HeaderMenu({
       return true;
     }
     if (item.id === 'shop') {
-      // Shop is active for /collections/all, /collections/extras, or any /products/* route
-      return pathname === '/collections/all' || 
-             pathname === '/collections/extras' || 
-             pathname.startsWith('/products/');
+      // Shop is active for /collections/shop-all, /collections/extras, or any /products/* route
+      return (
+        pathname === '/collections/shop-all' ||
+        pathname === '/collections/all' ||
+        pathname === '/collections/extras' ||
+        pathname.startsWith('/products/')
+      );
     }
     if (item.id === 'explore') {
       // Explore is active for any of its submenu items
-      return pathname === '/pages/retailers' || 
-             pathname === '/pages/reviews' || 
-             pathname === '/pages/contact' || 
-             pathname === '/pages/about';
+      return (
+        pathname === '/pages/retailers' ||
+        pathname === '/pages/reviews' ||
+        pathname === '/pages/contact' ||
+        pathname === '/pages/about'
+      );
     }
     if (item.id === 'education') {
       // Education is active for FAQ
@@ -223,11 +243,11 @@ export function HeaderMenu({
       {/* Add login/account link for mobile at the top */}
       {viewport === 'mobile' && isLoggedIn && (
         <div className="mb-4 pb-4 block md:hidden border-b border-gray-200">
-          <NavLink 
-            prefetch="intent" 
-            to="/account" 
+          <NavLink
+            prefetch="intent"
+            to="/account"
             className=" py-2 font-bold text-[16px] tracking-wider text-black hover:text-[#fbac17] transition-colors"
-            style={{ textDecoration: 'none' }}
+            style={{textDecoration: 'none'}}
             onClick={close}
           >
             <Suspense fallback="Log In">
@@ -241,11 +261,11 @@ export function HeaderMenu({
       {staticMenuItems.map((item) => {
         const hasSubItems = item.items && item.items.length > 0;
         const isExpanded = expandedItems.has(item.id);
-        
+
         return (
           <div key={item.id} className={viewport === 'mobile' ? 'mb-0' : ''}>
             <NavLink
-              className={({ isActive }) => {
+              className={({isActive}) => {
                 // For parent items with submenus, never highlight them
                 // For direct menu items without submenus, use normal isActive
                 let shouldHighlight = false;
@@ -253,32 +273,51 @@ export function HeaderMenu({
                   shouldHighlight = isActive;
                 }
                 // Note: Parent items with submenus will never be highlighted
-                
-                const classes = `${viewport === 'desktop' 
-                  ? `font-semibold text-[14px] lg:text-[14px] tracking-widest transition-colors px-1 py-0.5 rounded ${
-                      shouldHighlight 
-                        ? 'text-[#fbac17] !important' 
-                        : 'text-white hover:text-black'
-                    }` 
-                  : `block py-1 font-bold text-[14px] tracking-wider border-0 ${
-                      shouldHighlight 
-                        ? 'text-[#fbac17] !important' 
-                        : 'text-black'
-                    }`
+
+                const classes = `${
+                  viewport === 'desktop'
+                    ? `font-semibold text-[14px] lg:text-[14px] tracking-widest transition-colors px-1 py-0.5 rounded ${
+                        shouldHighlight
+                          ? 'text-[#fbac17] !important'
+                          : 'text-white hover:text-black'
+                      }`
+                    : `block py-1 font-bold text-[14px] tracking-wider border-0 ${
+                        shouldHighlight
+                          ? 'text-[#fbac17] !important'
+                          : 'text-black'
+                      }`
                 } ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`;
-                
+
                 return classes;
               }}
-              style={viewport === 'desktop' ? { letterSpacing: '0.12em', textDecoration: 'none' , fontSize:"14px"} : { textDecoration: 'none' }}
+              style={
+                viewport === 'desktop'
+                  ? {
+                      letterSpacing: '0.12em',
+                      textDecoration: 'none',
+                      fontSize: '14px',
+                    }
+                  : {textDecoration: 'none'}
+              }
               end
-              onClick={hasSubItems && viewport === 'mobile' ? (e) => toggleSubmenu(item.id, e) : close}
+              onClick={
+                hasSubItems && viewport === 'mobile'
+                  ? (e) => toggleSubmenu(item.id, e)
+                  : close
+              }
               prefetch="intent"
               to={hasSubItems && viewport === 'mobile' ? '#' : item.url}
             >
               <div className="flex items-center justify-between">
                 {item.title}
                 {viewport === 'mobile' && hasSubItems && (
-                  <svg className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <svg
+                    className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
                     <polyline points="6,9 12,15 18,9"></polyline>
                   </svg>
                 )}
@@ -289,15 +328,12 @@ export function HeaderMenu({
                 {item.items.map((subItem) => (
                   <NavLink
                     key={subItem.id}
-                    className={({ isActive }) => {
-                      
+                    className={({isActive}) => {
                       return `block py-0.5 text-[14px] tracking-wide ${
-                        isActive 
-                          ? 'text-[#fbac17]' 
-                          : 'text-black'
+                        isActive ? 'text-[#fbac17]' : 'text-black'
                       }`;
                     }}
-                    style={{ textDecoration: 'none', fontSize: '14px' }}
+                    style={{textDecoration: 'none', fontSize: '14px'}}
                     onClick={close}
                     prefetch="intent"
                     to={subItem.url}
@@ -320,14 +356,17 @@ function HeaderCtas({
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav className="header-ctas text-white flex items-center gap-1 md:gap-3 lg:gap-4" role="navigation">
+    <nav
+      className="header-ctas text-white flex items-center gap-1 md:gap-3 lg:gap-4"
+      role="navigation"
+    >
       {/* Hide login on mobile, show on desktop */}
       <div className="hidden md:block">
-        <NavLink 
-          prefetch="intent" 
-          to="/account" 
+        <NavLink
+          prefetch="intent"
+          to="/account"
           className="text-white font-bold hover:text-gray-200 transition-colors text-xs md:text-sm lg:text-base"
-          style={{ textDecoration: 'none' }}
+          style={{textDecoration: 'none'}}
         >
           <Suspense fallback="Log In">
             <Await resolve={isLoggedIn} errorElement="Sign in">
@@ -344,24 +383,39 @@ function HeaderCtas({
 
 function HeaderMenuMobileToggle() {
   const aside = useAside(); // Remove try-catch, let it throw if context is missing
-  
+
   return (
     <button
       className="flex items-center justify-center w-7 h-7 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 text-black hover:text-gray-600 transition-colors"
       onClick={() => aside.open('mobile')}
       aria-label="Open menu"
     >
-      <img src="/assets/sandIcon.svg" alt="Menu" width="20" height="20" className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10" />
+      <img
+        src="/assets/sandIcon.svg"
+        alt="Menu"
+        width="20"
+        height="20"
+        className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10"
+      />
     </button>
   );
 }
 
 function SearchToggle() {
   const aside = useAside(); // Remove try-catch, let it throw if context is missing
-  
+
   return (
-    <button className="reset text-black hover:text-gray-600 transition-colors p-1" onClick={() => aside.open('search')}>
-      <img src="/assets/searchIcon.svg" alt="Search" width="16" height="16" className="md:w-5 md:h-5" />
+    <button
+      className="reset text-black hover:text-gray-600 transition-colors p-1"
+      onClick={() => aside.open('search')}
+    >
+      <img
+        src="/assets/searchIcon.svg"
+        alt="Search"
+        width="16"
+        height="16"
+        className="md:w-5 md:h-5"
+      />
     </button>
   );
 }
@@ -386,20 +440,26 @@ function CartBadge({count}: {count: number | null}) {
       }}
       className="text-black font-semibold hover:text-gray-600 transition-colors relative"
     >
-       {count !== null && count > 0 && (
-          <span className="absolute -top-[6px] left-[4px] transform translate-x-1 text-black text-xs font-bold">
-            {count}
-          </span>
-        )}
-      <svg width="16" height="16" className="md:w-5 md:h-5" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+      {count !== null && count > 0 && (
+        <span className="absolute -top-[6px] left-[4px] transform translate-x-1 text-black text-xs font-bold">
+          {count}
+        </span>
+      )}
+      <svg
+        width="16"
+        height="16"
+        className="md:w-5 md:h-5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="2"
+        viewBox="0 0 24 24"
+      >
         <circle cx="9" cy="21" r="1"></circle>
         <circle cx="20" cy="21" r="1"></circle>
         <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6"></path>
         <path d="M6 16v2"></path>
         <path d="M21 16v2"></path>
       </svg>
-     
-     
     </button>
   );
 }
@@ -417,9 +477,10 @@ function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
 function CartBanner() {
   const originalCart = useAsyncValue() as CartApiQueryFragment | null;
   const cart = useOptimisticCart(originalCart);
-  return <CartBadge count={getCartItemCount(cart as CartApiQueryFragment | null)} />;
+  return (
+    <CartBadge count={getCartItemCount(cart as CartApiQueryFragment | null)} />
+  );
 }
-
 
 // Add ShopByImages component
 function ShopByImages() {
@@ -430,8 +491,10 @@ function ShopByImages() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch('/api/nav-menu-products');
-        const data = await response.json() as {products: ProductItemFragment[]};
+        const response = await fetch('/api/shop-all-products');
+        const data = (await response.json()) as {
+          products: ProductItemFragment[];
+        };
         // Use products in the order they appear in the collection (no sorting)
         setProducts(data.products || []);
       } catch (error) {
@@ -447,10 +510,15 @@ function ShopByImages() {
   if (loading) {
     return (
       <div className="shop-by-images mt-8">
-        <h3 className="text-lg font-[900] mb-6 text-black tracking-wider">SHOP BY IMAGE</h3>
+        <h3 className="text-lg font-[900] mb-6 text-black tracking-wider">
+          SHOP BY IMAGE
+        </h3>
         <div className="flex gap-3 overflow-x-auto">
           {[...Array(6)].map((_, i) => (
-            <div key={i} className="w-32 h-96 bg-gray-200 animate-pulse flex-shrink-0" />
+            <div
+              key={i}
+              className="w-32 h-96 bg-gray-200 animate-pulse flex-shrink-0"
+            />
           ))}
         </div>
       </div>
@@ -459,7 +527,9 @@ function ShopByImages() {
 
   return (
     <div className="shop-by-images mt-8">
-      <h3 className="text-lg font-[900] mb-6 text-black tracking-wider">SHOP BY IMAGE</h3>
+      <h3 className="text-lg font-[900] mb-6 text-black tracking-wider">
+        SHOP BY IMAGE
+      </h3>
       <div className="flex gap-3 overflow-x-auto">
         {products.slice(0, 6).map((product) => (
           <NavLink
@@ -472,7 +542,7 @@ function ShopByImages() {
               src={product.featuredImage?.url}
               alt={product.featuredImage?.altText || product.title}
               className="w-16 object-cover"
-              style={{ height: '200px' }}
+              style={{height: '200px'}}
             />
           </NavLink>
         ))}

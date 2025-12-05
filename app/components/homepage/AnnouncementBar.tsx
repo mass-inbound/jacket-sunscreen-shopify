@@ -13,7 +13,7 @@ interface AnnouncementBarContentProps {
 }
 
 function AnnouncementBarContent({
-  message = "30% OFF SITEWIDE",
+  message = "30% OFF SITEWIDE *discount applied at checkout.",
   cart
 }: AnnouncementBarContentProps) {
 
@@ -47,7 +47,7 @@ function AnnouncementBarContent({
 
 
 export function AnnouncementBar({
-  message = "30% OFF SITEWIDE",
+  message = "30% OFF SITEWIDE *discount applied at checkout.",
   cart
 }: AnnouncementBarProps) {
   if (!cart) {

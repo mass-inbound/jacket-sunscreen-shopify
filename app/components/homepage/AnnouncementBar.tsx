@@ -13,7 +13,7 @@ interface AnnouncementBarContentProps {
 }
 
 function AnnouncementBarContent({
-  message = "Free shipping on orders over $60 in the U.S.",
+  message = "30% OFF SITEWIDE",
   cart
 }: AnnouncementBarContentProps) {
 
@@ -47,7 +47,7 @@ function AnnouncementBarContent({
 
 
 export function AnnouncementBar({
-  message = "Free shipping on orders over $60 in the U.S.",
+  message = "30% OFF SITEWIDE",
   cart
 }: AnnouncementBarProps) {
   if (!cart) {

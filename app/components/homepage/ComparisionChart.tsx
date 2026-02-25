@@ -107,10 +107,10 @@ export function ComparisonChart() {
               <table className="w-full border-collapse">
                 <thead>
                   <tr>
-                    <th className="w-1/2 bg-[#FBAC18] px-2 pr-4 pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-black md:text-base rounded-tl-lg">
+                    <th className="w-1/2 bg-[#FBAC18] px-2 pr-4 pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-black rounded-tl-lg">
                       JACKET SUNSCREEN
                     </th>
-                    <th className="w-1/2 bg-black px-2 pr-4 l pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-white md:text-base rounded-tr-lg">
+                    <th className="w-1/2 bg-black px-2 pr-4 pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-white rounded-tr-lg">
                       OTHER SUNSCREENS
                     </th>
                   </tr>

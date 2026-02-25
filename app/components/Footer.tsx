@@ -1,6 +1,6 @@
-import {Suspense} from 'react';
-import {Await, NavLink} from 'react-router';
-import type {FooterQuery, HeaderQuery} from 'storefrontapi.generated';
+import { Suspense } from 'react';
+import { Await, NavLink } from 'react-router';
+import type { FooterQuery, HeaderQuery } from 'storefrontapi.generated';
 
 interface FooterProps {
   footer: Promise<FooterQuery | null>;
@@ -28,7 +28,7 @@ export function Footer({
                   </div>
                   <div className="text-center">
                     <h6 className="text-[12px] leading-[1.4em] font-bold text-white">
-                      The Gold Standard.
+                      OUTDOOR BEAUTY SYSTEM.
                     </h6>
                   </div>
                 </div>
@@ -43,15 +43,15 @@ export function Footer({
                         </label>
                         <div className="flex flex-col gap-[24px]">
                           <div className="border-[3px] border-[#FBAC18] rounded-[4px] p-[3px] pr-[15px] pl-[3px]">
-                            <input 
+                            <input
                               id="newsletter-email"
-                              type="email" 
+                              type="email"
                               className="w-full h-[40px] bg-transparent text-white placeholder-white/70 outline-none"
                               placeholder="Enter your email"
                             />
                           </div>
                           <div className="px-[42px] flex justify-center">
-                            <button 
+                            <button
                               type="submit"
                               className="bg-[#FBAC18] text-white font-normal px-[8px] py-[11px] text-[15px] leading-[1.2em] hover:bg-[#e69c15] transition-colors rounded-none whitespace-nowrap"
                             >
@@ -127,20 +127,20 @@ export function Footer({
                   </div>
 
                   {/* Social Media Icons */}
-                  <div className="absolute left-[66px] top-[251px] w-[186px] h-[39px]">
+                  <div className="absolute left-[122px] top-[251px] w-[186px] h-[39px]">
                     <div className="flex gap-[10px] w-full h-full">
                       <a href="https://www.instagram.com/jacketsunscreen/" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                         <img src="/images/instagram-icon.svg" alt="Instagram" className="w-full h-full" />
                       </a>
-                      <a href="https://www.facebook.com/JacketSunscreenOfficial" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
+                      <a href="https://www.facebook.com/profile.php?id=61579843926310" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                         <img src="/images/facebook-icon.svg" alt="Facebook" className="w-full h-full" />
                       </a>
-                      <a href="https://www.tiktok.com/@jacketsunscreen" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
+                      {/* <a href="https://www.tiktok.com/@jacketsunscreen" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                         <img src="/images/tiktok-icon.svg" alt="TikTok" className="w-full h-full" />
                       </a>
                       <a href="https://x.com/JACKET_SPF" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                         <img src="/images/twitter-icon.svg" alt="Twitter" className="w-full h-full" />
-                      </a>
+                      </a> */}
                     </div>
                   </div>
                 </div>
@@ -149,7 +149,7 @@ export function Footer({
                 <div className="px-[20px] pb-[39px]">
                   <div className="text-center">
                     <p className="text-[11px] leading-[1.4em] font-normal text-white">
-                      © 2025 by JACKET. All Rights Reserved.
+                      © 2026 by JACKET. All Rights Reserved.
                     </p>
                   </div>
                 </div>
@@ -231,22 +231,22 @@ export function Footer({
                           <a href="https://www.instagram.com/jacketsunscreen/" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                             <img src="/images/instagram-icon.svg" alt="Instagram" className="w-full h-full" />
                           </a>
-                          <a href="https://www.facebook.com/JacketSunscreenOfficial" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
+                          <a href="https://www.facebook.com/profile.php?id=61579843926310" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                             <img src="/images/facebook-icon.svg" alt="Facebook" className="w-full h-full" />
                           </a>
-                          <a href="https://www.tiktok.com/@jacketsunscreen" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
+                          {/* <a href="https://www.tiktok.com/@jacketsunscreen" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                             <img src="/images/tiktok-icon.svg" alt="TikTok" className="w-full h-full" />
                           </a>
                           <a href="https://x.com/JACKET_SPF" target="_blank" rel="noopener noreferrer" className="w-[39px] h-[39px] hover:opacity-80 transition-opacity">
                             <img src="/images/twitter-icon.svg" alt="Twitter" className="w-full h-full" />
-                          </a>
+                          </a> */}
                         </div>
                       </div>
 
                       {/* Copyright */}
                       <div className="absolute left-[12px] top-[292px] w-[499px]">
                         <p className="text-[14px] leading-[1.4em] font-normal text-white pb-[2px]">
-                          © 2025 by JACKET. All Rights Reserved.
+                          © 2026 by JACKET. All Rights Reserved.
                         </p>
                       </div>
                     </div>
@@ -257,14 +257,14 @@ export function Footer({
                       <div className="absolute left-[57px] top-[41px] w-[159px] h-[57px]">
                         <img src="/images/jacket-logo.png" alt="JACKET Sunscreen" className="w-full h-full object-cover" />
                       </div>
-                      
+
                       {/* Tagline */}
                       <div className="absolute left-[237px] top-[51px] w-[198px]">
                         <h6 className="text-[13px] leading-[1.4em] font-bold text-white pb-[11px]">
-                          The Gold Standard.
+                          OUTDOOR BEAUTY SYSTEM.
                         </h6>
                       </div>
-                      
+
                       {/* Newsletter Signup */}
                       <div className="absolute left-0 top-[98.41px] w-[461px]">
                         <div className="p-[24px] pb-[10px]">
@@ -276,14 +276,14 @@ export function Footer({
                             </div>
                             <div className="flex w-full items-center h-[46px]">
                               <div className="flex-1 border-[3px] border-[#FBAC18] rounded-[4px] p-[3px] pr-[15px] pl-[3px] mr-[24px]">
-                                <input 
+                                <input
                                   id="newsletter-email-desktop"
-                                  type="email" 
+                                  type="email"
                                   className="w-full h-[40px] bg-transparent text-white placeholder-white/70 outline-none"
                                   placeholder="Enter your email"
                                 />
                               </div>
-                              <button 
+                              <button
                                 type="submit"
                                 className="bg-[#FBAC18] text-white font-normal px-[4.25px] py-[11px] text-[15px] leading-[1.2em] hover:bg-[#e69c15] transition-colors rounded-none whitespace-nowrap h-[40px] w-[85.25px] flex items-center justify-center"
                               >
@@ -321,8 +321,8 @@ function FooterMenu({
         // if the url is internal, we strip the domain
         const url =
           item.url.includes('myshopify.com') ||
-          item.url.includes(publicStoreDomain) ||
-          item.url.includes(primaryDomainUrl)
+            item.url.includes(publicStoreDomain) ||
+            item.url.includes(primaryDomainUrl)
             ? new URL(item.url).pathname
             : item.url;
         const isExternal = !url.startsWith('/');

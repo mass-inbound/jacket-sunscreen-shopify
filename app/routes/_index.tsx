@@ -147,7 +147,7 @@ export default function Homepage() {
       <ComparisonChart />
 
       {/* Content Sections */}
-      <ContentSections />
+      {/* <ContentSections /> */}
 
       {/* PGA Partner Section */}
       <PGAPartner />

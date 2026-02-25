@@ -1,5 +1,5 @@
-import {Suspense, useState, useEffect} from 'react';
-import {Await, NavLink, useAsyncValue, useLocation} from 'react-router';
+import { Suspense, useState, useEffect } from 'react';
+import { Await, NavLink, useAsyncValue, useLocation } from 'react-router';
 import {
   type CartViewPayload,
   useAnalytics,
@@ -11,8 +11,10 @@ import type {
   CollectionFragment,
   ProductItemFragment,
 } from 'storefrontapi.generated';
-import {useAside} from '~/components/Aside';
-import {getCartItemCount} from '~/lib/inventory';
+import { useAside } from '~/components/Aside';
+import { getCartItemCount } from '~/lib/inventory';
+import HamburgerIcon from "../assets/HamburgerIcon.svg";
+import SearchIcon from "../assets/SearchIcon.svg"
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -29,7 +31,7 @@ export function Header({
   cart,
   publicStoreDomain,
 }: HeaderProps) {
-  const {shop, menu} = header;
+  const { shop, menu } = header;
   const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
@@ -54,7 +56,8 @@ export function Header({
           <div
             className={`absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)] transition-opacity duration-300`}
             style={{
-              background: '#FBAC18',
+              // background: '#FBAC18',
+              background: '#000',
               opacity: isScrolled ? 0.8 : 1,
             }}
           />
@@ -71,13 +74,13 @@ export function Header({
                 prefetch="intent"
                 to="/"
                 className="flex items-center select-none"
-                style={{textDecoration: 'none'}}
+                style={{ textDecoration: 'none' }}
                 end
               >
                 <img
-                  src="/assets/logo2.png"
+                  src="/images/JACKET-Website-Nav-Logo.svg"
                   alt="Logo"
-                  className="block w-[80px] h-[32px] md:w-[167px] md:h-[57px] lg:w-[237px] lg:h-[77px] xl:w-[277px] xl:h-[85px] object-contain"
+                  className="block h-[50px] md:h-[57px] lg:h-[77px] xl:h-[115px] object-contain mt-3"
                 />
               </NavLink>
             </div>
@@ -107,7 +110,7 @@ export function HeaderMenu({
   isLoggedIn?: Promise<boolean>;
 }) {
   const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-4 lg:gap-6 items-center z-10' : 'flex flex-col'} `;
-  const {close} = useAside();
+  const { close } = useAside();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
   const [products, setProducts] = useState<ProductItemFragment[]>([]);
   const [productsLoading, setProductsLoading] = useState(true);
@@ -148,12 +151,12 @@ export function HeaderMenu({
   const generateShopItems = () => {
     if (productsLoading) {
       return [
-        {id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all'},
+        { id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all' },
       ];
     }
 
     const shopItems = [
-      {id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all'},
+      { id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all' },
     ];
 
     // Add dynamic products from nav-menu-products collection
@@ -194,17 +197,17 @@ export function HeaderMenu({
       title: 'EXPLORE',
       url: '#',
       items: [
-        {id: 'retailers', title: 'RETAILERS', url: '/pages/retailers'},
-        {id: 'reviews', title: 'REVIEWS', url: '/pages/reviews'},
-        {id: 'contact', title: 'CONTACT', url: '/pages/contact'},
-        {id: 'about', title: 'ABOUT', url: '/pages/about'},
+        { id: 'retailers', title: 'RETAILERS', url: '/pages/retailers' },
+        { id: 'reviews', title: 'REVIEWS', url: '/pages/reviews' },
+        { id: 'contact', title: 'CONTACT', url: '/pages/contact' },
+        { id: 'about', title: 'ABOUT', url: '/pages/about' },
       ],
     },
     {
       id: 'education',
       title: 'EDUCATION',
       url: '#',
-      items: [{id: 'faq', title: 'FAQ', url: '/pages/faq'}],
+      items: [{ id: 'faq', title: 'FAQ', url: '/pages/faq' }],
     },
   ];
 
@@ -247,7 +250,7 @@ export function HeaderMenu({
             prefetch="intent"
             to="/account"
             className=" py-2 font-bold text-[16px] tracking-wider text-black hover:text-[#fbac17] transition-colors"
-            style={{textDecoration: 'none'}}
+            style={{ textDecoration: 'none' }}
             onClick={close}
           >
             <Suspense fallback="Log In">
@@ -265,7 +268,7 @@ export function HeaderMenu({
         return (
           <div key={item.id} className={viewport === 'mobile' ? 'mb-0' : ''}>
             <NavLink
-              className={({isActive}) => {
+              className={({ isActive }) => {
                 // For parent items with submenus, never highlight them
                 // For direct menu items without submenus, use normal isActive
                 let shouldHighlight = false;
@@ -274,30 +277,27 @@ export function HeaderMenu({
                 }
                 // Note: Parent items with submenus will never be highlighted
 
-                const classes = `${
-                  viewport === 'desktop'
-                    ? `font-semibold text-[14px] lg:text-[14px] tracking-widest transition-colors px-1 py-0.5 rounded ${
-                        shouldHighlight
-                          ? 'text-[#fbac17] !important'
-                          : 'text-white hover:text-black'
-                      }`
-                    : `block py-1 font-bold text-[14px] tracking-wider border-0 ${
-                        shouldHighlight
-                          ? 'text-[#fbac17] !important'
-                          : 'text-black'
-                      }`
-                } ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`;
+                const classes = `${viewport === 'desktop'
+                  ? `font-semibold text-[14px] lg:text-[14px] tracking-widest transition-colors px-1 py-0.5 rounded ${shouldHighlight
+                    ? 'text-[#fbac17] !important'
+                    : 'text-white hover:text-black'
+                  }`
+                  : `block py-1 font-bold text-[14px] tracking-wider border-0 ${shouldHighlight
+                    ? 'text-[#fbac17] !important'
+                    : 'text-black'
+                  }`
+                  } ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`;
 
                 return classes;
               }}
               style={
                 viewport === 'desktop'
                   ? {
-                      letterSpacing: '0.12em',
-                      textDecoration: 'none',
-                      fontSize: '14px',
-                    }
-                  : {textDecoration: 'none'}
+                    letterSpacing: '0.12em',
+                    textDecoration: 'none',
+                    fontSize: '14px',
+                  }
+                  : { textDecoration: 'none' }
               }
               end
               onClick={
@@ -328,12 +328,11 @@ export function HeaderMenu({
                 {item.items.map((subItem) => (
                   <NavLink
                     key={subItem.id}
-                    className={({isActive}) => {
-                      return `block py-0.5 text-[14px] tracking-wide ${
-                        isActive ? 'text-[#fbac17]' : 'text-black'
-                      }`;
+                    className={({ isActive }) => {
+                      return `block py-0.5 text-[14px] tracking-wide ${isActive ? 'text-[#fbac17]' : 'text-black'
+                        }`;
                     }}
-                    style={{textDecoration: 'none', fontSize: '14px'}}
+                    style={{ textDecoration: 'none', fontSize: '14px' }}
                     onClick={close}
                     prefetch="intent"
                     to={subItem.url}
@@ -366,7 +365,7 @@ function HeaderCtas({
           prefetch="intent"
           to="/account"
           className="text-white font-bold hover:text-gray-200 transition-colors text-xs md:text-sm lg:text-base"
-          style={{textDecoration: 'none'}}
+          style={{ textDecoration: 'none' }}
         >
           <Suspense fallback="Log In">
             <Await resolve={isLoggedIn} errorElement="Sign in">
@@ -390,13 +389,7 @@ function HeaderMenuMobileToggle() {
       onClick={() => aside.open('mobile')}
       aria-label="Open menu"
     >
-      <img
-        src="/assets/sandIcon.svg"
-        alt="Menu"
-        width="20"
-        height="20"
-        className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-10 xl:h-10"
-      />
+      <img src={HamburgerIcon} alt="Menu" className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-11 xl:h-11" />
     </button>
   );
 }
@@ -410,21 +403,22 @@ function SearchToggle() {
       onClick={() => aside.open('search')}
     >
       <img
-        src="/assets/searchIcon.svg"
+        src={SearchIcon}
         alt="Search"
         width="16"
         height="16"
         className="md:w-5 md:h-5"
       />
+
     </button>
   );
 }
 
-function CartBadge({count}: {count: number | null}) {
+function CartBadge({ count }: { count: number | null }) {
   const analytics = useAnalytics();
   const aside = useAside(); // Remove try-catch, let it throw if context is missing
 
-  const {publish, shop, cart, prevCart} = analytics;
+  const { publish, shop, cart, prevCart } = analytics;
 
   return (
     <button
@@ -450,7 +444,7 @@ function CartBadge({count}: {count: number | null}) {
         height="16"
         className="md:w-5 md:h-5"
         fill="none"
-        stroke="currentColor"
+        stroke="white"
         strokeWidth="2"
         viewBox="0 0 24 24"
       >
@@ -464,7 +458,7 @@ function CartBadge({count}: {count: number | null}) {
   );
 }
 
-function CartToggle({cart}: Pick<HeaderProps, 'cart'>) {
+function CartToggle({ cart }: Pick<HeaderProps, 'cart'>) {
   return (
     <Suspense fallback={<CartBadge count={null} />}>
       <Await resolve={cart}>
@@ -486,7 +480,7 @@ function CartBanner() {
 function ShopByImages() {
   const [products, setProducts] = useState<ProductItemFragment[]>([]);
   const [loading, setLoading] = useState(true);
-  const {close} = useAside();
+  const { close } = useAside();
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -542,7 +536,7 @@ function ShopByImages() {
               src={product.featuredImage?.url}
               alt={product.featuredImage?.altText || product.title}
               className="w-16 object-cover"
-              style={{height: '200px'}}
+              style={{ height: '200px' }}
             />
           </NavLink>
         ))}

@@ -80,10 +80,9 @@ export function ComparisonChart() {
             <span className="bg-[#FBAC18] px-2 py-1 rounded font-black text-black">
               JACKET
             </span>
-            <span className="ml-2">: The Gold Standard</span>
           </h2>
           <p className="mt-3 text-sm font-normal text-black">
-           All sunscreens are not created equal.
+            All sunscreens are not created equal.
           </p>
         </div>
 
@@ -91,7 +90,7 @@ export function ComparisonChart() {
           {/* Floating images */}
           <div className="">
             <div className=" absolute -top-20 left-0 z-30 hidden md:flex w-1/2 justify-end -space-x-4 md:-space-x-16 ">
-              <img src="/assets/table-a-1.png" alt="Table A 1" className="h-28  object-contain"/>
+              <img src="/assets/table-a-1.png" alt="Table A 1" className="h-28  object-contain" />
               <img src="/assets/table-a-2.png" alt="Table A 2" className="h-28 object-contain" />
               <img src="/assets/table-a-3.png" alt="Table A 3" className="h-16  mt-[47px] object-contain" />
             </div>
@@ -106,38 +105,37 @@ export function ComparisonChart() {
           <div className="rounded-lg border border-[#121212] bg-white shadow">
             <div className="overflow-x-auto">
               <table className="w-full border-collapse">
-              <thead>
-                <tr>
-                  <th className="w-1/2 bg-[#FBAC18] px-2 pr-4 pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-black md:text-base rounded-tl-lg">
-                    JACKET SUNSCREEN
-                  </th>
-                  <th className="w-1/2 bg-black px-2 pr-4 l pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-white md:text-base rounded-tr-lg">
-                    OTHER SUNSCREENS
-                  </th>
-                </tr>
-              </thead>
-              <tbody>
-                {rows.map((row) => (
-                  <tr key={row.label} className="border-t border-[#121212]">
-                    <td className="bg-[#FFF8EB] pl-4 pr-2 md:pl-6 md:pr-4 py-2 md:py-3 text-[15px] font-bold">
-                      <div className="flex items-center gap-2 md:gap-3 text-[#000000]">
-                        <GoldCheckIcon />
-                        <span>{row.label}</span>
-                      </div>
-                    </td>
-                    <td className="bg-[#E0E0E0] pl-4 pr-2 md:pl-6 md:pr-4 py-2 md:py-3 text-[15px] font-bold">
-                      <div
-                        className={`flex items-center gap-2 md:gap-3 text-[#000000] ${
-                          row.rightHas ? "opacity-100" : "opacity-60"
-                        }`}
-                      >
-                        {row.rightHas ? <GreyCheckIcon /> : <GreyCrossIcon />}
-                        <span>{row.rightText}</span>
-                      </div>
-                    </td>
+                <thead>
+                  <tr>
+                    <th className="w-1/2 bg-[#FBAC18] px-2 pr-4 pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-black rounded-tl-lg">
+                      JACKET SUNSCREEN
+                    </th>
+                    <th className="w-1/2 bg-black px-2 pr-4 pl-4 md:px-4 md:pr-36 py-2 md:py-3 text-left text-xs md:text-sm font-bold text-white rounded-tr-lg">
+                      OTHER SUNSCREENS
+                    </th>
                   </tr>
-                ))}
-              </tbody>
+                </thead>
+                <tbody>
+                  {rows.map((row) => (
+                    <tr key={row.label} className="border-t border-[#121212]">
+                      <td className="bg-[#FFF8EB] pl-4 pr-2 md:pl-6 md:pr-4 py-2 md:py-3 text-[15px] font-bold">
+                        <div className="flex items-center gap-2 md:gap-3 text-[#000000]">
+                          <GoldCheckIcon />
+                          <span>{row.label}</span>
+                        </div>
+                      </td>
+                      <td className="bg-[#E0E0E0] pl-4 pr-2 md:pl-6 md:pr-4 py-2 md:py-3 text-[15px] font-bold">
+                        <div
+                          className={`flex items-center gap-2 md:gap-3 text-[#000000] ${row.rightHas ? "opacity-100" : "opacity-60"
+                            }`}
+                        >
+                          {row.rightHas ? <GreyCheckIcon /> : <GreyCrossIcon />}
+                          <span>{row.rightText}</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
               </table>
             </div>
             {/* See More Button inside wrapper so border encloses it */}

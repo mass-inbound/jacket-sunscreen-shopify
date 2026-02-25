@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useRouteLoaderData } from 'react-router';
 import { Image, Money } from '@shopify/hydrogen';
-import type { 
-  ProductItemFragment, 
-  CollectionItemFragment, 
-  RecommendedProductFragment 
+import type {
+  ProductItemFragment,
+  CollectionItemFragment,
+  RecommendedProductFragment
 } from 'storefrontapi.generated';
 import { AddToCartButton } from '~/components/AddToCartButton';
 import { useAside } from '~/components/Aside';
@@ -21,21 +21,21 @@ export function FeaturedProducts({
   // Function to determine if a product is new
   const isNewProduct = (product: any) => {
     // Only check if product has "new" related tags - no automatic detection
-    if (product.tags && product.tags.some((tag: string) => 
-      tag.toLowerCase().includes('new') || 
+    if (product.tags && product.tags.some((tag: string) =>
+      tag.toLowerCase().includes('new') ||
       tag.toLowerCase().includes('arrival') ||
       tag.toLowerCase().includes('latest')
     )) {
       return true;
     }
-    
+
     return false;
   };
 
   return (
     <section className="py-8 md:py-12 lg:py-16 px-4 md:px-48 lg:px-36 xl:px-72">
       <div className="max-w-7xl mx-auto">
-       
+
         <div className="grid grid-cols-1 gap-y-8 sm:grid-cols-2">
           {products.map((product) => (
             <ProductCard key={product.id} product={product} isNew={isNewProduct(product)} />
@@ -46,10 +46,10 @@ export function FeaturedProducts({
   );
 }
 
-function ProductCard({ 
-  product, 
-  isNew 
-}: { 
+function ProductCard({
+  product,
+  isNew
+}: {
   product: ProductItemFragment | CollectionItemFragment | RecommendedProductFragment;
   isNew: boolean;
 }) {
@@ -57,18 +57,18 @@ function ProductCard({
   const [quantity, setQuantity] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
-  
+
   // Fix hydration by only enabling interactions after mounting
   useEffect(() => {
     setMounted(true);
   }, []);
-  
+
   const { open } = useAside();
   const rootData = useRouteLoaderData<RootLoader>('root');
   const cart = rootData?.cart as any;
   const image = product.featuredImage;
   const price = product.priceRange?.minVariantPrice;
-  
+
   // Get the first available variant for add to cart
   const firstVariant = (product as any).variants?.nodes?.[0] || null;
 
@@ -87,7 +87,7 @@ function ProductCard({
       setQuantity(prev => prev + 1);
     }
   };
-  
+
   const decrementQuantity = () => {
     if (quantity > 1) {
       setQuantity(prev => prev - 1);
@@ -112,7 +112,7 @@ function ProductCard({
 
   return (
     <>
-      <div 
+      <div
         className="relative group flex flex-col"
         onMouseEnter={() => mounted && setIsHovered(true)}
         onMouseLeave={() => mounted && setIsHovered(false)}
@@ -131,7 +131,7 @@ function ProductCard({
               />
             </Link>
           )}
-          
+
           {/* Quick View Overlay - Only covers bottom area */}
           {showHoverEffects && (
             <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center pb-6 transition-opacity duration-300 pointer-events-none">
@@ -163,7 +163,7 @@ function ProductCard({
         <div className="text-center px-4 flex-1 flex flex-col justify-between">
           <div>
             {/* Product Title */}
-            <Link 
+            <Link
               to={`/products/${product.handle}`}
               className="block mb-3 no-underline hover:no-underline"
             >
@@ -172,7 +172,7 @@ function ProductCard({
                 <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-[25px] h-[2px] bg-black"></span>
               </h3>
             </Link>
-            
+
             {/* Price */}
             {price && (
               <div className="mb-4">
@@ -180,7 +180,7 @@ function ProductCard({
               </div>
             )}
           </div>
-          
+
           {/* Add to Cart Button */}
           {firstVariant && mounted ? (
             <AddToCartButton
@@ -194,12 +194,12 @@ function ProductCard({
               disabled={!firstVariant.availableForSale || maxQuantity === 0}
             >
               <button className="w-full md:w-[80%] bg-[#FBAC18] text-black font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
-                {!firstVariant.availableForSale ? 'Sold out' : 
-                 maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
+                {!firstVariant.availableForSale ? 'Sold out' :
+                  maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
               </button>
             </AddToCartButton>
           ) : (
-            <button 
+            <button
               onClick={handleAddToCart}
               disabled={!mounted}
               className="w-full bg-[#FBAC18] text-white font-bold py-2 px-4 rounded text-sm md:text-base hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -212,7 +212,7 @@ function ProductCard({
 
       {/* Quick View Modal */}
       {showModal && (
-        <QuickViewModal 
+        <QuickViewModal
           product={product}
           firstVariant={firstVariant}
           quantity={quantity}
@@ -227,12 +227,12 @@ function ProductCard({
   );
 }
 
-function QuickViewModal({ 
-  product, 
-  firstVariant, 
-  quantity, 
-  maxQuantity, 
-  onClose, 
+function QuickViewModal({
+  product,
+  firstVariant,
+  quantity,
+  maxQuantity,
+  onClose,
   onAddToCart,
   onIncrementQuantity,
   onDecrementQuantity
@@ -249,7 +249,7 @@ function QuickViewModal({
   const image = product.featuredImage;
   const price = product.priceRange?.minVariantPrice;
   const { open, type } = useAside();
-  
+
   // Auto-close modal when cart opens
   useEffect(() => {
     if (type === 'cart') {
@@ -264,7 +264,7 @@ function QuickViewModal({
         onClose();
       }
     };
-    
+
     document.addEventListener('keydown', handleEscKey);
     return () => {
       document.removeEventListener('keydown', handleEscKey);
@@ -278,7 +278,7 @@ function QuickViewModal({
       document.body.style.overflow = 'unset';
     };
   }, []);
-  
+
   // Generate SKU from product handle or variant
   const sku = firstVariant?.sku || `${product.handle?.toUpperCase().replace(/-/g, '')}-01` || 'SKU-N/A';
 
@@ -295,7 +295,7 @@ function QuickViewModal({
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
       style={{ zIndex: 9999 }}
       role="dialog"
@@ -309,24 +309,24 @@ function QuickViewModal({
         aria-label="Close quick view"
         type="button"
       />
-      
-      <div 
+
+      <div
         className="bg-white rounded-none max-w-4xl w-full max-h-[90vh] overflow-hidden relative z-10"
         role="document"
       >
         {/* Close Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 z-10 text-gray-500 hover:text-gray-700 text-2xl w-12 h-12 flex items-center justify-center transition-colors"
+          className="absolute top-2 right-2 z-10 text-gray-500 hover:text-gray-700 text-3xl w-12 h-12 flex items-center justify-center transition-colors"
           aria-label="Close quick view"
           type="button"
         >
           ×
         </button>
-        
-        <div className="flex flex-col md:flex-row">
+
+        <div className="flex flex-col md:flex-row max-h-[85svh] overflow-y-scroll">
           {/* Product Image */}
-          <div className="md:w-1/2 p-6">
+          <div className="h-[230px] md:h-auto md:w-1/2 p-2 md:p-6">
             {image && (
               <Image
                 alt={image.altText || product.title}
@@ -338,33 +338,33 @@ function QuickViewModal({
               />
             )}
           </div>
-          
+
           {/* Product Details */}
           <div className="md:w-1/2 p-6 flex flex-col justify-between">
             <div>
               {/* Product Title */}
-              <h2 
+              <h2
                 id="quick-view-title"
-                className="text-2xl md:text-3xl font-bold text-[#FBAC18] mb-4"
+                className="text-2xl md:text-3xl font-bold text-[#FBAC18] mb-[6px] md:mb-4"
               >
                 {product.title}
               </h2>
-              
+
               {/* Price */}
-              <div className="mb-4">
+              <div className="mb-[6px] md:mb-4">
                 {price && (
-                  <Money 
-                    data={price} 
+                  <Money
+                    data={price}
                     className="text-2xl font-bold text-[#1B1A1B]"
                   />
                 )}
               </div>
-              
+
               {/* SKU */}
-              <div className="mb-6">
+              <div className="mb-3.5 md:mb-6">
                 <span className="text-sm text-gray-600">SKU: {sku}</span>
               </div>
-              
+
               {/* Quantity Selector */}
               <div className="mb-6">
                 <div className="block text-sm font-medium text-gray-700 mb-2">
@@ -379,14 +379,14 @@ function QuickViewModal({
                     aria-label="Decrease quantity"
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19 13H5v-2h14v2z"/>
+                      <path d="M19 13H5v-2h14v2z" />
                     </svg>
                   </button>
-                  
+
                   <div className="flex-1 text-center">
                     <span className="text-[#1B1A1B] font-bold">{quantity}</span>
                   </div>
-                  
+
                   <button
                     onClick={onIncrementQuantity}
                     className="p-3 text-[#1B1A1B] hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -406,7 +406,7 @@ function QuickViewModal({
                 )}
               </div>
             </div>
-            
+
             {/* Buttons */}
             <div className="space-y-4">
               {/* Add to Cart Button */}
@@ -421,16 +421,16 @@ function QuickViewModal({
                   onClick={handleModalAddToCart}
                   disabled={!firstVariant.availableForSale || maxQuantity === 0}
                 >
-                  <button 
+                  <button
                     className="w-full bg-[#FBAC18] text-black font-bold py-3 px-6 rounded text-lg hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     type="button"
                   >
-                    {!firstVariant.availableForSale ? 'Sold out' : 
-                     maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
+                    {!firstVariant.availableForSale ? 'Sold out' :
+                      maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
                   </button>
                 </AddToCartButton>
               ) : (
-                <button 
+                <button
                   disabled={true}
                   className="w-full bg-[#FBAC18] text-white font-bold py-3 px-6 rounded text-lg hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   type="button"
@@ -438,7 +438,7 @@ function QuickViewModal({
                   Loading...
                 </button>
               )}
-              
+
               {/* View More Details Link */}
               <div className="text-center">
                 <Link

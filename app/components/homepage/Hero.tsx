@@ -16,16 +16,17 @@ export function Hero({
   ctaLink = "/products"
 }: HeroProps) {
   return (
-    <section className="relative w-full h-[550px] md:h-[700px] lg:h-[896px] mb-4 md:mb-8 overflow-hidden">
+    // <section className="relative w-full h-[550px] md:h-[700px] lg:h-[896px] mb-4 md:mb-8 overflow-hidden">
+    <section className="relative w-full h-[calc(100vh-145px)] mb-4 md:mb-8">
       {/* Background Video */}
       <div className="absolute inset-0 w-full h-full">
-        <video
+        {/* <video
           autoPlay
           muted
           loop
           playsInline
           className="w-full h-full object-cover"
-          style={{ 
+          style={{
             objectPosition: 'center',
             minWidth: '100%',
             minHeight: '100%'
@@ -33,39 +34,36 @@ export function Hero({
         >
           <source src="/assets/file.mp4" type="video/mp4" />
           Your browser does not support the video tag.
-        </video>
+        </video> */}
+        <img src="/images/JACKET-hero-image.png" alt="" className='w-full h-full lg:px-[30px] xl:px-[100px] object-cover lg:object-fill'
+        />
       </div>
-      
+
       {/* Mobile Layout */}
-      <div className="md:hidden">
-        {/* Mobile text elements over video background */}
+      {/* <div className="md:hidden">
+        // Mobile text elements over video background 
         <div className="absolute top-0 left-0 right-0 z-10">
-          {/* "IT'S ALWAYS" */}
+           // "IT'S ALWAYS" 
           <div className="absolute top-[43px] left-[19px] w-[280px]">
             <h1 className="text-[26px] leading-[1.1] font-[400] text-white text-left">THE
             </h1>
             <h1 className="text-6xl lg:text-[86px] leading-[1.1] font-[800] text-[#FBAC18] mb-2 lg:mb-[9px]">
-                  GOLD
+              GOLD
             </h1>
             <h1 className="text-[29px] leading-[1.1] font-[400] text-white text-left">STANDARD
             </h1>
           </div>
 
-         
-          
-
-       
-
-          {/* "THE NEW FACE OF SUNSCREEN" */}
+           // "THE NEW FACE OF SUNSCREEN" 
           <div className="absolute top-[184.4px] left-[5px] w-[310px] pb-[10px]">
             <h6 className="text-[17.75px] leading-[1.15] font-[700] text-white text-left pl-4">
               THE NEW FACE OF SUNSCREEN</h6>
           </div>
         </div>
 
-        {/* Yellow bottom section */}
+         // Yellow bottom section 
         <div className="absolute bottom-0 left-0 right-0 h-[173px] bg-[#FBAC18]">
-          {/* Product image - half outside, half inside */}
+          // Product image - half outside, half inside 
           <div className="absolute left-1/2 transform -translate-x-1/2 -top-[146px]">
             <Link to={ctaLink || '/products'} aria-label="View JACKET Sunscreen Bottle">
               <img
@@ -75,8 +73,8 @@ export function Hero({
               />
             </Link>
           </div>
-          
-          {/* Text inside yellow section */}
+
+          // Text inside yellow section 
           <div className="pt-[72px] pb-[29px] px-5 h-full flex items-center justify-center">
             <h5 className="text-[16px] leading-[1.411] font-[600] text-black text-center">
               ULTIMATE PERFORMANCE,<br />
@@ -85,16 +83,16 @@ export function Hero({
             </h5>
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* Desktop/Tablet Layout */}
-      <div className="hidden md:block">
-        {/* Content Container */}
+      {/* <div className="hidden md:block">
+        // Content Container 
         <div className="absolute top-16 lg:top-[200px] left-0 right-0 flex flex-col justify-center z-10">
-          {/* Main Content */}
+          // Main Content 
           <div className="px-8 lg:px-[100px]">
             <div className="w-full">
-              {/* Title Stack */}
+              // Title Stack 
               <div className="flex flex-col items-start mb-6 lg:mb-[28px]">
                 <h1 className="text-4xl lg:text-[52px] leading-[1.1] font-[500] text-white mb-2 lg:mb-[9px]">
                   THE
@@ -109,7 +107,7 @@ export function Hero({
             </div>
           </div>
 
-          {/* Description */}
+          // Description 
           <div className="px-8 lg:px-[100px] pb-4 lg:pb-[10px]">
             <h5 className="text-base lg:text-[19px] leading-[1.411] font-[600] text-white max-w-md lg:max-w-none">
               ULTIMATE PERFORMANCE,<br />
@@ -119,20 +117,20 @@ export function Hero({
           </div>
         </div>
 
-        {/* Yellow Product Section */}
+        // Yellow Product Section 
         <div className="absolute top-0 right-0 w-3/5 lg:w-auto h-auto">
           <div className="relative w-[350px] h-[600px] lg:h-[817px] bg-[#FBAC18] flex items-center justify-center ml-auto">
-            {/* Image */}
+            // Image 
             <div className="absolute -left-16 lg:-left-1/4 flex items-center justify-center">
-              <img 
-                src="/assets/main-sunscreen.png" 
+              <img
+                src="/assets/main-sunscreen.png"
                 alt="Main Sunscreen Product"
                 className="w-full h-full object-cover max-w-[300px] lg:max-w-none"
               />
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </section>
   );
 } 

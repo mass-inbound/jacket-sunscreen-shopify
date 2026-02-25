@@ -1,4 +1,4 @@
-import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
 import {
   Await,
   useLoaderData,
@@ -6,13 +6,13 @@ import {
   type MetaFunction,
   useRouteLoaderData,
 } from 'react-router';
-import {Suspense} from 'react';
-import {Image, Money} from '@shopify/hydrogen';
+import { Suspense } from 'react';
+import { Image, Money } from '@shopify/hydrogen';
 import type {
   FeaturedCollectionFragment,
   RecommendedProductsQuery,
 } from 'storefrontapi.generated';
-import {ProductItem} from '~/components/ProductItem';
+import { ProductItem } from '~/components/ProductItem';
 import {
   Hero,
   FeaturedProducts,
@@ -28,12 +28,12 @@ import {
   ImageGallery,
   OverlaySection,
 } from '~/components/homepage';
-import {PGAPartner} from '~/components/homepage/PGAPartner';
-import type {RootLoader} from '~/root';
-import {useFirstVisit} from '~/hooks/useFirstVisit';
+import { PGAPartner } from '~/components/homepage/PGAPartner';
+import type { RootLoader } from '~/root';
+import { useFirstVisit } from '~/hooks/useFirstVisit';
 
 export const meta: MetaFunction = () => {
-  return [{title: 'Jacket Sunscreen | Premium Sun Protection'}];
+  return [{ title: 'Jacket Sunscreen | Premium Sun Protection' }];
 };
 
 export async function loader(args: LoaderFunctionArgs) {
@@ -43,16 +43,16 @@ export async function loader(args: LoaderFunctionArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
  * Load data necessary for rendering content above the fold. This is the critical data
  * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
  */
-async function loadCriticalData({context}: LoaderFunctionArgs) {
+async function loadCriticalData({ context }: LoaderFunctionArgs) {
   try {
-    const [{collections}, featuredProductsCollection] = await Promise.all([
+    const [{ collections }, featuredProductsCollection] = await Promise.all([
       context.storefront.query(FEATURED_COLLECTION_QUERY),
       context.storefront.query(FEATURED_PRODUCTS_COLLECTION_QUERY),
     ]);
@@ -76,7 +76,7 @@ async function loadCriticalData({context}: LoaderFunctionArgs) {
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context}: LoaderFunctionArgs) {
+function loadDeferredData({ context }: LoaderFunctionArgs) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error) => {
@@ -161,7 +161,7 @@ export default function Homepage() {
       {/* Sticky Save 15% Button */}
       <button
         onClick={openPopup}
-        className="fixed bottom-4 left-4 bg-[#FBAC18] text-black font-bold rounded shadow-lg hover:bg-[#e69c15] transition-colors z-50 py-3 px-6 text-lg sm:py-4 sm:px-8 sm:text-xl md:py-5 md:px-10 md:text-2xl lg:py-[16px] lg:px-[32px] lg:text-[32px] xl:py-[18px] xl:px-[40px] xl:text-[40px]"
+        className="fixed bottom-[60px] left-4 bg-[#FBAC18] text-black font-bold rounded shadow-lg hover:bg-[#e69c15] transition-colors z-50 py-3 px-6 text-lg sm:py-4 sm:px-8 sm:text-xl md:py-5 md:px-10 md:text-2xl lg:py-[16px] lg:px-[32px] lg:text-[32px] xl:py-[18px] xl:px-[40px] xl:text-[40px]"
       >
         Save 15%
       </button>

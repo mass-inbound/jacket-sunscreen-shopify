@@ -44,7 +44,7 @@ export function Hero({
 
         {/* Desktop image */}
         <img
-          src="/images/JACKET-hero-image.png"
+          src="/images/JACKET-hero-image1.png"
           alt=""
           className="hidden lg:block w-full h-full lg:px-[30px] xl:px-[100px] object-cover lg:object-contain"
         />

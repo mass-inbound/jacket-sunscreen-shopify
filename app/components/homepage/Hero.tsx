@@ -17,8 +17,8 @@ export function Hero({
 }: HeroProps) {
   return (
     // <section className="relative w-full h-[550px] md:h-[700px] lg:h-[896px] mb-4 md:mb-8 overflow-hidden">
-    <section className="relative w-full h-[calc(100vh-145px)] mb-4 md:mb-8">
-      {/* Background Video */}
+    <section className="relative w-full h-[calc(100vh-145px)] lg:mb-8">
+      {/* Background image */}
       <div className="absolute inset-0 w-full h-full">
         {/* <video
           autoPlay
@@ -35,7 +35,18 @@ export function Hero({
           <source src="/assets/file.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </video> */}
-        <img src="/images/JACKET-hero-image.png" alt="" className='w-full h-full lg:px-[30px] xl:px-[100px] object-cover lg:object-fill'
+        {/* Mobile image */}
+        <img
+          src="/images/JACKET-HERO-MOBILE.png"
+          alt=""
+          className="block lg:hidden w-full h-full object-contain"
+        />
+
+        {/* Desktop image */}
+        <img
+          src="/images/JACKET-hero-image.png"
+          alt=""
+          className="hidden lg:block w-full h-full lg:px-[30px] xl:px-[100px] object-cover lg:object-contain"
         />
       </div>
 

@@ -37,7 +37,7 @@ export function Hero({
         </video> */}
         {/* Mobile image */}
         <img
-          src="/images/JACKET-HERO-MOBILE1.png"
+          src="/images/JACKET-HERO-MOBILE2.jpg"
           alt=""
           className="block lg:hidden w-full h-full object-contain"
         />

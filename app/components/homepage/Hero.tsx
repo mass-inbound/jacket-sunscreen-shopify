@@ -4,144 +4,80 @@ import { Link } from 'react-router';
 interface HeroProps {
   title?: string;
   subtitle?: string;
-  description?: string;
   ctaText?: string;
   ctaLink?: string;
+  bottomText?: string;
 }
 
 export function Hero({
-  title = "THE STANDARD",
-  subtitle = "ULTIMATE PERFORMANCE, ANTI-AGING SUNSCREEN THAT PROTECTS + REPAIRS",
+  title = "OUTDOOR BEAUTY SYSTEM",
+  subtitle = "DERMATOLOGIST-DEVELOPED, ANTIOXIDANT-ENRICHED, ANTI-AGING SUN AND SKIN CARE THAT PROTECTS, REPAIRS, HEALS AND HYDRATES.",
   ctaText = "SHOP NOW",
-  ctaLink = "/products"
+  ctaLink = "/products",
+  bottomText = "COMFORT AND CONFIDENCE WITHOUT COMPROMISE."
 }: HeroProps) {
   return (
-    // <section className="relative w-full h-[550px] md:h-[700px] lg:h-[896px] mb-4 md:mb-8 overflow-hidden">
-    <section className="relative w-full h-[calc(100vh-145px)] lg:mb-8">
-      {/* Background image */}
+    <section className="relative w-full h-[calc(100vh-145px)] min-h-[560px] overflow-hidden">
+      {/* Background images */}
       <div className="absolute inset-0 w-full h-full">
-        {/* <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          className="w-full h-full object-cover"
-          style={{
-            objectPosition: 'center',
-            minWidth: '100%',
-            minHeight: '100%'
-          }}
-        >
-          <source src="/assets/file.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video> */}
-        {/* Mobile image */}
         <img
-          src="/images/JACKET-HERO-MOBILE2.jpg"
-          alt=""
-          className="block lg:hidden w-full h-full object-contain"
+          src="/images/JACKET_MOBILE_PRODUCTS1.png"
+          alt="Jacket skincare products"
+          className="block md:hidden w-full h-full object-cover object-center"
         />
 
-        {/* Desktop image */}
         <img
-          src="/images/JACKET-hero-image1.png"
-          alt=""
-          className="hidden lg:block w-full h-full lg:px-[30px] xl:px-[100px] object-cover lg:object-contain"
+          src="/images/JACKET_DESKTOP_PRODUCTS.png"
+          alt="Jacket skincare products"
+          className="hidden md:block w-full h-[93%] object-cover object-center"
         />
       </div>
 
-      {/* Mobile Layout */}
-      {/* <div className="md:hidden">
-        // Mobile text elements over video background 
-        <div className="absolute top-0 left-0 right-0 z-10">
-           // "IT'S ALWAYS" 
-          <div className="absolute top-[43px] left-[19px] w-[280px]">
-            <h1 className="text-[26px] leading-[1.1] font-[400] text-white text-left">THE
+      {/* Overlay content */}
+      <div className="relative z-10 h-full">
+        {/* Mobile text */}
+        <div className="md:hidden px-6 pt-10 text-center">
+          <h1 className="mx-auto max-w-[340px] text-[38px] leading-[0.95] font-semibold tracking-tight text-black">
+            OUTDOOR <br />
+            BEAUTY SYSTEM
+          </h1>
+
+          <div className="mx-auto mt-5 h-[3px] w-full max-w-[340px] bg-[#f9ad19]" />
+
+          <p className="mx-auto mt-5 max-w-[550px] text-[18px] leading-[1.22] font-light uppercase tracking-[0.01em] text-black">
+            {subtitle}
+          </p>
+        </div>
+
+        {/* Desktop text */}
+        <div className="hidden md:block">
+          <div className="max-w-[980px] px-10 pt-12 lg:px-12 lg:pt-4 xl:px-16">
+            <h1 className="max-w-[860px] text-[42px] leading-[0.95] font-semibold tracking-tight text-black lg:text-[45px]">
+              {title}
             </h1>
-            <h1 className="text-6xl lg:text-[86px] leading-[1.1] font-[800] text-[#FBAC18] mb-2 lg:mb-[9px]">
-              GOLD
-            </h1>
-            <h1 className="text-[29px] leading-[1.1] font-[400] text-white text-left">STANDARD
-            </h1>
-          </div>
 
-           // "THE NEW FACE OF SUNSCREEN" 
-          <div className="absolute top-[184.4px] left-[5px] w-[310px] pb-[10px]">
-            <h6 className="text-[17.75px] leading-[1.15] font-[700] text-white text-left pl-4">
-              THE NEW FACE OF SUNSCREEN</h6>
+            <div className="mt-3 h-[3px] w-[420px] bg-[#f9ad19] lg:w-[520px]" />
+
+            <p className="mt-5 max-w-[670px] text-[17px] leading-[1.35] font-[400] uppercase tracking-[0.01em] text-black lg:text-[20px]">
+              {subtitle}
+            </p>
           </div>
         </div>
 
-         // Yellow bottom section 
-        <div className="absolute bottom-0 left-0 right-0 h-[173px] bg-[#FBAC18]">
-          // Product image - half outside, half inside 
-          <div className="absolute left-1/2 transform -translate-x-1/2 -top-[146px]">
-            <Link to={ctaLink || '/products'} aria-label="View JACKET Sunscreen Bottle">
-              <img
-                src="/assets/main-sunscreen.png"
-                alt="Main Sunscreen Product"
-                className="w-[112px] h-auto object-contain -rotate-90"
-              />
-            </Link>
-          </div>
-
-          // Text inside yellow section 
-          <div className="pt-[72px] pb-[29px] px-5 h-full flex items-center justify-center">
-            <h5 className="text-[16px] leading-[1.411] font-[600] text-black text-center">
-              ULTIMATE PERFORMANCE,<br />
-              ANTI-AGING SUNSCREEN<br />
-              THAT PROTECTS + REPAIRS
-            </h5>
-          </div>
-        </div>
-      </div> */}
-
-      {/* Desktop/Tablet Layout */}
-      {/* <div className="hidden md:block">
-        // Content Container 
-        <div className="absolute top-16 lg:top-[200px] left-0 right-0 flex flex-col justify-center z-10">
-          // Main Content 
-          <div className="px-8 lg:px-[100px]">
-            <div className="w-full">
-              // Title Stack 
-              <div className="flex flex-col items-start mb-6 lg:mb-[28px]">
-                <h1 className="text-4xl lg:text-[52px] leading-[1.1] font-[500] text-white mb-2 lg:mb-[9px]">
-                  THE
-                </h1>
-                <h1 className="text-6xl lg:text-[86px] leading-[1.1] font-[800] text-[#FBAC18] mb-2 lg:mb-[9px]">
-                  GOLD
-                </h1>
-                <h1 className="text-4xl lg:text-[52px] leading-[1.1] font-[500] text-white mb-2 lg:mb-[9px]">
-                  STANDARD
-                </h1>
-              </div>
-            </div>
-          </div>
-
-          // Description 
-          <div className="px-8 lg:px-[100px] pb-4 lg:pb-[10px]">
-            <h5 className="text-base lg:text-[19px] leading-[1.411] font-[600] text-white max-w-md lg:max-w-none">
-              ULTIMATE PERFORMANCE,<br />
-              ANTI-AGING SUNSCREEN<br />
-              THAT PROTECTS + REPAIRS
-            </h5>
-          </div>
+        {/* Mobile bottom banner - attached to image bottom */}
+        <div className="absolute bottom-[60px] left-0 w-full bg-[#f9ad19] px-4 py-1.5 text-center md:hidden">
+          <p className="text-[18px] leading-tight font-semibold uppercase tracking-[0.04em] text-black">
+            {bottomText}
+          </p>
         </div>
 
-        // Yellow Product Section 
-        <div className="absolute top-0 right-0 w-3/5 lg:w-auto h-auto">
-          <div className="relative w-[350px] h-[600px] lg:h-[817px] bg-[#FBAC18] flex items-center justify-center ml-auto">
-            // Image 
-            <div className="absolute -left-16 lg:-left-1/4 flex items-center justify-center">
-              <img
-                src="/assets/main-sunscreen.png"
-                alt="Main Sunscreen Product"
-                className="w-full h-full object-cover max-w-[300px] lg:max-w-none"
-              />
-            </div>
-          </div>
+        {/* Desktop bottom banner */}
+        <div className="absolute bottom-0 left-0 hidden w-full bg-[#f9ad19] px-8 py-2 text-center md:block">
+          <p className="text-[24px] leading-tight font-semibold uppercase tracking-[0.04em] text-black">
+            {bottomText}
+          </p>
         </div>
-      </div> */}
+      </div>
     </section>
   );
-} 
+}

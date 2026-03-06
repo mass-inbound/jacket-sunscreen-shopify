@@ -161,7 +161,7 @@ export default function Homepage() {
       {/* Sticky Save 15% Button */}
       <button
         onClick={openPopup}
-        className="fixed bottom-[60px] right-4 bg-[#FBAC18] text-black font-bold rounded shadow-lg hover:bg-[#e69c15] transition-colors z-50 py-3 px-6 text-lg sm:py-4 sm:px-8 sm:text-xl md:py-5 md:px-10 md:text-2xl lg:py-[16px] lg:px-[32px] lg:text-[32px] xl:py-[18px] xl:px-[40px] xl:text-[40px]"
+        className="fixed bottom-[50px] sm:bottom-[120px] lg:bottom-[75px] left-4 bg-[#FBAC18] text-black font-bold rounded shadow-lg hover:bg-[#e69c15] transition-colors z-50 py-3 px-6 text-lg sm:py-4 sm:px-8 sm:text-xl md:py-3 md:px-10 md:text-2xl lg:py-[12px] lg:px-[32px] lg:text-[32px] xl:py-[18px] xl:px-[40px] xl:text-[40px]"
       >
         Save 15%
       </button>

@@ -36,15 +36,15 @@ export function Hero({
       {/* Overlay content */}
       <div className="relative z-10 h-full">
         {/* Mobile text */}
-        <div className="md:hidden px-6 pt-10 text-center">
-          <h1 className="mx-auto max-w-[340px] text-[38px] leading-[0.95] font-semibold tracking-tight text-black">
+        <div className="md:hidden px-6 pt-[1.1rem] text-center">
+          <h1 className="mx-auto max-w-[340px] text-[34px] leading-[0.95] font-semibold tracking-tight text-black">
             OUTDOOR <br />
             BEAUTY SYSTEM
           </h1>
 
-          <div className="mx-auto mt-5 h-[3px] w-full max-w-[340px] bg-[#f9ad19]" />
+          <div className="mx-auto mt-[15px] h-[3px] w-full max-w-[340px] bg-[#f9ad19]" />
 
-          <p className="mx-auto mt-5 max-w-[550px] text-[18px] leading-[1.22] font-light uppercase tracking-[0.01em] text-black">
+          <p className="mx-auto mt-[15px] max-w-[550px] text-[16px] leading-[1.22] font-light uppercase tracking-[0.01em] text-black">
             {subtitle}
           </p>
         </div>

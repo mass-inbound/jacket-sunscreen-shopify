@@ -169,7 +169,7 @@ export default function Homepage() {
     transition-all duration-200
   "
       >
-        <span>Save <br className="hidden sm:block" />15%</span>
+        <span>Save <br className="block" />15%</span>
       </button>
 
       {/* Sale Popup */}

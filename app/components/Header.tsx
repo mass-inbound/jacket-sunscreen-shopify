@@ -193,6 +193,12 @@ export function HeaderMenu({
       items: generateShopItems(),
     },
     {
+      id: 'blog',
+      title: 'BLOG',
+      url: '/blogs/news',
+      items: [],
+    },
+    {
       id: 'explore',
       title: 'EXPLORE',
       url: '#',
@@ -224,6 +230,10 @@ export function HeaderMenu({
         pathname === '/collections/extras' ||
         pathname.startsWith('/products/')
       );
+    }
+    if (item.id === 'blog') {
+      // Blog is active for any /blogs/* route
+      return pathname.startsWith('/blogs/');
     }
     if (item.id === 'explore') {
       // Explore is active for any of its submenu items

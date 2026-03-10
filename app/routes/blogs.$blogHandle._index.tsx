@@ -100,7 +100,7 @@ export default function Blog() {
       <BlogTabs blogs={blogs} currentHandle={currentBlogHandle} />
       <PaginatedResourceSection
         connection={articles}
-        resourcesClassName="blog-grid grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6 mt-8 w-full"
+        resourcesClassName="blog-grid grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 mt-8 w-full"
       >
         {({ node: article, index }) => (
           <ArticleItem

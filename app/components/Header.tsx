@@ -213,7 +213,13 @@ export function HeaderMenu({
       id: 'education',
       title: 'EDUCATION',
       url: '#',
-      items: [{ id: 'faq', title: 'FAQ', url: '/pages/faq' }],
+      items: [
+        { id: 'faq', title: 'FAQ', url: '/pages/faq' },
+        {
+          id: 'blog',
+          title: 'BLOG',
+          url: '/blogs/news',
+        }],
     },
   ];
 

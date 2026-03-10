@@ -51,14 +51,14 @@ export function Hero({
 
         {/* Desktop text */}
         <div className="hidden md:block">
-          <div className="max-w-[980px] px-10 pt-4 lg:px-12 xl:px-16">
-            <h1 className="max-w-[860px] text-[42px] leading-[0.95] font-semibold tracking-tight text-black lg:text-[45px] 2xl:text-[49px]">
+          <div className="max-w-[980px] px-10 pt-1 lg:px-12 xl:px-16">
+            <h1 className="max-w-[860px] text-[42px] leading-[0.95] font-semibold tracking-tight text-black lg:text-[44px] 2xl:text-[49px]">
               {title}
             </h1>
 
             <div className="mt-3 h-[3px] w-[420px] bg-[#f9ad19] lg:w-[520px]" />
 
-            <p className="mt-3 max-w-[670px] text-[16px] font-[400] uppercase tracking-[0.01em] text-black lg:text-[20px]">
+            <p className="mt-3 max-w-[670px] text-[16px] font-[400] uppercase tracking-[0.01em] text-black lg:text-[18px]">
               {subtitle}
             </p>
           </div>

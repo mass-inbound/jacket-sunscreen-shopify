@@ -193,12 +193,6 @@ export function HeaderMenu({
       items: generateShopItems(),
     },
     {
-      id: 'blog',
-      title: 'BLOG',
-      url: '/blogs/news',
-      items: [],
-    },
-    {
       id: 'explore',
       title: 'EXPLORE',
       url: '#',
@@ -213,7 +207,13 @@ export function HeaderMenu({
       id: 'education',
       title: 'EDUCATION',
       url: '#',
-      items: [{ id: 'faq', title: 'FAQ', url: '/pages/faq' }],
+      items: [
+        { id: 'faq', title: 'FAQ', url: '/pages/faq' },
+        {
+          id: 'blog',
+          title: 'BLOG',
+          url: '/blog',
+        }],
     },
   ];
 
@@ -232,8 +232,8 @@ export function HeaderMenu({
       );
     }
     if (item.id === 'blog') {
-      // Blog is active for any /blogs/* route
-      return pathname.startsWith('/blogs/');
+      // Blog is active for any /blog or /blogs/* route
+      return pathname.startsWith('/blog') || pathname.startsWith('/blogs/');
     }
     if (item.id === 'explore') {
       // Explore is active for any of its submenu items

@@ -152,7 +152,7 @@ export default function Article() {
           <div className="px-6 md:px-10 lg:px-12 py-8 md:py-10">
             <div
               dangerouslySetInnerHTML={{ __html: contentHtml }}
-              className="article-content prose prose-lg prose-headings:font-bold prose-headings:text-gray-900 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-p:text-gray-700 prose-p:leading-relaxed prose-p:mb-6 prose-a:text-[#FBAC18] prose-a:no-underline hover:prose-a:underline prose-strong:text-gray-900 prose-strong:font-semibold prose-ul:list-disc prose-ul:pl-6 prose-ol:list-decimal prose-ol:pl-6 prose-li:text-gray-700 prose-li:mb-2 prose-img:rounded-lg prose-img:shadow-md prose-blockquote:border-l-4 prose-blockquote:border-[#FBAC18] prose-blockquote:pl-4 prose-blockquote:italic prose-blockquote:text-gray-600 max-w-none [&>p]:text-justify [&>li]:text-justify [&>div]:text-justify [&>span]:text-justify [&>p:first-child]:text-xl [&>p:first-child]:font-medium [&>p:first-child]:text-gray-800"
+              className="article-content"
             />
           </div>
         </div>

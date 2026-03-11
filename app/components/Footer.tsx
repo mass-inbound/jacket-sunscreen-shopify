@@ -102,7 +102,7 @@ export function Footer({
                       <NavLink to="/collections/shop-all" className="text-[12px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
                         Shop
                       </NavLink>
-                      <NavLink to="/pages/blog" className="text-[12px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
+                      <NavLink to="/blog" className="text-[12px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
                         Blog
                       </NavLink>
                       <NavLink to="/pages/contact" className="text-[12px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
@@ -213,7 +213,7 @@ export function Footer({
                           <NavLink to="/collections/shop-all" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
                             Shop
                           </NavLink>
-                          <NavLink to="/pages/blog" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
+                          <NavLink to="/blog" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">
                             Blog
                           </NavLink>
                           <NavLink to="/pages/contact" className="text-[16px] leading-[2.5em] font-normal text-white hover:text-[#FBAC18] transition-colors">

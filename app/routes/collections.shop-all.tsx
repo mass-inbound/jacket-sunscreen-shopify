@@ -1,12 +1,13 @@
-import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {Link, useLoaderData, type MetaFunction} from 'react-router';
-import {Analytics} from '@shopify/hydrogen';
-import {ProductItem} from '~/components/ProductItem';
-import {ProductFilter} from '~/components/ProductFilter';
-import type {CollectionItemFragment} from 'storefrontapi.generated';
+import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { Link, useLoaderData, type MetaFunction } from 'react-router';
+import { Analytics } from '@shopify/hydrogen';
+import { ProductItem } from '~/components/ProductItem';
+import { ProductFilter } from '~/components/ProductFilter';
+import type { CollectionItemFragment } from 'storefrontapi.generated';
+import { useEffect, useMemo, useState } from 'react';
 
 export const meta: MetaFunction<typeof loader> = () => {
-  return [{title: `Jacket Sunscreen | Shop All`}];
+  return [{ title: `Jacket Sunscreen | Shop All` }];
 };
 
 const SHOP_ALL_COLLECTION_HANDLE = 'shop-all';
@@ -16,8 +17,8 @@ type ShopAllProduct = CollectionItemFragment & {
 };
 
 export async function loader(args: LoaderFunctionArgs) {
-  const {context, request} = args;
-  const {storefront} = context;
+  const { context, request } = args;
+  const { storefront } = context;
   const url = new URL(request.url);
   const selectedProductTypes = url.searchParams
     .getAll('product_type')
@@ -28,7 +29,7 @@ export async function loader(args: LoaderFunctionArgs) {
     .map((tag) => tag.trim())
     .filter(Boolean);
 
-  const {collection} = await storefront.query<ShopAllCollectionProductsQuery>(
+  const { collection } = await storefront.query<ShopAllCollectionProductsQuery>(
     SHOP_ALL_COLLECTION_PRODUCTS_QUERY,
     {
       variables: {
@@ -38,7 +39,7 @@ export async function loader(args: LoaderFunctionArgs) {
   );
 
   if (!collection) {
-    throw new Response('Shop All collection not found', {status: 404});
+    throw new Response('Shop All collection not found', { status: 404 });
   }
 
   const products =
@@ -85,6 +86,54 @@ export default function ShopAllCollectionPage() {
     selectedProductTypes = [],
   } = useLoaderData<typeof loader>();
 
+  const productNumericIds = useMemo(() => {
+    return products
+      .map((p) => (p?.id ? p.id.split('/').pop() || '' : ''))
+      .filter(Boolean);
+  }, [products]);
+
+  const [statsByProductId, setStatsByProductId] = useState<
+    Record<string, { averageRating: number; totalReviews: number }>
+  >({});
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadStats() {
+      setStatsByProductId({});
+      if (productNumericIds.length === 0) return;
+
+      const chunkSize = 50;
+      const chunks: string[][] = [];
+      for (let i = 0; i < productNumericIds.length; i += chunkSize) {
+        chunks.push(productNumericIds.slice(i, i + chunkSize));
+      }
+
+      const results = await Promise.all(
+        chunks.map(async (ids) => {
+          const res = await fetch(
+            `/api/reviews?ids=${encodeURIComponent(ids.join(','))}`,
+          );
+          const json = (await res.json()) as {
+            statsByProductId?: Record<
+              string,
+              { averageRating: number; totalReviews: number }
+            >;
+          };
+          return json.statsByProductId || {};
+        }),
+      ).catch(() => []);
+
+      if (cancelled) return;
+      setStatsByProductId(Object.assign({}, ...results));
+    }
+
+    loadStats();
+    return () => {
+      cancelled = true;
+    };
+  }, [productNumericIds]);
+
   return (
     <div>
       <div className="pt-4 px-3 md:px-2 lg:px-6 mb-8">
@@ -113,11 +162,14 @@ export default function ShopAllCollectionPage() {
               No products found for the selected filters.
             </div>
           ) : (
-            <div className="products-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div className="products-grid grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {products.map((product, index) => (
                 <ProductItem
                   key={product.id}
                   product={product}
+                  reviewStats={
+                    statsByProductId[product.id.split('/').pop() || ''] ?? null
+                  }
                   loading={index < 20 ? 'eager' : undefined}
                   variant="collection"
                 />

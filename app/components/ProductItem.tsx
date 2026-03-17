@@ -1,28 +1,76 @@
-import {Link} from 'react-router';
-import {Image, Money} from '@shopify/hydrogen';
+import { Link } from 'react-router';
+import { Image, Money } from '@shopify/hydrogen';
 import type {
   ProductItemFragment,
   CollectionItemFragment,
   RecommendedProductFragment,
 } from 'storefrontapi.generated';
-import {useVariantUrl} from '~/lib/variants';
-import {useState, useEffect} from 'react';
-import {AddToCartButton} from './AddToCartButton';
-import {useAside} from './Aside';
+import { useVariantUrl } from '~/lib/variants';
+import { useState, useEffect } from 'react';
+import { AddToCartButton } from './AddToCartButton';
+import { useAside } from './Aside';
 import { getMaxAddableQuantity } from '~/lib/inventory';
 import { useRouteLoaderData } from 'react-router';
 import type { RootLoader } from '~/root';
 
+// ---------------------------------------------------------------------------
+// Star icon that supports full, half, and empty states
+// ---------------------------------------------------------------------------
+const STAR_PATH =
+  'M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z';
+
+function StarIcon({ fill }: { fill: 'full' | 'half' | 'empty' }) {
+  const fillWidth =
+    fill === 'full' ? '100%' : fill === 'half' ? '50%' : '0%';
+  return (
+    <span className="relative inline-block w-4 h-4 flex-shrink-0">
+      {/* Gray base star */}
+      <svg
+        viewBox="0 0 20 20"
+        className="w-4 h-4 absolute inset-0"
+        fill="#D1D5DB"
+        aria-hidden="true"
+      >
+        <path d={STAR_PATH} />
+      </svg>
+      {/* Gold overlay, clipped to fillWidth */}
+      <span
+        className="absolute inset-0 overflow-hidden"
+        style={{ width: fillWidth }}
+        aria-hidden="true"
+      >
+        <svg viewBox="0 0 20 20" className="w-4 h-4" fill="#FBAC18">
+          <path d={STAR_PATH} />
+        </svg>
+      </span>
+    </span>
+  );
+}
+
+function getStarFill(
+  index: number,
+  rating: number
+): 'full' | 'half' | 'empty' {
+  if (index < Math.floor(rating)) return 'full';
+  if (index === Math.floor(rating) && rating % 1 >= 0.5) return 'half';
+  return 'empty';
+}
+
+// ---------------------------------------------------------------------------
+// ProductItem
+// ---------------------------------------------------------------------------
 export function ProductItem({
   product,
   loading,
+  reviewStats = null,
   variant = 'default',
 }: {
   product:
-    | CollectionItemFragment
-    | ProductItemFragment
-    | RecommendedProductFragment;
+  | CollectionItemFragment
+  | ProductItemFragment
+  | RecommendedProductFragment;
   loading?: 'eager' | 'lazy';
+  reviewStats?: { averageRating: number; totalReviews: number } | null;
   variant?: 'default' | 'collection';
 }) {
   const variantUrl = useVariantUrl(product.handle);
@@ -32,23 +80,17 @@ export function ProductItem({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
-  
+
   // Fix hydration by only enabling interactions after mounting
   useEffect(() => {
     setMounted(true);
-    // Set initial window width
     setWindowWidth(window.innerWidth);
-    
-    // Add resize listener
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    
+    const handleResize = () => setWindowWidth(window.innerWidth);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-  
-  const {open} = useAside();
+
+  const { open } = useAside();
   const rootData = useRouteLoaderData<RootLoader>('root');
   const cart = rootData?.cart as any;
 
@@ -60,10 +102,10 @@ export function ProductItem({
   const maxQuantity = Math.max(1, maxAddable);
 
   // Image dimensions based on variant and screen size
-  const imageHeight = windowWidth < 768 
-    ? '373px' 
-    : variant === 'collection' 
-      ? (windowWidth === 1024 ? '250px' : '450px') 
+  const imageHeight = windowWidth < 768
+    ? '373px'
+    : variant === 'collection'
+      ? (windowWidth === 1024 ? '250px' : '450px')
       : '346px';
   const imageWidth = variant === 'collection' ? 'w-full max-w-[400px] mx-auto' : 'w-full';
 
@@ -72,7 +114,7 @@ export function ProductItem({
       setQuantity(prev => prev + 1);
     }
   };
-  
+
   const decrementQuantity = () => {
     if (quantity > 1) {
       setQuantity(prev => prev - 1);
@@ -103,21 +145,19 @@ export function ProductItem({
 
   // Function to determine if a product is new
   const isNewProduct = (product: any) => {
-    // Only check if product has "new" related tags - no automatic detection
-    if (product.tags && product.tags.some((tag: string) => 
-      tag.toLowerCase().includes('new') || 
+    if (product.tags && product.tags.some((tag: string) =>
+      tag.toLowerCase().includes('new') ||
       tag.toLowerCase().includes('arrival') ||
       tag.toLowerCase().includes('latest')
     )) {
       return true;
     }
-    
     return false;
   };
 
   return (
     <>
-      <div 
+      <div
         className="product-item bg-white rounded-3xl overflow-hidden shadow-sm group"
         onMouseEnter={() => mounted && setIsHovered(true)}
         onMouseLeave={() => mounted && setIsHovered(false)}
@@ -130,7 +170,7 @@ export function ProductItem({
             to={variantUrl}
           >
             {image && (
-              <div 
+              <div
                 className={`${imageWidth} rounded-3xl overflow-hidden`}
                 style={{ height: imageHeight }}
               >
@@ -155,7 +195,7 @@ export function ProductItem({
               </div>
             )}
           </Link>
-          
+
           {/* Quick View Overlay - Only covers bottom area */}
           {showHoverEffects && (
             <div className="absolute bottom-0 left-0 right-0 flex items-end justify-center pb-6 transition-opacity duration-300 pointer-events-none">
@@ -172,7 +212,7 @@ export function ProductItem({
               </button>
             </div>
           )}
-          
+
           {/* NEW Badge */}
           {isNewProduct(product) && (
             <div className="absolute top-2 left-2 bg-[#FBAC18] text-white text-xs font-bold px-3 py-1 rounded-lg">
@@ -193,10 +233,10 @@ export function ProductItem({
               <h3 className="text-[#1B1A1B] font-bold text-xl leading-tight mb-2 line-clamp-2 hover:text-[#FBAC18] transition-colors">
                 {product.title}
               </h3>
-              
+
               {/* Separator Line */}
               <div className="w-20 h-1 bg-[#FBAC18] mb-2"></div>
-              
+
               {/* Price */}
               <div className="text-[#545354] text-sm font-normal">
                 <Money data={product.priceRange.minVariantPrice} />
@@ -204,23 +244,33 @@ export function ProductItem({
             </Link>
           </div>
 
-          {/* Star Rating */}
-          <div className="flex items-center gap-2 mt-2">
-            <div className="flex gap-1">
-              {[...Array(5)].map((_, i) => (
-                <svg
+          {/* Star Rating - Dynamic from Judge.me */}
+          <div className="flex flex-wrap items-center gap-2 mt-2" aria-label={
+            reviewStats === null
+              ? 'Loading rating'
+              : reviewStats.totalReviews > 0
+                ? `${reviewStats.averageRating.toFixed(1)} out of 5, ${reviewStats.totalReviews} reviews`
+                : 'No reviews yet'
+          }>
+            <div className="flex gap-0.5">
+              {[0, 1, 2, 3, 4].map((i) => (
+                <StarIcon
                   key={i}
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="#FBAC18"
-                  className="w-4 h-4"
-                >
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                </svg>
+                  fill={
+                    reviewStats === null
+                      ? 'empty'
+                      : getStarFill(i, reviewStats.averageRating)
+                  }
+                />
               ))}
             </div>
-            <span className="text-[#1B1A1B] text-sm">5.0 (1)</span>
+            <span className="text-[#1B1A1B] text-sm">
+              {reviewStats === null
+                ? ''
+                : reviewStats.totalReviews > 0
+                  ? `${reviewStats.averageRating.toFixed(1)} (${reviewStats.totalReviews})`
+                  : 'No reviews yet'}
+            </span>
           </div>
 
           {/* Quantity Selector */}
@@ -269,24 +319,16 @@ export function ProductItem({
               onClick={handleAddToCart}
               disabled={!firstVariant.availableForSale || maxQuantity === 0}
             >
-              <button className={`${
-                variant === 'collection' && windowWidth === 1024 
-                  ? 'w-full' 
-                  : 'w-full'
-              } bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}>
-                {!firstVariant.availableForSale ? 'Sold out' : 
-                 maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
+              <button className="w-full bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed">
+                {!firstVariant.availableForSale ? 'Sold out' :
+                  maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
               </button>
             </AddToCartButton>
           ) : (
-            <button 
+            <button
               onClick={handleAddToCart}
               disabled={!mounted}
-              className={`${
-                variant === 'collection' && windowWidth === 1024 
-                  ? 'w-full' 
-                  : 'w-full'
-              } bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
+              className="w-full bg-[#FBAC18] text-[#1B1A1B] font-normal text-base py-2 px-4 rounded mt-3 hover:bg-[#e69c15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {!mounted ? 'Loading...' : 'ADD TO CART'}
             </button>
@@ -296,7 +338,7 @@ export function ProductItem({
 
       {/* Quick View Modal */}
       {showModal && (
-        <QuickViewModal 
+        <QuickViewModal
           product={product}
           firstVariant={firstVariant}
           quantity={quantity}
@@ -311,12 +353,12 @@ export function ProductItem({
   );
 }
 
-function QuickViewModal({ 
-  product, 
-  firstVariant, 
-  quantity, 
-  maxQuantity, 
-  onClose, 
+function QuickViewModal({
+  product,
+  firstVariant,
+  quantity,
+  maxQuantity,
+  onClose,
   onAddToCart,
   onIncrementQuantity,
   onDecrementQuantity
@@ -333,7 +375,7 @@ function QuickViewModal({
   const image = product.featuredImage;
   const price = product.priceRange?.minVariantPrice;
   const { open, type } = useAside();
-  
+
   // Auto-close modal when cart opens
   useEffect(() => {
     if (type === 'cart') {
@@ -348,7 +390,7 @@ function QuickViewModal({
         onClose();
       }
     };
-    
+
     document.addEventListener('keydown', handleEscKey);
     return () => {
       document.removeEventListener('keydown', handleEscKey);
@@ -362,7 +404,7 @@ function QuickViewModal({
       document.body.style.overflow = 'unset';
     };
   }, []);
-  
+
   // Generate SKU from product handle or variant
   const sku = firstVariant?.sku || `${product.handle?.toUpperCase().replace(/-/g, '')}-01` || 'SKU-N/A';
 
@@ -372,7 +414,7 @@ function QuickViewModal({
   };
 
   return (
-    <div 
+    <div
       className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4"
       style={{ zIndex: 9999 }}
       role="dialog"
@@ -386,8 +428,8 @@ function QuickViewModal({
         aria-label="Close quick view"
         type="button"
       />
-      
-      <div 
+
+      <div
         className="bg-white rounded-none max-w-4xl w-full max-h-[90vh] overflow-hidden relative z-10"
         role="document"
       >
@@ -400,7 +442,7 @@ function QuickViewModal({
         >
           ×
         </button>
-        
+
         <div className="flex flex-col md:flex-row">
           {/* Product Image */}
           <div className="md:w-1/2 p-6">
@@ -415,33 +457,33 @@ function QuickViewModal({
               />
             )}
           </div>
-          
+
           {/* Product Details */}
           <div className="md:w-1/2 p-6 flex flex-col justify-between">
             <div>
               {/* Product Title */}
-              <h2 
+              <h2
                 id="quick-view-title"
                 className="text-2xl md:text-3xl font-bold text-[#FBAC18] mb-4"
               >
                 {product.title}
               </h2>
-              
+
               {/* Price */}
               <div className="mb-4">
                 {price && (
-                  <Money 
-                    data={price} 
+                  <Money
+                    data={price}
                     className="text-2xl font-bold text-[#1B1A1B]"
                   />
                 )}
               </div>
-              
+
               {/* SKU */}
               <div className="mb-6">
                 <span className="text-sm text-gray-600">SKU: {sku}</span>
               </div>
-              
+
               {/* Quantity Selector */}
               <div className="mb-6">
                 <div className="block text-sm font-medium text-gray-700 mb-2">
@@ -456,14 +498,14 @@ function QuickViewModal({
                     aria-label="Decrease quantity"
                   >
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                      <path d="M19 13H5v-2h14v2z"/>
+                      <path d="M19 13H5v-2h14v2z" />
                     </svg>
                   </button>
-                  
+
                   <div className="flex-1 text-center">
                     <span className="text-[#1B1A1B] font-bold">{quantity}</span>
                   </div>
-                  
+
                   <button
                     onClick={onIncrementQuantity}
                     className="p-3 text-[#1B1A1B] hover:text-gray-700 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
@@ -483,7 +525,7 @@ function QuickViewModal({
                 )}
               </div>
             </div>
-            
+
             {/* Buttons */}
             <div className="space-y-4">
               {/* Add to Cart Button */}
@@ -498,16 +540,16 @@ function QuickViewModal({
                   onClick={handleModalAddToCart}
                   disabled={!firstVariant.availableForSale || maxQuantity === 0}
                 >
-                  <button 
+                  <button
                     className="w-full bg-[#FBAC18] text-black font-bold py-3 px-6 rounded text-lg hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                     type="button"
                   >
-                    {!firstVariant.availableForSale ? 'Sold out' : 
-                     maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
+                    {!firstVariant.availableForSale ? 'Sold out' :
+                      maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
                   </button>
                 </AddToCartButton>
               ) : (
-                <button 
+                <button
                   disabled={true}
                   className="w-full bg-[#FBAC18] text-white font-bold py-3 px-6 rounded text-lg hover:bg-[#e69b15] transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
                   type="button"
@@ -515,7 +557,7 @@ function QuickViewModal({
                   Loading...
                 </button>
               )}
-              
+
               {/* View More Details Link */}
               <div className="text-center">
                 <Link

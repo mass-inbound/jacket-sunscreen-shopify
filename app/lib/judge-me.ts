@@ -45,6 +45,117 @@ export interface ReviewStats {
   ratingBreakdown: Record<number, number>;
 }
 
+export function resolveJudgeMeCredentials(env: {
+  JUDGE_ME_SHOP_DOMAIN?: string;
+  JUDGE_ME_PRIVATE_API_TOKEN?: string;
+  JUDGE_ME_PUBLIC_API_TOKEN?: string;
+  PUBLIC_STORE_DOMAIN?: string;
+}): { shopDomain: string; apiToken: string } {
+  const shopDomain =
+    env.JUDGE_ME_SHOP_DOMAIN ||
+    env.PUBLIC_STORE_DOMAIN ||
+    'jacket-sunscreen.myshopify.com';
+  const apiToken =
+    env.JUDGE_ME_PRIVATE_API_TOKEN ||
+    env.JUDGE_ME_PUBLIC_API_TOKEN ||
+    '3ySpx789ET7EP9Fp1gBiPxssnQE';
+  return { shopDomain, apiToken };
+}
+
+let allReviewsCache:
+  | {
+      key: string;
+      expiresAt: number;
+      reviews: JudgeMeReview[];
+    }
+  | undefined;
+
+async function fetchAllJudgeMeReviewsRaw(
+  shopDomain: string,
+  apiToken: string
+): Promise<JudgeMeReview[]> {
+  const perPage = 100;
+  let page = 1;
+  let all: JudgeMeReview[] = [];
+
+  // Paginate until we've fetched all pages or Judge.me returns no more reviews.
+  // Judge.me responses include `total`, but we guard with length checks too.
+  while (true) {
+    const url = new URL('https://judge.me/api/v1/reviews');
+    url.searchParams.append('shop_domain', shopDomain);
+    url.searchParams.append('api_token', apiToken);
+    url.searchParams.append('page', String(page));
+    url.searchParams.append('per_page', String(perPage));
+
+    const response = await fetch(url.toString());
+    if (!response.ok) {
+      const errorText = await response.text().catch(() => '');
+      console.error(
+        'Judge.me API error (all reviews):',
+        response.status,
+        response.statusText,
+        errorText
+      );
+      break;
+    }
+
+    const data = (await response.json()) as JudgeMeApiResponse;
+    const batch = Array.isArray(data.reviews) ? data.reviews : [];
+    all = all.concat(batch);
+
+    const fetchedSoFar = page * (data.per_page || perPage);
+    const total = data.total ?? 0;
+    if (batch.length === 0) break;
+    if (total > 0 && fetchedSoFar >= total) break;
+    page += 1;
+  }
+
+  return all;
+}
+
+export async function fetchAllJudgeMeReviewsRawCached(
+  shopDomain: string,
+  apiToken: string,
+  ttlMs: number = 60_000
+): Promise<JudgeMeReview[]> {
+  const key = `${shopDomain}::${apiToken}`;
+  const now = Date.now();
+  if (allReviewsCache && allReviewsCache.key === key && allReviewsCache.expiresAt > now) {
+    return allReviewsCache.reviews;
+  }
+
+  const reviews = await fetchAllJudgeMeReviewsRaw(shopDomain, apiToken);
+  allReviewsCache = { key, expiresAt: now + ttlMs, reviews };
+  return reviews;
+}
+
+export function calculateStatsFromRawReviews(reviews: JudgeMeReview[]): ReviewStats {
+  return calculateStats(reviews);
+}
+
+export function transformJudgeMeReviewForDisplay(
+  review: JudgeMeReview,
+): ReviewForDisplay {
+  return transformReview(review);
+}
+
+export function getEmptyReviewStats(): ReviewStats {
+  return getEmptyStats();
+}
+
+export function getProductIdFromGid(gid: string | undefined | null): string {
+  if (!gid) return '';
+  return gid.split('/').pop() || '';
+}
+
+export function filterRawReviewsForProduct(
+  allReviews: JudgeMeReview[],
+  productId: string,
+): JudgeMeReview[] {
+  const pid = String(productId);
+  return allReviews.filter((r) => String(r.product_external_id) === pid);
+}
+
 /**
  * Fetch reviews for a specific product from Judge.me
  */

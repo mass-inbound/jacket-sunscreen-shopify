@@ -23,7 +23,17 @@ import { Await } from 'react-router';
 import { RecommendedProductItem } from '~/components/RecommendedProductItem';
 import { ImageZoomModal } from '~/components/ImageZoomModal';
 import { useMemo } from 'react';
-import { fetchProductReviews, type ReviewForDisplay, type ReviewStats } from '~/lib/judge-me';
+import {
+  calculateStatsFromRawReviews,
+  fetchAllJudgeMeReviewsRawCached,
+  filterRawReviewsForProduct,
+  getEmptyReviewStats,
+  getProductIdFromGid,
+  resolveJudgeMeCredentials,
+  transformJudgeMeReviewForDisplay,
+  type ReviewForDisplay,
+  type ReviewStats,
+} from '~/lib/judge-me';
 import { ProductReviews } from '~/components/ProductReviews';
 import { getVariantUrl } from '~/lib/variants';
 
@@ -163,28 +173,27 @@ function loadDeferredData({ context, params }: LoaderFunctionArgs) {
     variables: { handle: params.handle!, selectedOptions: [] },
   }).then((result) => {
     if (result.product?.id) {
-      // Extract the numeric ID from the global ID (e.g., "gid://shopify/Product/123" -> "123")
-      const idParts = result.product.id.split('/');
-      const productId = idParts[idParts.length - 1];
+      const productId = getProductIdFromGid(result.product.id);
 
       // Ensure productId is a valid string before using it
       if (typeof productId === 'string' && productId.length > 0) {
-        // Resolve Judge.me credentials with robust fallbacks
-        const shopDomain = env.JUDGE_ME_SHOP_DOMAIN || env.PUBLIC_STORE_DOMAIN || 'jacket-sunscreen.myshopify.com';
-        const apiToken = env.JUDGE_ME_PRIVATE_API_TOKEN || env.JUDGE_ME_PUBLIC_API_TOKEN || '3ySpx789ET7EP9Fp1gBiPxssnQE';
+        const { shopDomain, apiToken } = resolveJudgeMeCredentials(env);
 
-        // Fetch product reviews from Judge.me using the Shopify product ID
-        return fetchProductReviews(
-          productId,
-          shopDomain,
-          apiToken
+        // Use cached full review list so totals match listing pages and avoid per-product Judge.me calls.
+        return fetchAllJudgeMeReviewsRawCached(shopDomain, apiToken).then(
+          (all) => {
+            const raw = filterRawReviewsForProduct(all, productId);
+            const stats = calculateStatsFromRawReviews(raw);
+            const reviews = raw.map(transformJudgeMeReviewForDisplay);
+            return { reviews, stats };
+          },
         );
       }
     }
-    return { reviews: [], stats: { averageRating: 0, totalReviews: 0, ratingBreakdown: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } } };
+    return { reviews: [], stats: getEmptyReviewStats() };
   }).catch((error) => {
     console.error('Failed to fetch reviews:', error);
-    return { reviews: [], stats: { averageRating: 0, totalReviews: 0, ratingBreakdown: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } } };
+    return { reviews: [], stats: getEmptyReviewStats() };
   });
 
   return {

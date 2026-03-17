@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import { AddToCartButton } from './AddToCartButton';
 import { useAside } from './Aside';
 import { getMaxAddableQuantity } from '~/lib/inventory';
-import { useRouteLoaderData, useFetcher } from 'react-router';
+import { useRouteLoaderData } from 'react-router';
 import type { RootLoader } from '~/root';
 
 // ---------------------------------------------------------------------------
@@ -62,6 +62,7 @@ function getStarFill(
 export function ProductItem({
   product,
   loading,
+  reviewStats = null,
   variant = 'default',
 }: {
   product:
@@ -69,6 +70,7 @@ export function ProductItem({
   | ProductItemFragment
   | RecommendedProductFragment;
   loading?: 'eager' | 'lazy';
+  reviewStats?: { averageRating: number; totalReviews: number } | null;
   variant?: 'default' | 'collection';
 }) {
   const variantUrl = useVariantUrl(product.handle);
@@ -78,9 +80,6 @@ export function ProductItem({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
-  // Use fetcher so the request goes through the app and gets same loader context as product page
-  const reviewsFetcher = useFetcher<{ stats?: { averageRating: number; totalReviews: number } }>();
-  const productNumericId = product.id ? product.id.split('/').pop() ?? '' : '';
 
   // Fix hydration by only enabling interactions after mounting
   useEffect(() => {
@@ -90,21 +89,6 @@ export function ProductItem({
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  // Load Judge.me review stats for this product (same API as product page)
-  useEffect(() => {
-    if (!productNumericId) return;
-    reviewsFetcher.load(`/api/reviews/${productNumericId}`);
-  }, [productNumericId]);
-
-  // Derive review stats from fetcher data (null = loading, undefined stats = no data yet)
-  const reviewStats =
-    reviewsFetcher.data?.stats != null
-      ? {
-        averageRating: reviewsFetcher.data.stats.averageRating ?? 0,
-        totalReviews: reviewsFetcher.data.stats.totalReviews ?? 0,
-      }
-      : null;
 
   const { open } = useAside();
   const rootData = useRouteLoaderData<RootLoader>('root');

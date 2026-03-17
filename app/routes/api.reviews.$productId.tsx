@@ -1,5 +1,10 @@
 import type { LoaderFunctionArgs } from 'react-router';
-import { fetchProductReviews } from '~/lib/judge-me';
+import {
+  calculateStatsFromRawReviews,
+  fetchAllJudgeMeReviewsRawCached,
+  filterRawReviewsForProduct,
+  resolveJudgeMeCredentials,
+} from '~/lib/judge-me';
 
 /**
  * API route that returns review stats for a specific product from Judge.me.
@@ -12,21 +17,12 @@ export async function loader({ context, params }: LoaderFunctionArgs) {
     return Response.json({ stats: null }, { status: 400 });
   }
 
-  const { env } = context;
-  // Same fallbacks as products.$handle.tsx so Judge.me returns data consistently
-  const shopDomain =
-    env.JUDGE_ME_SHOP_DOMAIN ||
-    env.PUBLIC_STORE_DOMAIN ||
-    'jacket-sunscreen.myshopify.com';
-  const apiToken =
-    env.JUDGE_ME_PRIVATE_API_TOKEN ||
-    env.JUDGE_ME_PUBLIC_API_TOKEN ||
-    '3ySpx789ET7EP9Fp1gBiPxssnQE';
+  const { shopDomain, apiToken } = resolveJudgeMeCredentials(context.env);
 
   try {
-    // Match products.$handle.tsx behavior exactly (default page/perPage)
-    // so list cards show the same stats as the product page.
-    const { stats } = await fetchProductReviews(productId, shopDomain, apiToken);
+    const all = await fetchAllJudgeMeReviewsRawCached(shopDomain, apiToken);
+    const raw = filterRawReviewsForProduct(all, productId);
+    const stats = calculateStatsFromRawReviews(raw);
     return Response.json({ stats });
   } catch (error) {
     console.error('Error fetching review stats for product', productId, error);

@@ -4,6 +4,7 @@ import { Analytics } from '@shopify/hydrogen';
 import { ProductItem } from '~/components/ProductItem';
 import { ProductFilter } from '~/components/ProductFilter';
 import type { CollectionItemFragment } from 'storefrontapi.generated';
+import { useEffect, useMemo, useState } from 'react';
 
 export const meta: MetaFunction<typeof loader> = () => {
   return [{ title: `Jacket Sunscreen | Shop All` }];
@@ -85,6 +86,54 @@ export default function ShopAllCollectionPage() {
     selectedProductTypes = [],
   } = useLoaderData<typeof loader>();
 
+  const productNumericIds = useMemo(() => {
+    return products
+      .map((p) => (p?.id ? p.id.split('/').pop() || '' : ''))
+      .filter(Boolean);
+  }, [products]);
+
+  const [statsByProductId, setStatsByProductId] = useState<
+    Record<string, { averageRating: number; totalReviews: number }>
+  >({});
+
+  useEffect(() => {
+    let cancelled = false;
+
+    async function loadStats() {
+      setStatsByProductId({});
+      if (productNumericIds.length === 0) return;
+
+      const chunkSize = 50;
+      const chunks: string[][] = [];
+      for (let i = 0; i < productNumericIds.length; i += chunkSize) {
+        chunks.push(productNumericIds.slice(i, i + chunkSize));
+      }
+
+      const results = await Promise.all(
+        chunks.map(async (ids) => {
+          const res = await fetch(
+            `/api/reviews?ids=${encodeURIComponent(ids.join(','))}`,
+          );
+          const json = (await res.json()) as {
+            statsByProductId?: Record<
+              string,
+              { averageRating: number; totalReviews: number }
+            >;
+          };
+          return json.statsByProductId || {};
+        }),
+      ).catch(() => []);
+
+      if (cancelled) return;
+      setStatsByProductId(Object.assign({}, ...results));
+    }
+
+    loadStats();
+    return () => {
+      cancelled = true;
+    };
+  }, [productNumericIds]);
+
   return (
     <div>
       <div className="pt-4 px-3 md:px-2 lg:px-6 mb-8">
@@ -118,6 +167,9 @@ export default function ShopAllCollectionPage() {
                 <ProductItem
                   key={product.id}
                   product={product}
+                  reviewStats={
+                    statsByProductId[product.id.split('/').pop() || ''] ?? null
+                  }
                   loading={index < 20 ? 'eager' : undefined}
                   variant="collection"
                 />

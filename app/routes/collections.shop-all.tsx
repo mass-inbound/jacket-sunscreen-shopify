@@ -1,12 +1,12 @@
-import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {Link, useLoaderData, type MetaFunction} from 'react-router';
-import {Analytics} from '@shopify/hydrogen';
-import {ProductItem} from '~/components/ProductItem';
-import {ProductFilter} from '~/components/ProductFilter';
-import type {CollectionItemFragment} from 'storefrontapi.generated';
+import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { Link, useLoaderData, type MetaFunction } from 'react-router';
+import { Analytics } from '@shopify/hydrogen';
+import { ProductItem } from '~/components/ProductItem';
+import { ProductFilter } from '~/components/ProductFilter';
+import type { CollectionItemFragment } from 'storefrontapi.generated';
 
 export const meta: MetaFunction<typeof loader> = () => {
-  return [{title: `Jacket Sunscreen | Shop All`}];
+  return [{ title: `Jacket Sunscreen | Shop All` }];
 };
 
 const SHOP_ALL_COLLECTION_HANDLE = 'shop-all';
@@ -16,8 +16,8 @@ type ShopAllProduct = CollectionItemFragment & {
 };
 
 export async function loader(args: LoaderFunctionArgs) {
-  const {context, request} = args;
-  const {storefront} = context;
+  const { context, request } = args;
+  const { storefront } = context;
   const url = new URL(request.url);
   const selectedProductTypes = url.searchParams
     .getAll('product_type')
@@ -28,7 +28,7 @@ export async function loader(args: LoaderFunctionArgs) {
     .map((tag) => tag.trim())
     .filter(Boolean);
 
-  const {collection} = await storefront.query<ShopAllCollectionProductsQuery>(
+  const { collection } = await storefront.query<ShopAllCollectionProductsQuery>(
     SHOP_ALL_COLLECTION_PRODUCTS_QUERY,
     {
       variables: {
@@ -38,7 +38,7 @@ export async function loader(args: LoaderFunctionArgs) {
   );
 
   if (!collection) {
-    throw new Response('Shop All collection not found', {status: 404});
+    throw new Response('Shop All collection not found', { status: 404 });
   }
 
   const products =
@@ -113,7 +113,7 @@ export default function ShopAllCollectionPage() {
               No products found for the selected filters.
             </div>
           ) : (
-            <div className="products-grid grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+            <div className="products-grid grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
               {products.map((product, index) => (
                 <ProductItem
                   key={product.id}

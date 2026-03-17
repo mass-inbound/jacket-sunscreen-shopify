@@ -1,4 +1,4 @@
-import {redirect, type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import { redirect, type LoaderFunctionArgs } from '@shopify/remix-oxygen';
 import { useLoaderData, type MetaFunction, Link, useLocation } from 'react-router';
 import {
   getSelectedProductOptions,
@@ -8,10 +8,10 @@ import {
   getAdjacentAndFirstAvailableVariants,
   useSelectedOptionInUrlParam,
 } from '@shopify/hydrogen';
-import {ProductPrice} from '~/components/ProductPrice';
-import {ProductImage} from '~/components/ProductImage';
-import {AddToCartButton} from '~/components/AddToCartButton';
-import {redirectIfHandleIsLocalized} from '~/lib/redirect';
+import { ProductPrice } from '~/components/ProductPrice';
+import { ProductImage } from '~/components/ProductImage';
+import { AddToCartButton } from '~/components/AddToCartButton';
+import { redirectIfHandleIsLocalized } from '~/lib/redirect';
 import { useState } from 'react';
 import { useAside } from '~/components/Aside';
 import { getMaxAddableQuantity } from '~/lib/inventory';
@@ -34,44 +34,44 @@ function processDescriptionHtml(descriptionHtml: string): {
   ingredients: string;
 } {
   if (!descriptionHtml) return { cleanDescription: '', howToUse: '', ingredients: '' };
-  
+
   // Step 1: Split into 2 main chunks based on "HOW TO USE" (case-insensitive)
   const howToUseRegex = /HOW TO USE/i;
   const howToUseMatch = descriptionHtml.match(howToUseRegex);
-  
+
   if (!howToUseMatch) {
     // No "HOW TO USE" found, return everything as description
-    return { 
-      cleanDescription: descriptionHtml.trim(), 
-      howToUse: '', 
-      ingredients: '' 
+    return {
+      cleanDescription: descriptionHtml.trim(),
+      howToUse: '',
+      ingredients: ''
     };
   }
-  
+
   const howToUseIndex = howToUseMatch.index!;
-  
+
   // Chunk 1: Everything before "HOW TO USE" (this is the clean description)
   const cleanDescription = descriptionHtml.substring(0, howToUseIndex).trim();
-  
+
   // Chunk 2: Everything from "HOW TO USE" onwards
   const chunk2 = descriptionHtml.substring(howToUseIndex).trim();
-  
+
   // Step 2: Within chunk2, split by "INGREDIENTS" (case-insensitive)
   const ingredientsRegex = /INGREDIENTS/i;
   const ingredientsMatch = chunk2.match(ingredientsRegex);
-  
+
   let howToUse = '';
   let ingredients = '';
-  
+
   if (ingredientsMatch) {
     const ingredientsIndex = ingredientsMatch.index!;
-    
+
     // How to use: From start of chunk2 to "INGREDIENTS"
     howToUse = chunk2.substring(0, ingredientsIndex).trim();
-    
+
     // Ingredients: Everything after "INGREDIENTS" 
     ingredients = chunk2.substring(ingredientsIndex).trim();
-    
+
     // Clean up headers
     howToUse = howToUse.replace(/^HOW TO USE\s*/i, '').trim();
     ingredients = ingredients.replace(/^INGREDIENTS\s*/i, '').trim();
@@ -79,13 +79,13 @@ function processDescriptionHtml(descriptionHtml: string): {
     // No "INGREDIENTS" found in chunk2, everything goes to how to use
     howToUse = chunk2.replace(/^HOW TO USE\s*/i, '').trim();
   }
-  
+
   return { cleanDescription, howToUse, ingredients };
 }
 
-export const meta: MetaFunction<typeof loader> = ({data}) => {
+export const meta: MetaFunction<typeof loader> = ({ data }) => {
   return [
-    {title: `${data?.product.title ?? ''} | Jacket Sunscreen`},
+    { title: `${data?.product.title ?? ''} | Jacket Sunscreen` },
     {
       rel: 'canonical',
       href: `/products/${data?.product.handle}`,
@@ -100,7 +100,7 @@ export async function loader(args: LoaderFunctionArgs) {
   // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
 
-  return {...deferredData, ...criticalData};
+  return { ...deferredData, ...criticalData };
 }
 
 /**
@@ -112,26 +112,26 @@ async function loadCriticalData({
   params,
   request,
 }: LoaderFunctionArgs) {
-  const {handle} = params;
-  const {storefront, env} = context;
+  const { handle } = params;
+  const { storefront, env } = context;
 
   if (!handle) {
     throw new Error('Expected product handle to be defined');
   }
 
-  const [{product}] = await Promise.all([
+  const [{ product }] = await Promise.all([
     storefront.query(PRODUCT_QUERY, {
-      variables: {handle, selectedOptions: getSelectedProductOptions(request)},
+      variables: { handle, selectedOptions: getSelectedProductOptions(request) },
     }),
     // Add other queries here, so that they are loaded in parallel
   ]);
 
   if (!product?.id) {
-    throw new Response(null, {status: 404});
+    throw new Response(null, { status: 404 });
   }
 
   // The API handle might be localized, so redirect to the localized handle
-  redirectIfHandleIsLocalized(request, {handle, data: product});
+  redirectIfHandleIsLocalized(request, { handle, data: product });
 
   return {
     product,
@@ -147,8 +147,8 @@ async function loadCriticalData({
  * fetched after the initial page load. If it's unavailable, the page should still 200.
  * Make sure to not throw any errors here, as it will cause the page to 500.
  */
-function loadDeferredData({context, params}: LoaderFunctionArgs) {
-  const {storefront, env} = context;
+function loadDeferredData({ context, params }: LoaderFunctionArgs) {
+  const { storefront, env } = context;
 
   // Fetch recommended products (existing)
   const recommendedProducts = storefront
@@ -160,7 +160,7 @@ function loadDeferredData({context, params}: LoaderFunctionArgs) {
 
   // First get the product to extract the ID for Judge.me
   const productForReviews = storefront.query(PRODUCT_QUERY, {
-    variables: {handle: params.handle!, selectedOptions: []},
+    variables: { handle: params.handle!, selectedOptions: [] },
   }).then((result) => {
     if (result.product?.id) {
       // Extract the numeric ID from the global ID (e.g., "gid://shopify/Product/123" -> "123")
@@ -187,18 +187,18 @@ function loadDeferredData({context, params}: LoaderFunctionArgs) {
     return { reviews: [], stats: { averageRating: 0, totalReviews: 0, ratingBreakdown: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } } };
   });
 
-  return { 
+  return {
     recommendedProducts,
     productReviews: productForReviews
   };
 }
 
 export default function Product() {
-  const {product, recommendedProducts, productReviews, judgeMeCredentials} = useLoaderData<typeof loader>();
+  const { product, recommendedProducts, productReviews, judgeMeCredentials } = useLoaderData<typeof loader>();
   const [quantity, setQuantity] = useState(1);
-  const [expandedSections, setExpandedSections] = useState<{[key: string]: boolean}>({});
+  const [expandedSections, setExpandedSections] = useState<{ [key: string]: boolean }>({});
   const [isZoomModalOpen, setIsZoomModalOpen] = useState(false);
-  const {open} = useAside();
+  const { open } = useAside();
   const rootData = useRouteLoaderData<RootLoader>('root');
   const cart = rootData?.cart as any;
   const location = useLocation();
@@ -222,7 +222,7 @@ export default function Product() {
     selectedOrFirstAvailableVariant: selectedVariant,
   });
 
-  const {title, descriptionHtml} = product as any;
+  const { title, descriptionHtml } = product as any;
 
   // Process description once using useMemo
   const processedDescription = useMemo(() => {
@@ -251,10 +251,10 @@ export default function Product() {
 
   const handleBuyNow = () => {
     if (!selectedVariant?.id) return;
-    
+
     // Extract the variant ID from the full Shopify GID
     const variantId = selectedVariant.id.split('/').pop();
-    
+
     // Redirect to the cart URL which will create a cart and redirect to checkout
     window.location.href = `/cart/${variantId}:${quantity}`;
   };
@@ -305,7 +305,7 @@ export default function Product() {
           {/* Product Image Gallery */}
           <div className="space-y-6">
             <div className="relative group">
-              <div 
+              <div
                 className="aspect-square overflow-hidden rounded-lg bg-gray-100 cursor-pointer"
                 onClick={() => setIsZoomModalOpen(true)}
                 role="button"
@@ -317,12 +317,12 @@ export default function Product() {
                 }}
                 aria-label="Click to zoom product image"
               >
-                <ProductImage 
-                  image={selectedVariant?.image} 
+                <ProductImage
+                  image={selectedVariant?.image}
                 />
               </div>
               {/* Zoom Button */}
-              <button 
+              <button
                 className="absolute bottom-4 right-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-50 transition-colors"
                 onClick={() => setIsZoomModalOpen(true)}
                 aria-label="Zoom image"
@@ -335,7 +335,7 @@ export default function Product() {
 
             {/* Product Description - Moved here below the image */}
             <div className="prose prose-sm text-gray-600 leading-relaxed">
-              <div dangerouslySetInnerHTML={{__html: processedDescription.cleanDescription}} />
+              <div dangerouslySetInnerHTML={{ __html: processedDescription.cleanDescription }} />
             </div>
           </div>
 
@@ -372,7 +372,7 @@ export default function Product() {
                       ))}
                     </div>
                     <span className="text-sm text-gray-600">
-                      {reviewsData.stats.totalReviews > 0 
+                      {reviewsData.stats.totalReviews > 0
                         ? `${reviewsData.stats.averageRating.toFixed(1)} | ${reviewsData.stats.totalReviews} ${reviewsData.stats.totalReviews === 1 ? 'review' : 'reviews'}`
                         : 'No reviews yet'
                       }
@@ -389,10 +389,10 @@ export default function Product() {
 
             {/* Price */}
             <div className="text-xl font-semibold text-gray-900">
-        <ProductPrice
-          price={effectivePrice}
-          compareAtPrice={effectiveCompareAt}
-        />
+              <ProductPrice
+                price={effectivePrice}
+                compareAtPrice={effectiveCompareAt}
+              />
             </div>
 
             {/* Subscription Options */}
@@ -485,14 +485,14 @@ export default function Product() {
                         );
 
                         // Build next selected options set
-                        const nextSelected: Array<{name: string; value: string}> = [...(selectedVariant?.selectedOptions || [])].map(
+                        const nextSelected: Array<{ name: string; value: string }> = [...(selectedVariant?.selectedOptions || [])].map(
                           (o: any) =>
                             o?.name?.toLowerCase() === (option?.name || '').toLowerCase()
-                              ? {name: o.name, value: valueName}
-                              : {name: o.name, value: o.value},
+                              ? { name: o.name, value: valueName }
+                              : { name: o.name, value: o.value },
                         );
                         if (!nextSelected.find((o) => o.name.toLowerCase() === (option?.name || '').toLowerCase())) {
-                          nextSelected.push({name: option?.name, value: valueName});
+                          nextSelected.push({ name: option?.name, value: valueName });
                         }
 
                         const to = getVariantUrl({
@@ -511,9 +511,8 @@ export default function Product() {
                             key={valueName}
                             to={to}
                             replace
-                            className={`inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm transition-colors ${
-                              isSelected ? 'border-black' : 'border-gray-300'
-                            } ${available ? 'opacity-100' : 'opacity-40 pointer-events-none'}`}
+                            className={`inline-flex items-center justify-center rounded-md border px-3 py-1.5 text-sm transition-colors ${isSelected ? 'border-black' : 'border-gray-300'
+                              } ${available ? 'opacity-100' : 'opacity-40 pointer-events-none'}`}
                             aria-disabled={!available}
                             aria-current={isSelected ? 'true' : undefined}
                           >
@@ -522,7 +521,7 @@ export default function Product() {
                             ) : swatchColor ? (
                               <span
                                 className="w-5 h-5 rounded-full border"
-                                style={{backgroundColor: swatchColor}}
+                                style={{ backgroundColor: swatchColor }}
                                 aria-label={valueName}
                               />
                             ) : (
@@ -584,13 +583,13 @@ export default function Product() {
                   {
                     merchandiseId: selectedVariant?.id,
                     quantity,
-                    ...(selectedSellingPlanId ? {sellingPlanId: selectedSellingPlanId} : {}),
+                    ...(selectedSellingPlanId ? { sellingPlanId: selectedSellingPlanId } : {}),
                   } as any,
                 ]}
               >
                 <button className="w-full bg-[#FBAC18] text-black font-bold py-3 px-6 rounded-md hover:bg-[#e69b15] transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
-                  {!selectedVariant?.availableForSale ? 'Sold out' : 
-                   maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
+                  {!selectedVariant?.availableForSale ? 'Sold out' :
+                    maxQuantity === 0 ? 'No stock available' : 'ADD TO CART'}
                 </button>
               </AddToCartButton>
 
@@ -600,7 +599,7 @@ export default function Product() {
                 onClick={handleBuyNow}
                 disabled={!selectedVariant?.availableForSale || maxQuantity === 0}
               >
-               BUY NOW
+                BUY NOW
               </button>
 
               {/* Wishlist Button */}
@@ -620,10 +619,10 @@ export default function Product() {
                   className="flex items-center justify-between w-full text-left font-bold text-lg"
                 >
                   HOW TO USE
-                  <svg 
+                  <svg
                     className={`w-5 h-5 transform transition-transform ${expandedSections.howToUse ? 'rotate-45' : ''}`}
-                    fill="none" 
-                    stroke="currentColor" 
+                    fill="none"
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -632,7 +631,7 @@ export default function Product() {
                 {expandedSections.howToUse && (
                   <div className="mt-4 text-gray-600">
                     {processedDescription.howToUse ? (
-                      <div dangerouslySetInnerHTML={{__html: processedDescription.howToUse}} />
+                      <div dangerouslySetInnerHTML={{ __html: processedDescription.howToUse }} />
                     ) : (
                       <p>Apply liberally 15 minutes before sun exposure. Reapply at least every 2 hours, after swimming, sweating, or towel drying.</p>
                     )}
@@ -647,10 +646,10 @@ export default function Product() {
                   className="flex items-center justify-between w-full text-left font-bold text-lg"
                 >
                   INGREDIENTS
-                  <svg 
+                  <svg
                     className={`w-5 h-5 transform transition-transform ${expandedSections.ingredients ? 'rotate-45' : ''}`}
-                    fill="none" 
-                    stroke="currentColor" 
+                    fill="none"
+                    stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
@@ -659,7 +658,7 @@ export default function Product() {
                 {expandedSections.ingredients && (
                   <div className="mt-4 text-gray-600">
                     {processedDescription.ingredients ? (
-                      <div dangerouslySetInnerHTML={{__html: processedDescription.ingredients}} />
+                      <div dangerouslySetInnerHTML={{ __html: processedDescription.ingredients }} />
                     ) : (
                       <p>No ingredients information available.</p>
                     )}
@@ -672,22 +671,22 @@ export default function Product() {
             <div className="flex items-center space-x-4">
               <a href="https://x.com/JACKET_SPF" target="_blank" rel="noopener noreferrer" className="w-6 h-6 text-[#107FEA] hover:opacity-80 transition-opacity flex items-center justify-center">
                 <svg fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                  <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                 </svg>
               </a>
               <a href="https://www.pinterest.com/jacketsunscreen" target="_blank" rel="noopener noreferrer" className="w-6 h-6 text-[#E81627] hover:opacity-80 transition-opacity flex items-center justify-center">
                 <svg fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z"/>
+                  <path d="M12.017 0C5.396 0 .029 5.367.029 11.987c0 5.079 3.158 9.417 7.618 11.174-.105-.949-.199-2.403.041-3.439.219-.937 1.406-5.957 1.406-5.957s-.359-.72-.359-1.781c0-1.663.967-2.911 2.168-2.911 1.024 0 1.518.769 1.518 1.688 0 1.029-.653 2.567-.992 3.992-.285 1.193.6 2.165 1.775 2.165 2.128 0 3.768-2.245 3.768-5.487 0-2.861-2.063-4.869-5.008-4.869-3.41 0-5.409 2.562-5.409 5.199 0 1.033.394 2.143.889 2.741.099.12.112.225.085.345-.09.375-.293 1.199-.334 1.363-.053.225-.172.271-.402.165-1.495-.69-2.433-2.878-2.433-4.646 0-3.776 2.748-7.252 7.92-7.252 4.158 0 7.392 2.967 7.392 6.923 0 4.135-2.607 7.462-6.233 7.462-1.214 0-2.357-.629-2.746-1.378l-.748 2.853c-.271 1.043-1.002 2.35-1.492 3.146C9.57 23.812 10.763 24.009 12.017 24.009c6.624 0 11.99-5.367 11.99-11.988C24.007 5.367 18.641.001 12.017.001z" />
                 </svg>
               </a>
               <a href="https://www.instagram.com/jacketsunscreen/" target="_blank" rel="noopener noreferrer" className="w-6 h-6 text-[#1BC149] hover:opacity-80 transition-opacity flex items-center justify-center">
                 <svg fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
                 </svg>
               </a>
               <a href="https://www.facebook.com/JacketSunscreenOfficial" target="_blank" rel="noopener noreferrer" className="w-6 h-6 text-black hover:opacity-80 transition-opacity flex items-center justify-center">
                 <svg fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
               </a>
             </div>
@@ -701,11 +700,11 @@ export default function Product() {
           {(reviewsData) => {
             // Extract the numeric ID from the product ID for the review form
             const productId = product.id.split('/').pop() || '';
-            
+
             return (
-              <ProductReviews 
-                reviews={reviewsData.reviews} 
-                stats={reviewsData.stats} 
+              <ProductReviews
+                reviews={reviewsData.reviews}
+                stats={reviewsData.stats}
                 productName={product.title}
                 productId={productId}
                 shopDomain={judgeMeCredentials.shopDomain}

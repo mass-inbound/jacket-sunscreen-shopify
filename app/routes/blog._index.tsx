@@ -207,9 +207,6 @@ function ArticleItem({
                     <div className="flex items-center gap-3 mb-4">
                         {article.author?.name && (
                             <>
-                                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center text-sm font-semibold text-gray-700 flex-shrink-0">
-                                    {article.author.name.charAt(0).toUpperCase()}
-                                </div>
                                 <div className="flex flex-col min-w-0">
                                     <span className="text-sm font-semibold text-gray-900 truncate">{article.author.name}</span>
                                     <div className="flex items-center gap-2 text-xs text-gray-500">

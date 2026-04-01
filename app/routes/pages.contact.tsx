@@ -1,17 +1,10 @@
-import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
-import {useLoaderData, type MetaFunction, Link} from 'react-router';
-import {useEffect} from 'react';
+import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { type MetaFunction, Link } from 'react-router';
+import { ShopifyContactForm } from '~/components/ShopifyContactForm';
 
-// Extend window type for JotForm
-declare global {
-  interface Window {
-    jotformEmbedHandler?: (selector: string, baseUrl: string) => void;
-  }
-}
-
-export const meta: MetaFunction<typeof loader> = ({data}) => {
+export const meta: MetaFunction<typeof loader> = () => {
   return [
-    {title: 'Contact Us | JACKET'},
+    { title: 'Contact Us | JACKET' },
     {
       name: 'description',
       content:
@@ -20,96 +13,35 @@ export const meta: MetaFunction<typeof loader> = ({data}) => {
   ];
 };
 
-export async function loader(args: LoaderFunctionArgs) {
+export async function loader(_args: LoaderFunctionArgs) {
   return {};
 }
 
 export default function Contact() {
-  // Load JotForm scripts
-  useEffect(() => {
-    // Load JotForm embed handler script
-    const script = document.createElement('script');
-    script.src =
-      'https://forms.inboundrequest.com/s/umd/latest/for-form-embed-handler.js';
-    script.async = true;
-    document.head.appendChild(script);
-
-    // Initialize JotForm handler after script loads
-    script.onload = () => {
-      if (window.jotformEmbedHandler) {
-        window.jotformEmbedHandler(
-          "iframe[id='JotFormIFrame-252173395609059']",
-          'https://forms.inboundrequest.com/',
-        );
-      }
-    };
-
-    return () => {
-      const existingScript = document.querySelector(
-        'script[src="https://forms.inboundrequest.com/s/umd/latest/for-form-embed-handler.js"]',
-      );
-      if (existingScript) {
-        document.head.removeChild(existingScript);
-      }
-    };
-  }, []);
-
   return (
     <div className="min-h-screen">
       {/* Top Section - Black Background */}
-      <div className="bg-black relative overflow-hidden">
+      <div className="bg-gray-100 relative overflow-hidden">
         <div className="mx-auto pt-12">
           <div className="flex flex-col lg:flex-row justify-between items-center text-white gap-4">
-            {/* Left: Contact Form */}
-            <div className="w-full lg:w-2/3 px-4 md:px-8 lg:pl-16 xl:pl-28">
+            {/* Left: Shopify contact form */}
+            <div className="w-full lg:w-full px-4 md:px-8 lg:pl-16 xl:pl-28">
               <div className="text-center">
                 <div className="inline-block text-left">
                   <h3 className="text-center text-[#FBAC18] text-xs md:text-[20px] uppercase font-bold mb-4">
                     Contact Us
                   </h3>
-                  <h2 className="text-center text-white text-2xl md:[45px] lg:text-[45px] font-bold mb-6 md:mb-8 uppercase leading-tight">
+                  <h2 className="text-center text-black text-2xl lg:text-[38px] font-bold mb-6 md:mb-8 uppercase leading-tight">
                     Thanks for <br className="hidden lg:block" />
                     reaching out!
                   </h2>
                 </div>
               </div>
-              {/* JotForm Iframe with Custom Styling */}
-              <div className="w-full md:max-w-[750px] md:-mt-10">
-                <iframe
-                  id="JotFormIFrame-252173395609059"
-                  title="Contact Form"
-                  onLoad={() => window.parent.scrollTo(0, 0)}
-                  allow="geolocation; microphone; camera; fullscreen; payment"
-                  src="https://forms.inboundrequest.com/252173395609059"
-                  style={{
-                    minWidth: '100%',
-                    maxWidth: '100%',
-                    height: '600px',
-                  }}
-                  scrolling="no"
-                />
+
+              <div className="w-full md:max-w-full md:-mt-10 min-h-[600px]">
+                <ShopifyContactForm className="w-full" />
               </div>
             </div>
-
-            {/* Right: Product Images - Hidden on mobile */}
-            {/* <div className="hidden lg:block lg:w-1/3 relative">
-                <img
-                  src="/assets/contact1.png"
-                  alt="Jacket Product 1"
-                className="absolute -top-[18.5rem] -right-16"
-                />
-             
-                <img
-                  src="/assets/contact3.png"
-                  alt="Jacket Product 3"
-                className="absolute top-40 -right-16"
-                />
-                <img
-                  src="/assets/contact2.png"
-                  alt="Jacket Product 2"
-                className="absolute -top-[48px] -right-16"
-                />
-              </div> */}
           </div>
         </div>
       </div>

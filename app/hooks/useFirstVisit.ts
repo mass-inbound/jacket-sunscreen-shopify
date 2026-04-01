@@ -16,6 +16,8 @@ export function useFirstVisit() {
 
   const [isLoaded, setIsLoaded] = useState(false);
   const [showCookieModal, setShowCookieModal] = useState(false);
+  /** When true, the sale popup is open (sticky button or first-visit auto). */
+  const [salePopupOpen, setSalePopupOpen] = useState(false);
 
   const {
     hasConsented,
@@ -39,6 +41,14 @@ export function useFirstVisit() {
     setIsLoaded(true);
   }, []);
 
+  // First visit: auto-open sale popup once until user closes it.
+  useEffect(() => {
+    if (!isLoaded) return;
+    if (state.hasVisited) return;
+    if (state.popupClosed) return;
+    setSalePopupOpen(true);
+  }, [isLoaded, state.hasVisited, state.popupClosed]);
+
   const updateState = (updates: Partial<FirstVisitState>) => {
     const newState = { ...state, ...updates };
     setState(newState);
@@ -46,10 +56,12 @@ export function useFirstVisit() {
   };
 
   const closePopup = () => {
+    setSalePopupOpen(false);
     updateState({ popupClosed: true });
   };
 
   const openPopup = () => {
+    setSalePopupOpen(true);
     updateState({ popupClosed: false });
   };
 
@@ -83,7 +95,7 @@ export function useFirstVisit() {
 
   return {
     isLoaded,
-    showPopup: isLoaded && !state.hasVisited && !state.popupClosed,
+    showPopup: isLoaded && salePopupOpen,
     showRegionBar: isLoaded && !state.hasVisited && !state.regionBarClosed && !hasConsented,
     showCookieModal,
     closePopup,

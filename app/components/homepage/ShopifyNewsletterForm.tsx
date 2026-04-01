@@ -1,4 +1,5 @@
-import { ShopifyForm as ShopifyFormsEmbed } from 'shopify-hydrogen-form-embed';
+import {ShopifyForm as ShopifyFormsEmbed} from 'shopify-hydrogen-form-embed';
+import {useShopifyFormsRuntimeReady} from '~/hooks/useShopifyFormsRuntimeReady';
 
 type ShopifyNewsletterFormProps = {
   className?: string;
@@ -13,6 +14,8 @@ export function ShopifyNewsletterForm({
   className = '',
   compact = false,
 }: ShopifyNewsletterFormProps) {
+  const runtimeReady = useShopifyFormsRuntimeReady();
+
   const formNotConfigured =
     !SHOPIFY_NEWSLETTER_FORM_ID ||
     SHOPIFY_NEWSLETTER_FORM_ID === PLACEHOLDER_FORM_ID;
@@ -31,10 +34,16 @@ export function ShopifyNewsletterForm({
 
   return (
     <div className={className}>
-      <ShopifyFormsEmbed
-        shopUrl={SHOPIFY_FORMS_SHOP_URL}
-        formId={SHOPIFY_NEWSLETTER_FORM_ID}
-        formStyle={`
+      {!runtimeReady ? (
+        <div className="flex min-h-[200px] items-center justify-center text-sm text-gray-500">
+          Loading…
+        </div>
+      ) : (
+        <ShopifyFormsEmbed
+          key={SHOPIFY_NEWSLETTER_FORM_ID}
+          shopUrl={SHOPIFY_FORMS_SHOP_URL}
+          formId={SHOPIFY_NEWSLETTER_FORM_ID}
+          formStyle={`
           .form-container {
             border-radius: 8px;
           }
@@ -59,7 +68,8 @@ export function ShopifyNewsletterForm({
           'data-forms-button-label-color': '#000000',
           'data-forms-background-color': compact ? '#1B1A1B' : '#FFFFFF',
         }}
-      />
+        />
+      )}
     </div>
   );
 }

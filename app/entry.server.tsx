@@ -31,6 +31,7 @@ export default async function handleRequest(
       'https://*.clarity.ms',
       'https://scripts.clarity.ms',
       'https://cdn.shopify.com',
+      'https://js.hcaptcha.com',
     ],
     styleSrc: [
       "'self'",
@@ -49,6 +50,7 @@ export default async function handleRequest(
       'https://*.judge.me',
       'https://*.googletagmanager.com', //added rc
       'https://*.google-analytics.com', //added rc
+      'https://*.clarity.ms',
     ],
     connectSrc: [
       "'self'",
@@ -56,6 +58,11 @@ export default async function handleRequest(
       'https://jacket-sunscreen.myshopify.com',
       'https://api.shop.app',
       'https://*.myshopify.com',
+      'https://forms.shopifyapps.com',
+      'https://otlp-http-production.shopifysvc.com',
+      'https://notify.bugsnag.com',
+      'https://cdn.shopify.com',
+      'https://*.hcaptcha.com',
       'https://rxmqy789nf.execute-api.us-east-2.amazonaws.com',
       'https://judge.me',
       'https://api.judge.me',
@@ -73,6 +80,8 @@ export default async function handleRequest(
       "'self'",
       'https://forms.inboundrequest.com',
       'https://www.google.com',
+      'https://js.hcaptcha.com',
+      'https://*.hcaptcha.com',
       'https://*.googletagmanager.com', //added rc
     ],
     fontSrc: ["'self'", 'https://fonts.gstatic.com', 'https://cdn.shopify.com'],

@@ -8,6 +8,7 @@ type ShopifyNewsletterFormProps = {
 const SHOPIFY_FORMS_SHOP_URL: string = 'jacket-sunscreen.myshopify.com';
 const PLACEHOLDER_FORM_ID = 'SHOPIFY_FORM_ID';
 const SHOPIFY_NEWSLETTER_FORM_ID: string = '935259';
+// const SHOPIFY_NEWSLETTER_FORM_ID: string = '935780';
 
 export function ShopifyNewsletterForm({
   className = '',

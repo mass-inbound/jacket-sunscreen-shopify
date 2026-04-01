@@ -1,3 +1,19 @@
+import {redirect} from 'react-router';
+import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
+
+/**
+ * Newsletter full-page route is disabled for now — redirect home.
+ * Previous page implementation is preserved below in comments.
+ */
+export async function loader(_args: LoaderFunctionArgs) {
+  return redirect('/');
+}
+
+export default function NewsletterSignupPage() {
+  return null;
+}
+
+/*
 import {Link, type MetaFunction} from 'react-router';
 import {ShopifyNewsletterForm} from '~/components/homepage/ShopifyNewsletterForm';
 
@@ -26,3 +42,4 @@ export default function NewsletterSignupPage() {
     </div>
   );
 }
+*/

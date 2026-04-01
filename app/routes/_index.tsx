@@ -159,7 +159,7 @@ export default function Homepage() {
       <CTASection />
 
       {/* Sticky Save 15% Button */}
-      <button
+      {/* <button
         onClick={openPopup}
         className="
     starburst-mobile
@@ -170,7 +170,7 @@ export default function Homepage() {
   "
       >
         <span>Save <br className="block" />15%</span>
-      </button>
+      </button> */}
 
       {/* Sale Popup */}
       <SalePopup isVisible={showPopup} onClose={closePopup} />

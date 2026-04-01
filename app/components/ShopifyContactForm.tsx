@@ -1,4 +1,6 @@
+import {useEffect} from 'react';
 import {ShopifyForm as ShopifyFormsEmbed} from 'shopify-hydrogen-form-embed';
+import {rebootstrapShopifyFormsApp} from '~/lib/shopify-forms-rebootstrap';
 
 const SHOPIFY_FORMS_SHOP_URL = 'jacket-sunscreen.myshopify.com';
 /** Contact form in Shopify Admin → Apps → Forms */
@@ -9,9 +11,31 @@ type ShopifyContactFormProps = {
 };
 
 export function ShopifyContactForm({className = ''}: ShopifyContactFormProps) {
+  useEffect(() => {
+    let cancelled = false;
+
+    const run = async () => {
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      });
+      if (cancelled) return;
+      try {
+        await rebootstrapShopifyFormsApp();
+      } catch (e) {
+        console.error('[ShopifyContactForm] Forms rebootstrap failed:', e);
+      }
+    };
+
+    void run();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
   return (
     <div className={className}>
       <ShopifyFormsEmbed
+        key={SHOPIFY_CONTACT_FORM_ID}
         shopUrl={SHOPIFY_FORMS_SHOP_URL}
         formId={SHOPIFY_CONTACT_FORM_ID}
         formStyle={`

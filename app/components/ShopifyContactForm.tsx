@@ -1,4 +1,4 @@
-import {useEffect} from 'react';
+import {useEffect, useRef} from 'react';
 import {ShopifyForm as ShopifyFormsEmbed} from 'shopify-hydrogen-form-embed';
 import {rebootstrapShopifyFormsApp} from '~/lib/shopify-forms-rebootstrap';
 
@@ -11,6 +11,8 @@ type ShopifyContactFormProps = {
 };
 
 export function ShopifyContactForm({className = ''}: ShopifyContactFormProps) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+
   useEffect(() => {
     let cancelled = false;
 
@@ -19,6 +21,25 @@ export function ShopifyContactForm({className = ''}: ShopifyContactFormProps) {
         requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
       });
       if (cancelled) return;
+
+      // On hard refresh Shopify's own bootstrap may mount the inline form a bit later.
+      // If we rebootstrap too early we can end up with duplicate <form-embed> nodes.
+      await new Promise((r) => setTimeout(r, 1200));
+      if (cancelled) return;
+
+      const embeds = Array.from(
+        containerRef.current?.querySelectorAll('form-embed') ?? [],
+      );
+
+      // If duplicates already exist, keep the first and remove the rest.
+      if (embeds.length > 1) {
+        embeds.slice(1).forEach((node) => node.remove());
+        return;
+      }
+
+      // If the form is already mounted, do nothing.
+      if (embeds.length === 1) return;
+
       try {
         await rebootstrapShopifyFormsApp();
       } catch (e) {
@@ -33,7 +54,7 @@ export function ShopifyContactForm({className = ''}: ShopifyContactFormProps) {
   }, []);
 
   return (
-    <div className={className}>
+    <div ref={containerRef} className={className}>
       <ShopifyFormsEmbed
         key={SHOPIFY_CONTACT_FORM_ID}
         shopUrl={SHOPIFY_FORMS_SHOP_URL}

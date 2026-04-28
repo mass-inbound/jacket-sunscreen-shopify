@@ -1,4 +1,4 @@
-import {type LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import {type LoaderFunctionArgs} from 'react-router';
 import {useLoaderData, type MetaFunction} from 'react-router';
 
 export const meta: MetaFunction<typeof loader> = ({data}) => {
@@ -48,7 +48,7 @@ export default function About() {
             <div className="space-y-4 md:space-y-6">
               {/* Main Heading */}
               <h1 className="text-2xl md:text-3xl lg:text-4xl xl:text-5xl font-bold text-black leading-tight">
-                THE GOLD STANDARD
+                THE GOLD STANDARD IN SUN PROTECTION
               </h1>
 
               {/* Text Content */}

@@ -1,5 +1,5 @@
 import {redirect} from 'react-router';
-import type {LoaderFunctionArgs} from '@shopify/remix-oxygen';
+import type {LoaderFunctionArgs} from 'react-router';
 
 /**
  * Newsletter full-page route is disabled for now — redirect home.

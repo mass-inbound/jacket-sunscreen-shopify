@@ -1,4 +1,4 @@
-import { type LoaderFunctionArgs } from '@shopify/remix-oxygen';
+import { type LoaderFunctionArgs } from 'react-router';
 import { type MetaFunction, Link } from 'react-router';
 import { ShopifyContactForm } from '~/components/ShopifyContactForm';
 

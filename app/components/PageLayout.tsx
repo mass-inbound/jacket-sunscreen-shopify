@@ -11,6 +11,7 @@ import {CartMain} from '~/components/CartMain';
 import {Footer} from '~/components/Footer';
 import {Header, HeaderMenu} from '~/components/Header';
 import {AnnouncementBar} from '~/components/homepage/AnnouncementBar';
+import {AddedToCartPopup} from '~/components/AddedToCartPopup';
 import {
   SEARCH_ENDPOINT,
   SearchFormPredictive,
@@ -38,6 +39,7 @@ export function PageLayout({
   return (
     <ErrorBoundary>
       <Aside.Provider>
+        <AddedToCartPopup />
         <CartAside cart={cart} />
         <SearchAside />
         <MobileMenuAside header={header} publicStoreDomain={publicStoreDomain} isLoggedIn={isLoggedIn} />

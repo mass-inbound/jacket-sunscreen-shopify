@@ -485,7 +485,7 @@ function CartBadge({ count }: { count: number | null }) {
       className="text-black font-semibold hover:text-gray-600 transition-colors relative"
     >
       {count !== null && count > 0 && (
-        <span className="absolute -top-[6px] left-[4px] transform translate-x-1 text-black text-xs font-bold">
+        <span className="absolute -top-[6px] left-[4px] transform translate-x-1 text-white text-xs font-bold">
           {count}
         </span>
       )}

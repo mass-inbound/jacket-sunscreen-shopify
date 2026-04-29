@@ -4,6 +4,7 @@ import type {CartApiQueryFragment} from 'storefrontapi.generated';
 import {useAside} from '~/components/Aside';
 import {CartLineItem} from '~/components/CartLineItem';
 import {CartSummary} from './CartSummary';
+import {CartUpsell} from './CartUpsell';
 
 export type CartLayout = 'page' | 'aside';
 
@@ -21,14 +22,6 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
   // so the user immediately sees feedback when they modify the cart.
   const cart = useOptimisticCart(originalCart);
 
-  // Temporary debugging - remove this after confirming the fix works
-  // console.log('CartMain Debug:', {
-  //   totalQuantity: cart?.totalQuantity,
-  //   linesCount: cart?.lines?.nodes?.length,
-  //   lines: cart?.lines?.nodes,
-  //   cart
-  // });
-
   const linesCount = cart?.lines?.nodes?.length || 0;
   const withDiscount =
     cart &&
@@ -43,13 +36,13 @@ export function CartMain({layout, cart: originalCart}: CartMainProps) {
         <div
           className="cart-lines flex-1 overflow-y-auto"
           aria-labelledby="cart-lines"
-          style={{maxHeight: 'calc(100vh - 60px - 329px)'}}
         >
           <ul className="space-y-0">
             {(cart?.lines?.nodes ?? []).map((line) => (
               <CartLineItem key={line.id} line={line} layout={layout} />
             ))}
           </ul>
+          {cartHasItems && <CartUpsell cart={cart} layout={layout} />}
         </div>
         {cartHasItems && <CartSummary cart={cart} layout={layout} />}
       </div>

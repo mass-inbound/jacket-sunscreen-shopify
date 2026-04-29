@@ -25,7 +25,7 @@ export async function loader({request, context}: LoaderFunctionArgs) {
       : regularSearch({request, context});
 
   searchPromise.catch((error: Error) => {
-    console.error(error);
+    console.error('Search error:', error.message);
     return {term: '', result: null, error: error.message};
   });
 

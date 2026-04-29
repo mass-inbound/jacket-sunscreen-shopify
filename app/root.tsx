@@ -153,16 +153,16 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
       },
     })
     .catch((error) => {
-      console.error(error);
+      console.error('Footer query error:', error instanceof Error ? error.message : error);
       return null;
     });
   return {
     cart: cart.get().catch((error) => {
-      console.error('Error fetching cart:', error);
+      console.error('Error fetching cart:', error instanceof Error ? error.message : error);
       return null;
     }),
     isLoggedIn: customerAccount.isLoggedIn().catch((error) => {
-      console.error('Error checking login status:', error);
+      console.error('Error checking login status:', error instanceof Error ? error.message : error);
       return false;
     }),
     footer,

@@ -54,7 +54,11 @@ export default {
 
       return response;
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        console.error('Server error:', error.message, error.stack);
+      } else {
+        console.error('Server error:', error);
+      }
       return new Response('An unexpected error occurred', {status: 500});
     }
   },

@@ -164,7 +164,7 @@ function loadDeferredData({ context, params }: LoaderFunctionArgs) {
   const recommendedProducts = storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
     .catch((error) => {
-      console.error(error);
+      console.error('Recommended products error:', error instanceof Error ? error.message : error);
       return null;
     });
 

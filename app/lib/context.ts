@@ -34,6 +34,12 @@ export async function createAppLoadContext(
     cart: {
       queryFragment: CART_QUERY_FRAGMENT,
     },
+    logErrors: (error) => {
+      const msg =
+        error instanceof Error ? error.message : String(error);
+      if (msg) console.error('[Storefront API]', msg);
+      return false;
+    },
   });
 
   return {

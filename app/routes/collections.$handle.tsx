@@ -25,8 +25,8 @@ async function loadStandardCollectionData({
 }: LoaderFunctionArgs) {
   const handle = params.handle as string;
   if (handle === 'shop-all') {
-    // Defensive: explicit 404 if someone hits /collections/shop-all here
-    throw redirect('/collections/shop-all');
+    const url = new URL(request.url);
+    throw redirect(`/collections/shop-all${url.search}`);
   }
   const {storefront} = context;
   const paginationVariables = getPaginationVariables(request, {

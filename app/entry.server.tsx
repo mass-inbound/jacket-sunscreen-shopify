@@ -27,7 +27,8 @@ export default async function handleRequest(
       'https://judge.me',
       'https://*.judge.me',
       'https://connect.facebook.net',
-      'https://*.googletagmanager.com', //added rc
+      'https://*.googletagmanager.com',
+      'https://*.google-analytics.com',
       'https://*.clarity.ms',
       'https://scripts.clarity.ms',
       'https://cdn.shopify.com',
@@ -48,8 +49,9 @@ export default async function handleRequest(
       'https://*.shopifycdn.com',
       'https://judge.me',
       'https://*.judge.me',
-      'https://*.googletagmanager.com', //added rc
-      'https://*.google-analytics.com', //added rc
+      'https://*.googletagmanager.com',
+      'https://*.google-analytics.com',
+      'https://www.facebook.com',
       'https://*.clarity.ms',
     ],
     connectSrc: [
@@ -71,8 +73,10 @@ export default async function handleRequest(
       'ws://localhost:*',
       'ws://127.0.0.1:*',
       'ws://*.tryhydrogen.dev:*',
-      'https://*.googletagmanager.com', //added rc
-      'https://*.google-analytics.com', //added rc
+      'https://*.googletagmanager.com',
+      'https://*.google-analytics.com',
+      'https://www.facebook.com',
+      'https://*.facebook.net',
       'https://*.clarity.ms',
       'https://scripts.clarity.ms',
     ],

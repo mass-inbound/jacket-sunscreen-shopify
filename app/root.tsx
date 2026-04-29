@@ -197,14 +197,6 @@ export function Layout({children}: {children?: React.ReactNode}) {
         {/* REMOVED Facebook Pixel <script> from head to avoid hydration mismatch */}
         {/* --- PASTE META PIXEL CODE END --- */}
 
-        {/* This is the corrected placement for the Analytics Provider */}
-        {data ? (
-          <Analytics.Provider
-            cart={data.cart}
-            shop={data.shop}
-            consent={data.consent}
-          />
-        ) : null}
       </head>
       <body suppressHydrationWarning>
         {/* Facebook Pixel client-only injection */}
@@ -222,12 +214,22 @@ export function Layout({children}: {children?: React.ReactNode}) {
             }}
           ></iframe>
         </noscript>
-        {/* The provider has been moved from here to the <head> */}
-        <Suspense fallback={<div>Loading...</div>}>
-          <PageLayout {...data}>{children}</PageLayout>
-        </Suspense>
-        {/* @description Initialize Google Tag Manager analytics integration */}
-        <GoogleTagManager />
+        {data ? (
+          <Analytics.Provider
+            cart={data.cart}
+            shop={data.shop}
+            consent={data.consent}
+          >
+            <Suspense fallback={<div>Loading...</div>}>
+              <PageLayout {...data}>{children}</PageLayout>
+            </Suspense>
+            <GoogleTagManager />
+          </Analytics.Provider>
+        ) : (
+          <Suspense fallback={<div>Loading...</div>}>
+            <PageLayout {...data}>{children}</PageLayout>
+          </Suspense>
+        )}
 
         <ScrollRestoration nonce={nonce} />
         <Scripts nonce={nonce} />

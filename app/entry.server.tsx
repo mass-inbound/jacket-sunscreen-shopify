@@ -95,7 +95,11 @@ export default async function handleRequest(
       nonce,
       signal: request.signal,
       onError(error: unknown) {
-        console.error(error);
+        if (error instanceof Error) {
+          console.error(`SSR Error: ${error.message || '(empty message)'}`, error.stack);
+        } else {
+          console.error('SSR Error:', error);
+        }
         responseStatusCode = 500;
       },
     },

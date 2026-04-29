@@ -157,8 +157,14 @@ function loadDeferredData({context}: LoaderFunctionArgs) {
       return null;
     });
   return {
-    cart: cart.get(),
-    isLoggedIn: customerAccount.isLoggedIn(),
+    cart: cart.get().catch((error) => {
+      console.error('Error fetching cart:', error);
+      return null;
+    }),
+    isLoggedIn: customerAccount.isLoggedIn().catch((error) => {
+      console.error('Error checking login status:', error);
+      return false;
+    }),
     footer,
   };
 }

@@ -112,28 +112,7 @@ export function HeaderMenu({
   const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-4 lg:gap-6 items-center z-10' : 'flex flex-col'} `;
   const { close } = useAside();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-  const [products, setProducts] = useState<ProductItemFragment[]>([]);
-  const [productsLoading, setProductsLoading] = useState(true);
   const location = useLocation();
-
-  // Fetch products dynamically from the shop-all collection
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('/api/shop-all-products');
-        const data = (await response.json()) as {
-          products: ProductItemFragment[];
-        };
-        setProducts(data.products || []);
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-      } finally {
-        setProductsLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
 
   const toggleSubmenu = (itemId: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -147,38 +126,6 @@ export function HeaderMenu({
     setExpandedItems(newExpandedItems);
   };
 
-  // Generate dynamic shop items from the shop-all collection
-  const generateShopItems = () => {
-    if (productsLoading) {
-      return [
-        { id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all' },
-      ];
-    }
-
-    const shopItems = [
-      { id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all' },
-    ];
-
-    // Add dynamic products from nav-menu-products collection
-    products.forEach((product) => {
-      shopItems.push({
-        id: product.handle,
-        title: product.title.toUpperCase(),
-        url: `/products/${product.handle}`,
-      });
-    });
-
-    // Add EXTRAS as the last item
-    shopItems.push({
-      id: 'extras',
-      title: 'EXTRAS',
-      url: '/collections/extras',
-    });
-
-    return shopItems;
-  };
-
-  // Static menu items with dynamic shop items
   const staticMenuItems = [
     {
       id: 'home',
@@ -190,7 +137,55 @@ export function HeaderMenu({
       id: 'shop',
       title: 'SHOP',
       url: '/collections/shop-all',
-      items: generateShopItems(),
+      items: [
+        { id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all' },
+        {
+          id: 'sunscreen',
+          title: 'SUNSCREEN',
+          url: '#',
+          items: [
+            { id: 'spf50-face-body', title: 'SPF 50+ FACE AND BODY', url: '/products/spf-50-anti-aging-sunscreen' },
+            { id: 'spf30-spray', title: 'SPF 30+ SPRAY', url: '/products/jacket-spray-sunscreen' },
+            { id: 'spf50-mineral-stick', title: 'SPF 50+ MINERAL STICK', url: '/products/spf-50-mineral-stick-sunscreen' },
+            { id: 'spf40-tinted', title: 'SPF 40+ TINTED MINERAL MOISTURIZER', url: '/products/jacket-spf-40-tinted-moisturizer' },
+            { id: 'spf15-lip-balm', title: 'SPF 15 LIP BALM', url: '/products/lip-balm-by-jacket' },
+          ],
+        },
+        {
+          id: 'skincare',
+          title: 'SKINCARE',
+          url: '#',
+          items: [
+            { id: 'skincare-spf40-tinted', title: 'SPF 40+ TINTED MINERAL MOISTURIZER', url: '/products/jacket-spf-40-tinted-moisturizer' },
+            { id: 'refresh-serum', title: 'REFRESH HYDRATING SERUM', url: '/products/refresh-by-jacket' },
+            { id: 'refine-face-wash', title: 'REFINE FACE WASH', url: '/products/refine-by-jacket' },
+            { id: 'platinum-peptide', title: 'PLATINUM PEPTIDE FACE FIRMING CREAM', url: '/products/platinum-peptide-by-jacket-1' },
+            { id: 'radiance-brightening', title: 'RADIANCE BRIGHTENING SOLUTION', url: '/products/radiance-accelerated-brightening-solution' },
+          ],
+        },
+        {
+          id: 'bundles',
+          title: 'BUNDLES',
+          url: '#',
+          items: [
+            { id: 'sun-day-essentials', title: 'SUN DAY ESSENTIALS', url: '/products/sun-day-essentials-bundle' },
+            { id: 'wrinkle-reducer', title: 'WRINKLE REDUCER', url: '/products/wrinkle-reducer-bundle' },
+            { id: 'outdoor-beauty', title: 'OUTDOOR BEAUTY SYSTEM', url: '/products/outdoor-beauty-system-bundle' },
+          ],
+        },
+        {
+          id: 'apparel',
+          title: 'APPAREL',
+          url: '#',
+          items: [
+            { id: 'shirt-black', title: 'UPF 50+ LONG-SLEEVE SHIRT (BLACK)', url: '/products/jacket-l-s-hooded-performance-shirt' },
+            { id: 'shirt-white', title: 'UPF 50+ LONG-SLEEVE SHIRT (WHITE)', url: '/products/upf-50-long-sleeve-hooded-performance-shirt-white' },
+            { id: 'hat-black', title: 'STRAW SUN HAT (BLACK SHIELD)', url: '/products/jacket-lifeguard-hat-black-patch' },
+            { id: 'hat-yellow', title: 'STRAW SUN HAT (YELLOW SHIELD)', url: '/products/lifeguard-hat-yellow-patch' },
+            { id: 'hat-snapback', title: 'SNAPBACK ROPE HAT (OFF WHITE)', url: '/products/jacket-rope-snapback-hat-white' },
+          ],
+        },
+      ],
     },
     {
       id: 'explore',
@@ -335,21 +330,66 @@ export function HeaderMenu({
             </NavLink>
             {viewport === 'mobile' && hasSubItems && isExpanded && (
               <div className="ml-4 mt-1 mb-2">
-                {item.items.map((subItem) => (
-                  <NavLink
-                    key={subItem.id}
-                    className={({ isActive }) => {
-                      return `block py-0.5 text-[14px] tracking-wide ${isActive ? 'text-[#fbac17]' : 'text-black'
-                        }`;
-                    }}
-                    style={{ textDecoration: 'none', fontSize: '14px' }}
-                    onClick={close}
-                    prefetch="intent"
-                    to={subItem.url}
-                  >
-                    {subItem.title}
-                  </NavLink>
-                ))}
+                {item.items.map((subItem: any) => {
+                  const hasNestedItems = subItem.items && subItem.items.length > 0;
+                  const isSubExpanded = expandedItems.has(subItem.id);
+
+                  if (hasNestedItems) {
+                    return (
+                      <div key={subItem.id}>
+                        <button
+                          className={`flex items-center justify-between w-full py-1 font-bold text-[14px] tracking-wider text-left ${isSubExpanded ? 'text-black' : 'text-black'}`}
+                          style={{ textDecoration: 'none' }}
+                          onClick={(e) => toggleSubmenu(subItem.id, e)}
+                        >
+                          {subItem.title}
+                          <svg
+                            className={`w-3 h-3 transition-transform ${isSubExpanded ? 'rotate-180' : ''}`}
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="2"
+                          >
+                            <polyline points="6,9 12,15 18,9"></polyline>
+                          </svg>
+                        </button>
+                        {isSubExpanded && (
+                          <div className="ml-4 mb-1">
+                            {subItem.items.map((nestedItem: any) => (
+                              <NavLink
+                                key={nestedItem.id}
+                                className={({ isActive }) =>
+                                  `block py-0.5 text-[13px] tracking-wide ${isActive ? 'text-[#fbac17]' : 'text-black'}`
+                                }
+                                style={{ textDecoration: 'none' }}
+                                onClick={close}
+                                prefetch="intent"
+                                to={nestedItem.url}
+                              >
+                                {nestedItem.title}
+                              </NavLink>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <NavLink
+                      key={subItem.id}
+                      className={({ isActive }) =>
+                        `block py-0.5 text-[14px] tracking-wide ${isActive ? 'text-[#fbac17]' : 'text-black'}`
+                      }
+                      style={{ textDecoration: 'none', fontSize: '14px' }}
+                      onClick={close}
+                      prefetch="intent"
+                      to={subItem.url}
+                    >
+                      {subItem.title}
+                    </NavLink>
+                  );
+                })}
               </div>
             )}
           </div>

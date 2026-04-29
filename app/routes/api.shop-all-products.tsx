@@ -41,7 +41,6 @@ const SHOP_ALL_MENU_PRODUCTS_QUERY = `#graphql
       nodes {
         id
         availableForSale
-        quantityAvailable
         price {
           amount
           currencyCode

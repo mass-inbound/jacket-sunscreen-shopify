@@ -220,7 +220,6 @@ const SHOP_ALL_COLLECTION_ITEM_FRAGMENT = `#graphql
       nodes {
         id
         availableForSale
-        quantityAvailable
         price {
           amount
           currencyCode

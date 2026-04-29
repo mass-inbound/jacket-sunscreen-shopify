@@ -275,7 +275,6 @@ const FEATURED_PRODUCTS_COLLECTION_QUERY = `#graphql
       nodes {
         id
         availableForSale
-        quantityAvailable
         price {
           amount
           currencyCode
@@ -322,7 +321,6 @@ const FEATURED_PRODUCTS_QUERY = `#graphql
       nodes {
         id
         availableForSale
-        quantityAvailable
         price {
           amount
           currencyCode
@@ -362,7 +360,6 @@ const RECOMMENDED_PRODUCTS_QUERY = `#graphql
       nodes {
         id
         availableForSale
-        quantityAvailable
         price {
           amount
           currencyCode

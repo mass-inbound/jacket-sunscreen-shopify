@@ -92,7 +92,6 @@ const EXTRAS_COLLECTION_QUERY = `#graphql
       nodes {
         id
         availableForSale
-        quantityAvailable
         price {
           amount
           currencyCode

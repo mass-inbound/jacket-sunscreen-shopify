@@ -11,26 +11,26 @@ const tabsData: TabData[] = [
   {
     id: 'what-is-jacket',
     label: 'WHAT IS JACKET?',
-    heading: 'THE NEW FACE OF SUNSCREEN',
-    description: 'JACKET is a small-batch, dermatologist-developed sunscreen with an exclusive collection of antioxidants and vitamins that defend against harmful UV rays and help reverse existing sun damage and signs of premature aging. The weightless formula naturally hydrates, promotes collagen production, cleans up free radicals, improves blemishes and irritation, fades dark spots and smooths wrinkles. JACKET won’t clog pores and is safe and effective for all skin types, including those with sensitivities.'
+    heading: 'OUTDOOR BEAUTY SYSTEM',
+    description: 'JACKET is Sunscreen + Skincare that Protects, Repairs and Hydrates with a premium on Wearability. Our dermatologist-developed, bio-stimulating formulas contain antioxidants and medical-grade ingredients that deliver maximum protection and ultimate performance, working at the cellular level to repair damaged skin and reverse signs of premature aging. JACKET also promotes Collagen production, the protein responsible for maintaining tone, texture, elasticity and overall skin health. Weightless, invisible-finish sunscreens are non-greasy, won’t clog pores or cause breakouts, and are recommended for sensitive skin.'
   },
   {
     id: 'why-jacket',
-    label: 'WHY JACKET?',
-    heading: 'COMFORT AND CONFIDENCE WITHOUT COMPROMISE',
-    description: 'Unlike most sunscreens, JACKET does more than prevent sunburns. JACKET acts at the cellular level to clean up free radicals caused by UV rays that alter skin’s DNA and result in skin cancer and premature aging. JACKET is not oily or greasy and won’t leave a white cast, allowing you to enjoy maximum broad-spectrum protection (also blocks blue light) without looking, feeling or smelling like you’re wearing sunscreen — making it ideal for everyday use, including under makeup.'
+    label: 'MAXIMUM PROTECTION',
+    heading: 'EVERY DAY IS SUNDAY',
+    description: 'Wearing broad spectrum, water resistant, SPF 30 (or higher) sunscreen every day reduces the risk of developing Melanoma, the deadliest form of skin cancer, by 50 percent. JACKET sunscreens are broad spectrum, blocking both UVA and UVB rays as well as Blue Light, all of which contribute to skin damage such as sunburns, hyperpigmentation, premature aging and cancer. Our sunscreens range from SPF 30 to SPF 50, are water and sweat resistant for 80 minutes, and do not require frequent reapplication, making them ideal for daily skincare routines or outdoor adventures.'
   },
   {
     id: 'only-jacket',
-    label: 'ONLY JACKET!',
-    heading: 'INVEST IN YOUR SKIN',
-    description: 'All sunscreens are not the same. When it comes to your skin and health, never settle. JACKET is The Gold Standard for sunscreen, pairing dermatologist-selected ingredients and antioxidants that not only protect against harmful UV rays but also heal and repair damaged skin. Does your sunscreen do that? The result is healthier skin that keeps you looking and feeling your best. Give your skin the care it deserves.'
+    label: 'ANTI-AGING ANTIOXIDANTS',
+    heading: 'THE NEW FACE OF SUNSCREEN',
+    description: 'Damage from UV rays and environmental stressors can occur at any age but becomes increasingly visible starting in your mid-20s, when natural Collagen production begins to decrease. JACKET features antioxidants that neutralize DNA-altering free radicals, helping to both prevent and correct premature aging. Our sunscreens smooth fine lines and wrinkles, reduce hyperpigmentation, calm and soothe irritation and inflammation, heal and hide blemishes and scarring, and support and strengthen the moisture barrier. JACKET is also the best sunscreen for improving Melasma.'
   },
   {
     id: 'jacket-up',
-    label: 'JACKET UP!',
-    heading: 'IT’S ALWAYS JACKET WEATHER',
-    description: 'There are plenty of (bad) excuses for not wearing sunscreen. Greasy. Smelly. Sticky. Breakouts. JACKET eliminates all of them. JACKET is easy to apply, pleasant to wear and non-fragrant other than the mild, refreshing lemongrass scent that is also a natural insect repellant. Sunscreen absolutely belongs in your daily skincare routine. Not simply for an improved appearance, but because it can save your life. Maximize the action. Minimize the risk.'
+    label: 'DERMATOLOGIST DEVELOPED',
+    heading: 'BORN IN THE SUNSHINE STATE',
+    description: 'Have you noticed how many sunscreen brands say they are #1 among dermatologists? Makes you wonder just how credible those claims are. JACKET formulas were developed (not just approved, recommended, etc.) by Dr. Thomas Balshi, MD, a dermatologist and cosmetic surgeon in South Florida. Dr. Balshi sought a product that protected, nourished and repaired damaged skin without looking, feeling or smelling like you are wearing sunscreen. He couldn’t find one, so he created it. Our dermatologist has a name and a face, and he, his family and his patients wear JACKET daily.'
   }
 ];
 

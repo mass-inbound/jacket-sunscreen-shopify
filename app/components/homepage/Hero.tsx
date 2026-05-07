@@ -8,10 +8,10 @@ export function Hero({
   bottomText = "DERMATOLOGIST DEVELOPED SUNSCREEN + SKINCARE"
 }: HeroProps) {
   return (
-    <section className="relative w-full h-[calc(100vh-145px)] max-[375px]:max-h-[670px] md:max-h-[580px] min-[1025px]:max-h-[calc(100vh-145px)] min-h-[560px] overflow-hidden">
+    <section className="relative w-full h-[calc(100vh-145px)] max-[375px]:max-h-[670px] md:max-h-[650px] min-[1025px]:max-h-[calc(100vh-145px)] min-h-[560px] overflow-hidden">
 
       {/* Background images */}
-      <div className="absolute inset-0 w-full h-full md:max-h-[600px] lg:max-h-full">
+      <div className="absolute inset-0 w-full h-full">
         <img
           src="/images/jacket-hero-image-mobile-may.png"
           alt="Jacket skincare products"
@@ -20,15 +20,15 @@ export function Hero({
         <img
           src="/images/jacket-hero-image-desktop-may.jpg"
           alt="Jacket skincare products"
-          className="hidden md:block w-full h-[93%] object-cover object-center"
+          className="hidden md:block w-full h-full object-cover object-[50%_55%]"
         />
       </div>
 
       {/* Overlay content */}
       <div className="relative z-10 h-full">
 
-        {/* Mobile title - right aligned */}
-        <div className="md:hidden flex justify-end px-6 pt-8">
+        {/* Mobile title - above the cream */}
+        <div className="md:hidden absolute top-[35%] right-0 left-0 flex justify-end px-6">
           <h1 className="text-[36px] leading-[1] font-light tracking-tight text-white text-right">
             PROTECTS.<br />
             REPAIRS.<br />
@@ -46,8 +46,8 @@ export function Hero({
         </div>
 
         {/* Mobile bottom banner */}
-        <div className="absolute bottom-[60px] left-0 w-full bg-black px-4 py-1.5 text-center md:hidden">
-          <p className="text-[18px] leading-tight font-semibold uppercase tracking-[0.04em] text-[#f9ad19]">
+        <div className="absolute bottom-0 left-0 w-full bg-black px-4 py-2 text-center md:hidden">
+          <p className="text-[12px] leading-tight font-semibold uppercase tracking-[0.02em] whitespace-nowrap text-[#f9ad19]">
             {bottomText}
           </p>
         </div>

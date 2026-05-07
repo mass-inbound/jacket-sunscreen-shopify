@@ -18,7 +18,7 @@ const tabsData: TabData[] = [
     id: 'why-jacket',
     label: 'MAXIMUM PROTECTION',
     heading: 'EVERY DAY IS SUNDAY',
-    description: 'Wearing broad spectrum, water resistant, SPF 30 (or higher) sunscreen every day reduces the risk of developing Melanoma, the deadliest form of skin cancer, by 50 percent. JACKET sunscreens are broad spectrum, blocking both UVA and UVB rays as well as Blue Light, all of which contribute to skin damage such as sunburns, hyperpigmentation, premature aging and cancer. Our sunscreens range from SPF 30 to SPF 50, are water and sweat resistant for 80 minutes, and do not require frequent reapplication, making them ideal for daily skincare routines or outdoor adventures.'
+    description: 'Wearing broad spectrum, water resistant, SPF 30 (or higher) sunscreen every day reduces the risk of developing Melanoma, the deadliest form of skin cancer, by 50 percent. JACKET sunscreens are broad spectrum, blocking both UVA and UVB rays as well as Blue Light, all of which contribute to skin damage such as sunburns, hyperpigmentation, premature aging and cancer. Our sunscreens range from SPF 30+ to SPF 50+, are water and sweat resistant for 80 minutes, and do not require frequent reapplication, making them ideal for daily skincare routines or outdoor adventures.'
   },
   {
     id: 'only-jacket',

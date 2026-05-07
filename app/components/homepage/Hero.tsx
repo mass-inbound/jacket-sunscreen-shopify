@@ -41,7 +41,7 @@ export function Hero({
           className="w-full h-full object-cover object-center"
         />
         <div className="absolute inset-0 flex flex-col justify-between">
-          <div className="flex justify-start pl-[45%] pt-12">
+          <div className="flex justify-start pl-[52%] pt-12">
             <h1 className="text-[60px] leading-[1] font-light tracking-tight text-white text-left lg:text-[70px] 2xl:text-[80px]">
               PROTECTS.<br />
               REPAIRS.<br />

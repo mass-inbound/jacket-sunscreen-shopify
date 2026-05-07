@@ -8,14 +8,14 @@ export function Hero({
   bottomText = "DERMATOLOGIST DEVELOPED SUNSCREEN + SKINCARE"
 }: HeroProps) {
   return (
-    <section className="relative w-full overflow-hidden">
+    <section className="relative w-full">
 
-      {/* Mobile layout */}
-      <div className="md:hidden relative w-full">
+      {/* Mobile */}
+      <div className="md:hidden relative w-full h-[calc(100vh-145px)] overflow-hidden">
         <img
           src="/images/jacket-hero-image-mobile-may.png"
           alt="Jacket skincare products"
-          className="w-full block"
+          className="w-full h-full object-cover object-[50%_25%]"
         />
         <div className="absolute inset-0">
           <div className="absolute top-[20%] right-0 left-0 flex justify-end px-6">
@@ -33,12 +33,12 @@ export function Hero({
         </div>
       </div>
 
-      {/* Desktop layout */}
-      <div className="hidden md:block relative w-full">
+      {/* Desktop */}
+      <div className="hidden md:block relative w-full h-[calc(100vh-145px)] overflow-hidden">
         <img
           src="/images/jacket-hero-image-desktop-may.jpg"
           alt="Jacket skincare products"
-          className="w-full block"
+          className="w-full h-full object-cover object-[50%_75%]"
         />
         <div className="absolute inset-0 flex flex-col justify-between">
           <div className="flex justify-end px-10 pt-8 lg:px-12 xl:px-16">

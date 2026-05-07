@@ -1,33 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router';
 
 interface HeroProps {
-  title?: string;
-  subtitle?: string;
-  ctaText?: string;
-  ctaLink?: string;
   bottomText?: string;
 }
 
 export function Hero({
-  title = "OUTDOOR BEAUTY SYSTEM",
-  subtitle = "DERMATOLOGIST-DEVELOPED, ANTIOXIDANT-ENRICHED, ANTI-AGING SUN AND SKIN CARE THAT PROTECTS, REPAIRS, HEALS AND HYDRATES.",
-  ctaText = "SHOP NOW",
-  ctaLink = "/products",
-  bottomText = "COMFORT AND CONFIDENCE WITHOUT COMPROMISE."
+  bottomText = "DERMATOLOGIST DEVELOPED SUNSCREEN + SKINCARE"
 }: HeroProps) {
   return (
     <section className="relative w-full h-[calc(100vh-145px)] max-[375px]:max-h-[670px] md:max-h-[580px] min-[1025px]:max-h-[calc(100vh-145px)] min-h-[560px] overflow-hidden">
+
       {/* Background images */}
       <div className="absolute inset-0 w-full h-full md:max-h-[600px] lg:max-h-full">
         <img
-          src="/images/JACKET_MOBILE_PRODUCTS1.png"
+          src="/images/jacket-hero-image-mobile-may.png"
           alt="Jacket skincare products"
           className="block md:hidden w-full h-full object-cover object-center"
         />
-
         <img
-          src="/images/JACKET_DESKTOP_PRODUCTS.png"
+          src="/images/jacket-hero-image-desktop-may.jpg"
           alt="Jacket skincare products"
           className="hidden md:block w-full h-[93%] object-cover object-center"
         />
@@ -35,48 +26,39 @@ export function Hero({
 
       {/* Overlay content */}
       <div className="relative z-10 h-full">
-        {/* Mobile text */}
-        <div className="md:hidden px-6 pt-[1.1rem] text-center">
-          <h1 className="mx-auto max-w-[340px] text-[34px] leading-[0.95] font-semibold tracking-tight text-black">
-            OUTDOOR <br />
-            BEAUTY SYSTEM
+
+        {/* Mobile title - right aligned */}
+        <div className="md:hidden flex justify-end px-6 pt-8">
+          <h1 className="text-[36px] leading-[1] font-light tracking-tight text-white text-right">
+            PROTECTS.<br />
+            REPAIRS.<br />
+            HYDRATES.
           </h1>
-
-          <div className="mx-auto mt-[15px] h-[3px] w-full max-w-[340px] bg-[#f9ad19]" />
-
-          <p className="mx-auto mt-[15px] max-w-[550px] text-[16px] leading-[1.22] font-light uppercase tracking-[0.01em] text-black">
-            {subtitle}
-          </p>
         </div>
 
-        {/* Desktop text */}
-        <div className="hidden md:block">
-          <div className="max-w-[980px] px-10 pt-1 lg:px-12 xl:px-16">
-            <h1 className="max-w-[860px] text-[42px] leading-[0.95] font-semibold tracking-tight text-black lg:text-[44px] 2xl:text-[49px]">
-              {title}
-            </h1>
-
-            <div className="mt-3 h-[3px] w-[420px] bg-[#f9ad19] lg:w-[520px]" />
-
-            <p className="mt-3 max-w-[670px] text-[16px] font-[400] uppercase tracking-[0.01em] text-black lg:text-[18px]">
-              {subtitle}
-            </p>
-          </div>
+        {/* Desktop title - right aligned */}
+        <div className="hidden md:flex justify-end px-10 pt-8 lg:px-12 xl:px-16">
+          <h1 className="text-[60px] leading-[1] font-light tracking-tight text-white text-right lg:text-[70px] 2xl:text-[80px]">
+            PROTECTS.<br />
+            REPAIRS.<br />
+            HYDRATES.
+          </h1>
         </div>
 
-        {/* Mobile bottom banner - attached to image bottom */}
-        <div className="absolute bottom-[60px] left-0 w-full bg-[#f9ad19] px-4 py-1.5 text-center md:hidden">
-          <p className="text-[18px] leading-tight font-semibold uppercase tracking-[0.04em] text-black">
+        {/* Mobile bottom banner */}
+        <div className="absolute bottom-[60px] left-0 w-full bg-black px-4 py-1.5 text-center md:hidden">
+          <p className="text-[18px] leading-tight font-semibold uppercase tracking-[0.04em] text-[#f9ad19]">
             {bottomText}
           </p>
         </div>
 
         {/* Desktop bottom banner */}
-        <div className="absolute bottom-0 left-0 hidden w-full bg-[#f9ad19] px-8 py-2 text-center md:block">
-          <p className="text-[24px] leading-tight font-semibold uppercase tracking-[0.04em] text-black">
+        <div className="absolute bottom-0 left-0 hidden w-full bg-black px-8 py-2 text-center md:block">
+          <p className="text-[24px] leading-tight font-semibold uppercase tracking-[0.04em] text-[#f9ad19]">
             {bottomText}
           </p>
         </div>
+
       </div>
     </section>
   );

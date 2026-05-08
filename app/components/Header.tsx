@@ -79,7 +79,7 @@ export function Header({
                 <img
                   src="/images/JACKET%20Logo_Black.svg"
                   alt="Logo"
-                  className="block h-[70px] md:h-[80px] lg:h-[100px] xl:h-[130px] object-contain mt-3"
+                  className="block h-[140px] md:h-[160px] lg:h-[200px] xl:h-[230px] object-contain mt-3"
                 />
               </NavLink>
             </div>

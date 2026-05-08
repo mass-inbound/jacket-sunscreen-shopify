@@ -37,7 +37,7 @@ export function Header({
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 50); // Start sticky behavior after 50px scroll
+      setIsScrolled(scrollTop > 50);
     };
 
     window.addEventListener('scroll', handleScroll);
@@ -52,12 +52,11 @@ export function Header({
         className={`flex md:px-2 justify-center items-center py-2 md:py-[15px] ${isScrolled ? 'pt-4 md:pt-[40px]' : ''} bg-transparent`}
       >
         <div className="relative w-full mx-auto">
-          {/* Overlay + Shadow + Background */}
+          {/* Background */}
           <div
             className={`absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)] transition-opacity duration-300`}
             style={{
-              // background: '#FBAC18',
-              background: '#000',
+              background: '#FFFFFF',
               opacity: isScrolled ? 0.8 : 1,
             }}
           />
@@ -68,7 +67,7 @@ export function Header({
               <HeaderMenuMobileToggle />
             </div>
 
-            {/* Center: Logo - Absolutely positioned for true center */}
+            {/* Center: Logo */}
             <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
               <NavLink
                 prefetch="intent"
@@ -78,7 +77,7 @@ export function Header({
                 end
               >
                 <img
-                  src="/images/JACKET-Website-Nav-Logo.svg"
+                  src="/images/JACKET%20Logo_Black.svg"
                   alt="Logo"
                   className="block h-[50px] md:h-[57px] lg:h-[77px] xl:h-[115px] object-contain mt-3"
                 />
@@ -204,21 +203,14 @@ export function HeaderMenu({
       url: '#',
       items: [
         { id: 'faq', title: 'FAQ', url: '/pages/faq' },
-        {
-          id: 'blog',
-          title: 'BLOG',
-          url: '/blog',
-        }],
+        { id: 'blog', title: 'BLOG', url: '/blog' },
+      ],
     },
   ];
 
-  // Function to check if a menu item should be active based on current location
   const isMenuItemActive = (item: any, pathname: string) => {
-    if (item.id === 'home' && pathname === '/') {
-      return true;
-    }
+    if (item.id === 'home' && pathname === '/') return true;
     if (item.id === 'shop') {
-      // Shop is active for /collections/shop-all, /collections/extras, or any /products/* route
       return (
         pathname === '/collections/shop-all' ||
         pathname === '/collections/all' ||
@@ -226,12 +218,8 @@ export function HeaderMenu({
         pathname.startsWith('/products/')
       );
     }
-    if (item.id === 'blog') {
-      // Blog is active for any /blog or /blogs/* route
-      return pathname.startsWith('/blog') || pathname.startsWith('/blogs/');
-    }
+    if (item.id === 'blog') return pathname.startsWith('/blog') || pathname.startsWith('/blogs/');
     if (item.id === 'explore') {
-      // Explore is active for any of its submenu items
       return (
         pathname === '/pages/retailers' ||
         pathname === '/pages/reviews' ||
@@ -239,22 +227,18 @@ export function HeaderMenu({
         pathname === '/pages/about'
       );
     }
-    if (item.id === 'education') {
-      // Education is active for FAQ
-      return pathname === '/pages/faq';
-    }
+    if (item.id === 'education') return pathname === '/pages/faq';
     return false;
   };
 
   return (
     <nav className={className} role="navigation">
-      {/* Add login/account link for mobile at the top */}
       {viewport === 'mobile' && isLoggedIn && (
         <div className="mb-4 pb-4 block md:hidden border-b border-gray-200">
           <NavLink
             prefetch="intent"
             to="/account"
-            className=" py-2 font-bold text-[16px] tracking-wider text-black hover:text-[#fbac17] transition-colors"
+            className="py-2 font-bold text-[16px] tracking-wider text-black hover:text-[#fbac17] transition-colors"
             style={{ textDecoration: 'none' }}
             onClick={close}
           >
@@ -274,18 +258,13 @@ export function HeaderMenu({
           <div key={item.id} className={viewport === 'mobile' ? 'mb-0' : ''}>
             <NavLink
               className={({ isActive }) => {
-                // For parent items with submenus, never highlight them
-                // For direct menu items without submenus, use normal isActive
                 let shouldHighlight = false;
-                if (!hasSubItems) {
-                  shouldHighlight = isActive;
-                }
-                // Note: Parent items with submenus will never be highlighted
+                if (!hasSubItems) shouldHighlight = isActive;
 
                 const classes = `${viewport === 'desktop'
                   ? `font-semibold text-[14px] lg:text-[14px] tracking-widest transition-colors px-1 py-0.5 rounded ${shouldHighlight
                     ? 'text-[#fbac17] !important'
-                    : 'text-white hover:text-black'
+                    : 'text-black hover:text-[#fbac17]'
                   }`
                   : `block py-1 font-bold text-[14px] tracking-wider border-0 ${shouldHighlight
                     ? 'text-[#fbac17] !important'
@@ -297,11 +276,7 @@ export function HeaderMenu({
               }}
               style={
                 viewport === 'desktop'
-                  ? {
-                    letterSpacing: '0.12em',
-                    textDecoration: 'none',
-                    fontSize: '14px',
-                  }
+                  ? { letterSpacing: '0.12em', textDecoration: 'none', fontSize: '14px' }
                   : { textDecoration: 'none' }
               }
               end
@@ -338,7 +313,7 @@ export function HeaderMenu({
                     return (
                       <div key={subItem.id}>
                         <button
-                          className={`flex items-center justify-between w-full py-1 font-bold text-[14px] tracking-wider text-left ${isSubExpanded ? 'text-black' : 'text-black'}`}
+                          className={`flex items-center justify-between w-full py-1 font-bold text-[14px] tracking-wider text-left text-black`}
                           style={{ textDecoration: 'none' }}
                           onClick={(e) => toggleSubmenu(subItem.id, e)}
                         >
@@ -406,15 +381,14 @@ function HeaderCtas({
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
     <nav
-      className="header-ctas text-white flex items-center gap-1 md:gap-3 lg:gap-4"
+      className="header-ctas text-black flex items-center gap-1 md:gap-3 lg:gap-4"
       role="navigation"
     >
-      {/* Hide login on mobile, show on desktop */}
       <div className="hidden md:block">
         <NavLink
           prefetch="intent"
           to="/account"
-          className="text-white font-bold hover:text-gray-200 transition-colors text-xs md:text-sm lg:text-base"
+          className="text-black font-bold hover:text-gray-600 transition-colors text-xs md:text-sm lg:text-base"
           style={{ textDecoration: 'none' }}
         >
           <Suspense fallback="Log In">
@@ -431,7 +405,7 @@ function HeaderCtas({
 }
 
 function HeaderMenuMobileToggle() {
-  const aside = useAside(); // Remove try-catch, let it throw if context is missing
+  const aside = useAside();
 
   return (
     <button
@@ -439,13 +413,18 @@ function HeaderMenuMobileToggle() {
       onClick={() => aside.open('mobile')}
       aria-label="Open menu"
     >
-      <img src={HamburgerIcon} alt="Menu" className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-11 xl:h-11" />
+      <img
+        src={HamburgerIcon}
+        alt="Menu"
+        className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-11 xl:h-11"
+        style={{filter: 'brightness(0)'}}
+      />
     </button>
   );
 }
 
 function SearchToggle() {
-  const aside = useAside(); // Remove try-catch, let it throw if context is missing
+  const aside = useAside();
 
   return (
     <button
@@ -458,16 +437,15 @@ function SearchToggle() {
         width="16"
         height="16"
         className="md:w-5 md:h-5"
+        style={{filter: 'brightness(0)'}}
       />
-
     </button>
   );
 }
 
 function CartBadge({ count }: { count: number | null }) {
   const analytics = useAnalytics();
-  const aside = useAside(); // Remove try-catch, let it throw if context is missing
-
+  const aside = useAside();
   const { publish, shop, cart, prevCart } = analytics;
 
   return (
@@ -485,7 +463,7 @@ function CartBadge({ count }: { count: number | null }) {
       className="text-black font-semibold hover:text-gray-600 transition-colors relative"
     >
       {count !== null && count > 0 && (
-        <span className="absolute -top-[6px] left-[4px] transform translate-x-1 text-white text-xs font-bold">
+        <span className="absolute -top-[6px] left-[4px] transform translate-x-1 text-black text-xs font-bold">
           {count}
         </span>
       )}
@@ -494,7 +472,7 @@ function CartBadge({ count }: { count: number | null }) {
         height="16"
         className="md:w-5 md:h-5"
         fill="none"
-        stroke="white"
+        stroke="black"
         strokeWidth="2"
         viewBox="0 0 24 24"
       >
@@ -526,7 +504,6 @@ function CartBanner() {
   );
 }
 
-// Add ShopByImages component
 function ShopByImages() {
   const [products, setProducts] = useState<ProductItemFragment[]>([]);
   const [loading, setLoading] = useState(true);
@@ -539,7 +516,6 @@ function ShopByImages() {
         const data = (await response.json()) as {
           products: ProductItemFragment[];
         };
-        // Use products in the order they appear in the collection (no sorting)
         setProducts(data.products || []);
       } catch (error) {
         console.error('Failed to fetch products:', error);
@@ -559,10 +535,7 @@ function ShopByImages() {
         </h3>
         <div className="flex gap-3 overflow-x-auto">
           {[...Array(6)].map((_, i) => (
-            <div
-              key={i}
-              className="w-32 h-96 bg-gray-200 animate-pulse flex-shrink-0"
-            />
+            <div key={i} className="w-32 h-96 bg-gray-200 animate-pulse flex-shrink-0" />
           ))}
         </div>
       </div>

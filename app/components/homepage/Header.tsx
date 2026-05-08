@@ -14,28 +14,32 @@ export function Header() {
     <header className="w-full z-40">
       <div className="flex justify-center items-center py-[15px] md:py-[15px] lg:py-[15px] bg-transparent">
         <div className="relative w-full max-w-[1430px] md:max-w-[1014px] lg:max-w-[1430px] mx-auto">
-          {/* Overlay + Shadow + Background */}
+
+          {/* Background */}
           <div
-            className="absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)]"
-            style={{background: '#FBAC18'}}
+            className="absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.2)]"
+            style={{background: '#FFFFFF'}}
           />
+
           {/* Content */}
           <div className="relative flex items-center justify-between h-[52.3px] md:h-[79.3px] px-4 md:px-8 lg:px-8">
-            {/* Left: Logo */}
+
+            {/* Logo */}
             <a href="/" className="flex items-center z-10">
-              {/* Placeholder SVG logo */}
-              <span className="w-[120px] h-[32px] md:w-[160px] md:h-[40px] lg:w-[180px] lg:h-[48px] bg-white rounded flex items-center justify-center font-bold text-[#FBAC18] text-lg md:text-xl lg:text-2xl shadow-sm select-none">
-                JACKET
-              </span>
+              <img
+                src="/images/JACKET%20Logo_Black.svg"
+                alt="JACKET Logo"
+                className="w-[120px] md:w-[160px] lg:w-[180px] h-auto"
+              />
             </a>
 
-            {/* Desktop/Tablet Menu */}
+            {/* Desktop Menu */}
             <nav className="hidden md:flex gap-8 lg:gap-12 items-center z-10">
               {MENU_ITEMS.map((item) => (
                 <a
                   key={item.label}
                   href={item.href}
-                  className="text-white font-semibold text-base lg:text-lg tracking-widest hover:text-black transition-colors px-2 py-1 rounded"
+                  className="text-black font-semibold text-base lg:text-lg tracking-widest hover:text-gray-500 transition-colors px-2 py-1 rounded"
                   style={{letterSpacing: '0.12em'}}
                 >
                   {item.label}
@@ -43,14 +47,14 @@ export function Header() {
               ))}
             </nav>
 
-            {/* Desktop/Tablet Cart Icon (placeholder) */}
+            {/* Desktop Cart */}
             <div className="hidden md:flex items-center z-10">
-              <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-gray-100 transition-colors">
+              <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
                 <svg
                   width="20"
                   height="20"
                   fill="none"
-                  stroke="#FBAC18"
+                  stroke="black"
                   strokeWidth="2"
                   viewBox="0 0 24 24"
                 >
@@ -71,7 +75,7 @@ export function Header() {
                 width="28"
                 height="28"
                 fill="none"
-                stroke="white"
+                stroke="black"
                 strokeWidth="2"
                 viewBox="0 0 24 24"
               >
@@ -85,12 +89,14 @@ export function Header() {
             {mobileOpen && (
               <>
                 <div className="fixed inset-0 bg-black bg-opacity-60 z-50 flex flex-col">
-                  <div className="bg-[#FBAC18] shadow-lg rounded-b-[10px] p-6 flex flex-col gap-6">
+                  <div className="bg-white shadow-lg rounded-b-[10px] p-6 flex flex-col gap-6">
                     <div className="flex items-center justify-between mb-4">
                       <a href="/" className="flex items-center">
-                        <span className="w-[120px] h-[32px] bg-white rounded flex items-center justify-center font-bold text-[#FBAC18] text-lg shadow-sm select-none">
-                          JACKET
-                        </span>
+                        <img
+                          src="/images/JACKET%20Logo_Black.svg"
+                          alt="JACKET Logo"
+                          className="w-[120px] h-auto"
+                        />
                       </a>
                       <button
                         onClick={() => setMobileOpen(false)}
@@ -101,7 +107,7 @@ export function Header() {
                           width="28"
                           height="28"
                           fill="none"
-                          stroke="#FBAC18"
+                          stroke="black"
                           strokeWidth="2"
                           viewBox="0 0 24 24"
                         >
@@ -115,7 +121,7 @@ export function Header() {
                         <a
                           key={item.label}
                           href={item.href}
-                          className="text-white font-semibold text-lg tracking-widest hover:text-black transition-colors px-2 py-2 rounded"
+                          className="text-black font-semibold text-lg tracking-widest hover:text-gray-500 transition-colors px-2 py-2 rounded"
                           style={{letterSpacing: '0.12em'}}
                           onClick={() => setMobileOpen(false)}
                         >
@@ -124,12 +130,12 @@ export function Header() {
                       ))}
                     </nav>
                     <div className="mt-6 flex items-center">
-                      <button className="w-8 h-8 flex items-center justify-center rounded-full bg-white hover:bg-gray-100 transition-colors">
+                      <button className="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors">
                         <svg
                           width="20"
                           height="20"
                           fill="none"
-                          stroke="#FBAC18"
+                          stroke="black"
                           strokeWidth="2"
                           viewBox="0 0 24 24"
                         >
@@ -148,11 +154,7 @@ export function Header() {
                   tabIndex={0}
                   onClick={() => setMobileOpen(false)}
                   onKeyDown={(e) => {
-                    if (
-                      e.key === 'Escape' ||
-                      e.key === 'Enter' ||
-                      e.key === ' '
-                    )
+                    if (e.key === 'Escape' || e.key === 'Enter' || e.key === ' ')
                       setMobileOpen(false);
                   }}
                 />

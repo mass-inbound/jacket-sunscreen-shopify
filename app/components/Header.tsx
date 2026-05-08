@@ -49,12 +49,12 @@ export function Header({
       className={`w-full z-40 transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0' : ''}`}
     >
       <div
-        className={`flex md:px-2 justify-center items-center py-2 md:py-[15px] ${isScrolled ? 'pt-4 md:pt-[40px]' : ''} bg-transparent`}
+        className={`flex justify-center items-center bg-transparent`}
       >
         <div className="relative w-full mx-auto">
           {/* Background */}
           <div
-            className={`absolute top-0 left-0 w-full h-full rounded-[10px] shadow-[0_1px_4px_0_rgba(0,0,0,0.6)] transition-opacity duration-300`}
+            className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300`}
             style={{
               background: '#FFFFFF',
               opacity: isScrolled ? 0.8 : 1,
@@ -79,7 +79,7 @@ export function Header({
                 <img
                   src="/images/JACKET%20Logo_Black.svg"
                   alt="Logo"
-                  className="block h-[50px] md:h-[57px] lg:h-[77px] xl:h-[115px] object-contain mt-3"
+                  className="block h-[70px] md:h-[80px] lg:h-[100px] xl:h-[130px] object-contain mt-3"
                 />
               </NavLink>
             </div>

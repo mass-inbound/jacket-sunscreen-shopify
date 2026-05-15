@@ -286,42 +286,12 @@ export async function submitReview(
   }
 }
 
-/**
- * Fetch all reviews from Judge.me
- */
 export async function fetchAllReviews(
   shopDomain: string,
   apiToken: string,
-  page: number = 1,
-  perPage: number = 50
 ): Promise<ReviewForDisplay[]> {
-  try {
-    const url = new URL('https://judge.me/api/v1/reviews');
-    url.searchParams.append('shop_domain', shopDomain);
-    url.searchParams.append('api_token', apiToken);
-    url.searchParams.append('page', page.toString());
-    url.searchParams.append('per_page', perPage.toString());
-
-    console.log('Judge.me All Reviews API URL:', url.toString()); // Debug log
-    console.log('Shop domain:', shopDomain); // Debug log
-    console.log('API token:', apiToken ? 'Present' : 'Missing'); // Debug log
-
-    const response = await fetch(url.toString());
-    
-    if (!response.ok) {
-      console.error('Judge.me API error:', response.status, response.statusText);
-      const errorText = await response.text();
-      console.error('Judge.me API error response:', errorText);
-      return [];
-    }
-
-    const data = await response.json() as JudgeMeApiResponse;
-    console.log('Judge.me All Reviews API response:', data); // Debug log
-    return data.reviews.map(transformReview);
-  } catch (error) {
-    console.error('Error fetching all reviews:', error);
-    return [];
-  }
+  const reviews = await fetchAllJudgeMeReviewsRawCached(shopDomain, apiToken);
+  return reviews.map(transformReview);
 }
 
 /**

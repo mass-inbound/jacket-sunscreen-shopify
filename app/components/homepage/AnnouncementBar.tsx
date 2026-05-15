@@ -13,7 +13,7 @@ interface AnnouncementBarContentProps {
 }
 
 function AnnouncementBarContent({
-  message = "Give Mom the Gift of Ageless Skin! Use code MOM20 for 20% off",
+  message = "Free Shipping on Orders Over $50 in the U.S.",
   cart
 }: AnnouncementBarContentProps) {
 
@@ -47,7 +47,7 @@ function AnnouncementBarContent({
 
 
 export function AnnouncementBar({
-  message = "Give Mom the Gift of Ageless Skin! Use code MOM20 for 20% off",
+  message = "Free Shipping on Orders Over $50 in the U.S.",
   cart
 }: AnnouncementBarProps) {
   if (!cart) {

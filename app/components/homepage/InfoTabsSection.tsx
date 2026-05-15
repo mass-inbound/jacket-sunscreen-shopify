@@ -5,6 +5,7 @@ interface TabData {
   label: string;
   heading: string;
   description: string;
+  image?: string;
 }
 
 const tabsData: TabData[] = [
@@ -12,7 +13,8 @@ const tabsData: TabData[] = [
     id: 'what-is-jacket',
     label: 'WHAT IS JACKET?',
     heading: 'OUTDOOR BEAUTY SYSTEM',
-    description: 'JACKET is Sunscreen + Skincare that Protects, Repairs and Hydrates with a premium on Wearability. Our dermatologist-developed, bio-stimulating formulas contain antioxidants and medical-grade ingredients that deliver maximum protection and ultimate performance, working at the cellular level to repair damaged skin and reverse signs of premature aging. JACKET also promotes Collagen production, the protein responsible for maintaining tone, texture, elasticity and overall skin health. Weightless, invisible-finish sunscreens are non-greasy, won’t clog pores or cause breakouts, and are recommended for sensitive skin.'
+    description: 'JACKET is Sunscreen + Skincare that Protects, Repairs and Hydrates with a premium on Wearability. Our dermatologist-developed, bio-stimulating formulas contain antioxidants and medical-grade ingredients that deliver maximum protection and ultimate performance, working at the cellular level to repair damaged skin and reverse signs of premature aging. JACKET also promotes Collagen production, the protein responsible for maintaining tone, texture, elasticity and overall skin health. Weightless, invisible-finish sunscreens are non-greasy, won\'t clog pores or cause breakouts, and are recommended for sensitive skin.',
+    image: '/images/Products BCKGD.png'
   },
   {
     id: 'why-jacket',
@@ -30,7 +32,7 @@ const tabsData: TabData[] = [
     id: 'jacket-up',
     label: 'DERMATOLOGIST DEVELOPED',
     heading: 'BORN IN THE SUNSHINE STATE',
-    description: 'Have you noticed how many sunscreen brands say they are #1 among dermatologists? Makes you wonder just how credible those claims are. JACKET formulas were developed (not just approved, recommended, etc.) by Dr. Thomas Balshi, MD, a dermatologist and cosmetic surgeon in South Florida. Dr. Balshi sought a product that protected, nourished and repaired damaged skin without looking, feeling or smelling like you are wearing sunscreen. He couldn’t find one, so he created it. Our dermatologist has a name and a face, and he, his family and his patients wear JACKET daily.'
+    description: 'Have you noticed how many sunscreen brands say they are #1 among dermatologists? Makes you wonder just how credible those claims are. JACKET formulas were developed (not just approved, recommended, etc.) by Dr. Thomas Balshi, MD, a dermatologist and cosmetic surgeon in South Florida. Dr. Balshi sought a product that protected, nourished and repaired damaged skin without looking, feeling or smelling like you are wearing sunscreen. He couldn\'t find one, so he created it. Our dermatologist has a name and a face, and he, his family and his patients wear JACKET daily.'
   }
 ];
 
@@ -67,6 +69,16 @@ export function InfoTabsSection() {
             <div className="max-w-4xl mx-auto text-center h-full flex flex-col justify-center">
               {activeTabData && (
                 <>
+                  {/* Product image — only on WHAT IS JACKET? tab */}
+                  {activeTabData.image && (
+                    <div className="w-full mb-6">
+                      <img
+                        src={activeTabData.image}
+                        alt="Jacket product lineup"
+                        className="w-full h-auto"
+                      />
+                    </div>
+                  )}
                   <h2 className="text-xl md:text-2xl lg:text-3xl xl:text-4xl font-bold text-black mb-4 md:mb-6">
                     {activeTabData.heading}
                   </h2>
@@ -81,4 +93,4 @@ export function InfoTabsSection() {
       </div>
     </section>
   );
-} 
+}

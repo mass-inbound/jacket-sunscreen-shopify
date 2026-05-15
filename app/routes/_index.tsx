@@ -136,11 +136,11 @@ export default function Homepage() {
       {/* Hero Section */}
       <Hero />
 
-      {/* Featured Products Section */}
-      <FeaturedProducts products={data.featuredProducts} />
-
       {/* Info Tabs Section */}
       <InfoTabsSection />
+
+      {/* Featured Products Section */}
+      <FeaturedProducts products={data.featuredProducts} />
 
       {/* Comparison Chart */}
       <ComparisonChart />

@@ -11,7 +11,7 @@ export function Hero({
     <section className="relative w-full py-0">
 
       {/* Mobile */}
-      <div className="md:hidden relative w-full h-[58vh] overflow-hidden">
+      <div className="md:hidden relative w-full h-[58vh] overflow-hidden">.
         <img
           src="/images/jacket-hero-image-mobile-may.png"
           alt="Jacket skincare products"

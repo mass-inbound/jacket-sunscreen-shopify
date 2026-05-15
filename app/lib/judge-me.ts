@@ -3,6 +3,8 @@ export interface JudgeMeReview {
   rating: number;
   title: string;
   body: string;
+  published: boolean;
+  hidden: boolean;
   reviewer: {
     name: string;
     email: string;
@@ -291,7 +293,9 @@ export async function fetchAllReviews(
   apiToken: string,
 ): Promise<ReviewForDisplay[]> {
   const reviews = await fetchAllJudgeMeReviewsRawCached(shopDomain, apiToken);
-  return reviews.map(transformReview);
+  return reviews
+    .filter(r => r.published === true && r.hidden === false)
+    .map(transformReview);
 }
 
 /**

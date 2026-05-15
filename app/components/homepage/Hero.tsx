@@ -25,7 +25,7 @@ export function Hero({
               <p className="text-[18px] font-bold uppercase tracking-[0.15em] text-[#f9ad19] mb-2">
                 SPF LIFE + STYLE
               </p>
-              <h1 className="text-[46px] leading-[1] font-light tracking-tight text-white text-right">
+              <h1 className="text-[35px] leading-[1] font-light tracking-tight text-white text-right">
                 PROTECTS.<br />
                 REPAIRS.<br />
                 HYDRATES.
@@ -58,7 +58,7 @@ export function Hero({
             <div className="flex justify-start pl-[52%] pt-12">
               <div className="flex flex-col items-start">
                 {/* Task 2: SPF LIFE + STYLE subheadline */}
-                <p className="text-[13px] font-bold uppercase tracking-[0.15em] text-[#f9ad19] mb-3">
+                <p className="text-[32px] font-bold uppercase tracking-[0.15em] text-[#f9ad19] mb-3">
                   SPF LIFE + STYLE
                 </p>
                 <h1 className="text-[60px] leading-[1] font-light tracking-tight text-white text-left lg:text-[70px] 2xl:text-[80px]">

@@ -22,10 +22,10 @@ export function Hero({
           <div className="absolute inset-0">
             <div className="absolute top-[20%] right-0 left-0 flex flex-col items-end px-6">
               {/* Task 2: SPF LIFE + STYLE subheadline */}
-              <p className="text-[11px] font-bold uppercase tracking-[0.15em] text-[#f9ad19] mb-2">
+              <p className="text-[18px] font-bold uppercase tracking-[0.15em] text-[#f9ad19] mb-2">
                 SPF LIFE + STYLE
               </p>
-              <h1 className="text-[36px] leading-[1] font-light tracking-tight text-white text-right">
+              <h1 className="text-[46px] leading-[1] font-light tracking-tight text-white text-right">
                 PROTECTS.<br />
                 REPAIRS.<br />
                 HYDRATES.

@@ -37,11 +37,19 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader(args: LoaderFunctionArgs) {
+  // Start fetching non-critical data without blocking time to first byte
   const deferredData = loadDeferredData(args);
+
+  // Await the critical data required to render initial state of the page
   const criticalData = await loadCriticalData(args);
+
   return { ...deferredData, ...criticalData };
 }
 
+/**
+ * Load data necessary for rendering content above the fold. This is the critical data
+ * needed to render the page. If it's unavailable, the whole page should 400 or 500 error.
+ */
 async function loadCriticalData({ context }: LoaderFunctionArgs) {
   try {
     const [{ collections }, featuredProductsCollection] = await Promise.all([
@@ -63,6 +71,11 @@ async function loadCriticalData({ context }: LoaderFunctionArgs) {
   }
 }
 
+/**
+ * Load data for rendering content below the fold. This data is deferred and will be
+ * fetched after the initial page load. If it's unavailable, the page should still 200.
+ * Make sure to not throw any errors here, as it will cause the page to 500.
+ */
 function loadDeferredData({ context }: LoaderFunctionArgs) {
   const recommendedProducts = context.storefront
     .query(RECOMMENDED_PRODUCTS_QUERY)
@@ -93,7 +106,7 @@ export default function Homepage() {
     saveCookiePreferences,
     cookiePreferences,
   } = useFirstVisit();
-
+  // Sample tabs data - you can customize this based on your needs
   const tabs = [
     {
       id: 'all',
@@ -123,26 +136,17 @@ export default function Homepage() {
       {/* Hero Section */}
       <Hero />
 
-      {/* Task 3: Tabs Section — between hero and products */}
-      <TabsSection tabs={tabs} />
-
       {/* Featured Products Section */}
       <FeaturedProducts products={data.featuredProducts} />
 
       {/* Info Tabs Section */}
       <InfoTabsSection />
 
-      {/* Task 4: Product Line Image */}
-      <div className="w-full">
-        <img
-          src="/images/Products%20BCKGD.png"
-          alt="Jacket product lineup"
-          className="w-full h-auto"
-        />
-      </div>
-
       {/* Comparison Chart */}
       <ComparisonChart />
+
+      {/* Content Sections */}
+      {/* <ContentSections /> */}
 
       {/* PGA Partner Section */}
       <PGAPartner />
@@ -152,6 +156,20 @@ export default function Homepage() {
 
       {/* CTA Section */}
       <CTASection />
+
+      {/* Sticky Save 15% Button */}
+      {/* <button
+        onClick={openPopup}
+        className="
+    starburst-mobile
+    fixed z-50
+    text-black font-bold
+    bg-[#FBAC18] hover:brightness-95
+    transition-all duration-200
+  "
+      >
+        <span>Save <br className="block" />15%</span>
+      </button> */}
 
       {/* Sale Popup */}
       <SalePopup isVisible={showPopup} onClose={closePopup} />

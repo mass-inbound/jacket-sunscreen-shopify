@@ -23,7 +23,7 @@ export function Hero({
             <div className="absolute top-[20%] right-0 left-0 flex flex-col items-end px-6">
               {/* Task 2: SPF LIFE + STYLE subheadline */}
               <p className="text-[18px] font-bold uppercase tracking-[0.15em] text-[#f9ad19] mb-2">
-                SPF LIFE + STYLE
+                SPF LIFE+STYLE
               </p>
               <h1 className="text-[35px] leading-[1] font-light tracking-tight text-white text-right">
                 PROTECTS.<br />
@@ -48,7 +48,7 @@ export function Hero({
       {/* ── DESKTOP ── */}
       <div className="hidden md:block">
         {/* Image container */}
-        <div className="relative w-full h-[calc(100vh-145px)] overflow-hidden">
+        <div className="relative w-full h-[calc(100vh-220px)] overflow-hidden">
           <img
             src="/images/jacket-hero-image-desktop-may-new.png"
             alt="Jacket skincare products"

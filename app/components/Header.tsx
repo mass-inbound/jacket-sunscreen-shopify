@@ -223,10 +223,8 @@ function DesktopNav({
 }) {
   // SHOP: yellow underline indicator + pb-1
   const shopBtnClass = (active: boolean) =>
-    `flex items-center gap-1 font-semibold transition-colors pb-1 border-b-2 bg-transparent cursor-pointer ${
-      active
-        ? 'text-black border-[#fbac17]'
-        : 'text-black border-transparent hover:text-[#fbac17]'
+    `flex items-center gap-1 font-semibold transition-colors pb-1 bg-transparent cursor-pointer ${
+      active ? 'text-[#fbac17]' : 'text-black hover:text-[#fbac17]'
     }`;
 
   // FIX 3: added pb-1 so EXPLORE/EDUCATION sit at the same vertical position as SHOP

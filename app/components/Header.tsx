@@ -439,11 +439,11 @@ export function Header({
                         to={item.url}
                         prefetch="intent"
                         onClick={closeMegaMenu}
-                        className="flex flex-col items-start gap-1 text-[14px] text-black hover:text-[#fbac17] transition-colors"
+                        className="flex items-center gap-2 text-[14px] text-black hover:text-[#fbac17] transition-colors"
                         style={{ textDecoration: 'none' }}
-                      >
-                        <span>{item.title}</span>
-                        {item.badge && <Badge type={item.badge} />}
+                       >
+                      {item.title}
+                      {item.badge && <Badge type={item.badge} />}
                       </NavLink>
                     ))}
                   </div>

@@ -422,7 +422,7 @@ export function Header({
           onMouseEnter={() => handleEnter('shop')}
           onMouseLeave={handleLeave}
         >
-          <div className="max-w-6xl mx-auto px-8 lg:px-12 py-8 lg:py-10">
+          <div className="max-w-7xl mx-auto px-8 lg:px-12 py-8 lg:py-10">
 
             {/* 4 columns */}
             <div className="grid grid-cols-4 gap-8 lg:gap-12 mb-8">

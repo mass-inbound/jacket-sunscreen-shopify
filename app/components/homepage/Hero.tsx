@@ -13,7 +13,7 @@ export function Hero({
       {/* ── MOBILE ── */}
       <div className="md:hidden">
         {/* Image container */}
-        <div className="relative w-full h-[58vh] overflow-hidden">
+        <div className="relative w-full h-[52vh] overflow-hidden">
           <img
             src="/images/jacket-hero-image-mobile-may.png"
             alt="Jacket skincare products"
@@ -59,7 +59,7 @@ export function Hero({
               <div className="flex flex-col items-start">
                 {/* Task 2: SPF LIFE + STYLE subheadline */}
                 <p className="text-[32px] font-bold uppercase tracking-[0.15em] text-[#f9ad19] mb-3">
-                  SPF LIFE + STYLE
+                  SPF LIFE+STYLE
                 </p>
                 <h1 className="text-[60px] leading-[1] font-light tracking-tight text-white text-left lg:text-[70px] 2xl:text-[80px]">
                   PROTECTS.<br />

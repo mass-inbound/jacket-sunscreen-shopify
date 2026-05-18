@@ -1,4 +1,4 @@
-import { Suspense, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect, useRef } from 'react';
 import { Await, NavLink, useAsyncValue, useLocation } from 'react-router';
 import {
   type CartViewPayload,
@@ -14,7 +14,7 @@ import type {
 import { useAside } from '~/components/Aside';
 import { getCartItemCount } from '~/lib/inventory';
 import HamburgerIcon from "../assets/HamburgerIcon.svg";
-import SearchIcon from "../assets/SearchIcon.svg"
+import SearchIcon from "../assets/SearchIcon.svg";
 
 interface HeaderProps {
   header: HeaderQuery;
@@ -25,6 +25,281 @@ interface HeaderProps {
 
 type Viewport = 'desktop' | 'mobile';
 
+// ── Desktop mega menu data ────────────────────────────────────────────────────
+
+const shopColumns = [
+  {
+    id: 'sunscreen',
+    title: 'SUNSCREEN',
+    shopAllUrl: '/collections/sunscreen',
+    shopAllLabel: 'SHOP ALL SUNSCREEN',
+    items: [
+      { title: 'SPF 50+ Face and Body', url: '/products/spf-50-anti-aging-sunscreen', badge: 'BESTSELLER' as const },
+      { title: 'SPF 30+ Spray', url: '/products/jacket-spray-sunscreen', badge: undefined },
+      { title: 'SPF 50+ Mineral Stick', url: '/products/spf-50-mineral-stick-sunscreen', badge: undefined },
+      { title: 'SPF 40+ Tinted Moisturizer', url: '/products/jacket-spf-40-tinted-moisturizer', badge: 'BESTSELLER' as const },
+      { title: 'SPF 15 Lip Balm', url: '/products/lip-balm-by-jacket', badge: undefined },
+    ],
+  },
+  {
+    id: 'skincare',
+    title: 'SKINCARE',
+    shopAllUrl: '/collections/skincare',
+    shopAllLabel: 'SHOP ALL SKINCARE',
+    items: [
+      { title: 'Refresh Hydrating Serum', url: '/products/refresh-by-jacket', badge: undefined },
+      { title: 'Refine Face Wash', url: '/products/refine-by-jacket', badge: undefined },
+      { title: 'Platinum Peptide Cream', url: '/products/platinum-peptide-by-jacket-1', badge: 'NEW' as const },
+      { title: 'Radiance Brightening Solution', url: '/products/radiance-accelerated-brightening-solution', badge: undefined },
+    ],
+  },
+  {
+    id: 'bundles',
+    title: 'BUNDLES',
+    shopAllUrl: '/collections/bundles',
+    shopAllLabel: 'SHOP ALL BUNDLES',
+    items: [
+      { title: 'Sun Day Essentials', url: '/products/sun-day-essentials-bundle', badge: undefined },
+      { title: 'Wrinkle Reducer', url: '/products/wrinkle-reducer-bundle', badge: undefined },
+      { title: 'Outdoor Beauty System', url: '/products/outdoor-beauty-system-bundle', badge: undefined },
+    ],
+  },
+  {
+    id: 'apparel',
+    title: 'APPAREL',
+    shopAllUrl: '/collections/apparel',
+    shopAllLabel: 'SHOP ALL APPAREL',
+    items: [
+      { title: 'UPF 50+ Shirts', url: '/collections/shirts', badge: undefined },
+      { title: 'Straw Sun Hats', url: '/collections/hats', badge: undefined },
+      { title: 'Snapback Rope Hat', url: '/products/jacket-rope-snapback-hat-white', badge: undefined },
+    ],
+  },
+];
+
+const exploreItems = [
+  { title: 'RETAILERS', url: '/pages/retailers' },
+  { title: 'REVIEWS', url: '/pages/reviews' },
+  { title: 'CONTACT', url: '/pages/contact' },
+  { title: 'ABOUT', url: '/pages/about' },
+];
+
+const educationItems = [
+  { title: 'FAQ', url: '/pages/faq' },
+  { title: 'BLOG', url: '/blog' },
+];
+
+// ── Mobile menu items (HOME + SHOP BY IMAGE removed) ─────────────────────────
+
+const staticMenuItems = [
+  {
+    id: 'shop',
+    title: 'SHOP',
+    url: '/collections/shop-all',
+    items: [
+      { id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all' },
+      {
+        id: 'sunscreen',
+        title: 'SUNSCREEN',
+        url: '#',
+        items: [
+          { id: 'spf50-face-body', title: 'SPF 50+ FACE AND BODY', url: '/products/spf-50-anti-aging-sunscreen' },
+          { id: 'spf30-spray', title: 'SPF 30+ SPRAY', url: '/products/jacket-spray-sunscreen' },
+          { id: 'spf50-mineral-stick', title: 'SPF 50+ MINERAL STICK', url: '/products/spf-50-mineral-stick-sunscreen' },
+          { id: 'spf40-tinted', title: 'SPF 40+ TINTED MINERAL MOISTURIZER', url: '/products/jacket-spf-40-tinted-moisturizer' },
+          { id: 'spf15-lip-balm', title: 'SPF 15 LIP BALM', url: '/products/lip-balm-by-jacket' },
+        ],
+      },
+      {
+        id: 'skincare',
+        title: 'SKINCARE',
+        url: '#',
+        items: [
+          { id: 'skincare-spf40-tinted', title: 'SPF 40+ TINTED MINERAL MOISTURIZER', url: '/products/jacket-spf-40-tinted-moisturizer' },
+          { id: 'refresh-serum', title: 'REFRESH HYDRATING SERUM', url: '/products/refresh-by-jacket' },
+          { id: 'refine-face-wash', title: 'REFINE FACE WASH', url: '/products/refine-by-jacket' },
+          { id: 'platinum-peptide', title: 'PLATINUM PEPTIDE FACE FIRMING CREAM', url: '/products/platinum-peptide-by-jacket-1' },
+          { id: 'radiance-brightening', title: 'RADIANCE BRIGHTENING SOLUTION', url: '/products/radiance-accelerated-brightening-solution' },
+        ],
+      },
+      {
+        id: 'bundles',
+        title: 'BUNDLES',
+        url: '#',
+        items: [
+          { id: 'sun-day-essentials', title: 'SUN DAY ESSENTIALS', url: '/products/sun-day-essentials-bundle' },
+          { id: 'wrinkle-reducer', title: 'WRINKLE REDUCER', url: '/products/wrinkle-reducer-bundle' },
+          { id: 'outdoor-beauty', title: 'OUTDOOR BEAUTY SYSTEM', url: '/products/outdoor-beauty-system-bundle' },
+        ],
+      },
+      {
+        id: 'apparel',
+        title: 'APPAREL',
+        url: '#',
+        items: [
+          { id: 'shirt-black', title: 'UPF 50+ LONG-SLEEVE SHIRT (BLACK)', url: '/products/jacket-l-s-hooded-performance-shirt' },
+          { id: 'shirt-white', title: 'UPF 50+ LONG-SLEEVE SHIRT (WHITE)', url: '/products/upf-50-long-sleeve-hooded-performance-shirt-white' },
+          { id: 'hat-black', title: 'STRAW SUN HAT (BLACK SHIELD)', url: '/products/jacket-lifeguard-hat-black-patch' },
+          { id: 'hat-yellow', title: 'STRAW SUN HAT (YELLOW SHIELD)', url: '/products/lifeguard-hat-yellow-patch' },
+          { id: 'hat-snapback', title: 'SNAPBACK ROPE HAT (OFF WHITE)', url: '/products/jacket-rope-snapback-hat-white' },
+        ],
+      },
+    ],
+  },
+  {
+    id: 'explore',
+    title: 'EXPLORE',
+    url: '#',
+    items: [
+      { id: 'retailers', title: 'RETAILERS', url: '/pages/retailers' },
+      { id: 'reviews', title: 'REVIEWS', url: '/pages/reviews' },
+      { id: 'contact', title: 'CONTACT', url: '/pages/contact' },
+      { id: 'about', title: 'ABOUT', url: '/pages/about' },
+    ],
+  },
+  {
+    id: 'education',
+    title: 'EDUCATION',
+    url: '#',
+    items: [
+      { id: 'faq', title: 'FAQ', url: '/pages/faq' },
+      { id: 'blog', title: 'BLOG', url: '/blog' },
+    ],
+  },
+];
+
+// ── Badge ─────────────────────────────────────────────────────────────────────
+
+function Badge({ type }: { type: 'BESTSELLER' | 'NEW' }) {
+  return (
+    <span
+      className={`inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold tracking-wide rounded-sm flex-shrink-0 ${
+        type === 'BESTSELLER'
+          ? 'bg-[#e8d5b0] text-[#6b4c1e]'
+          : 'bg-[#f5c5b8] text-[#8b2e1a]'
+      }`}
+    >
+      {type}
+    </span>
+  );
+}
+
+// ── Small dropdown (Explore / Education) ─────────────────────────────────────
+
+function SmallDropdown({
+  items,
+  onMouseEnter,
+  onMouseLeave,
+}: {
+  items: { title: string; url: string }[];
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+}) {
+  return (
+    <div
+      className="absolute left-1/2 -translate-x-1/2 top-full mt-1 bg-white border-t-2 border-[#fbac17] z-50 rounded-b-md"
+      style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.10)', minWidth: '160px' }}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      <div className="py-2">
+        {items.map((item) => (
+          <NavLink
+            key={item.url}
+            to={item.url}
+            prefetch="intent"
+            className="block px-5 py-2 text-[12px] font-semibold tracking-[0.1em] text-black hover:text-[#fbac17] transition-colors"
+            style={{ textDecoration: 'none' }}
+          >
+            {item.title}
+          </NavLink>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── Desktop nav ───────────────────────────────────────────────────────────────
+
+function DesktopNav({
+  activeDropdown,
+  onEnter,
+  onLeave,
+}: {
+  activeDropdown: string | null;
+  onEnter: (id: string) => void;
+  onLeave: () => void;
+}) {
+  const btnClass = (active: boolean) =>
+    `flex items-center gap-1 font-semibold transition-colors pb-1 border-b-2 bg-transparent cursor-pointer ${
+      active
+        ? 'text-black border-[#fbac17]'
+        : 'text-black border-transparent hover:text-[#fbac17]'
+    }`;
+
+  return (
+    <div className="flex items-center gap-8 lg:gap-10">
+      {/* SHOP */}
+      <div className="relative" onMouseEnter={() => onEnter('shop')} onMouseLeave={onLeave}>
+        <button
+          className={btnClass(activeDropdown === 'shop')}
+          style={{ fontFamily: 'inherit', fontSize: '14px', letterSpacing: '0.12em' }}
+        >
+          SHOP
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+            className={`transition-transform duration-200 ${activeDropdown === 'shop' ? 'rotate-180' : ''}`}>
+            <polyline points="6,9 12,15 18,9" />
+          </svg>
+        </button>
+      </div>
+
+      {/* EXPLORE */}
+      <div className="relative" onMouseEnter={() => onEnter('explore')} onMouseLeave={onLeave}>
+        <button
+          className={btnClass(activeDropdown === 'explore')}
+          style={{ fontFamily: 'inherit', fontSize: '14px', letterSpacing: '0.12em' }}
+        >
+          EXPLORE
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+            className={`transition-transform duration-200 ${activeDropdown === 'explore' ? 'rotate-180' : ''}`}>
+            <polyline points="6,9 12,15 18,9" />
+          </svg>
+        </button>
+        {activeDropdown === 'explore' && (
+          <SmallDropdown
+            items={exploreItems}
+            onMouseEnter={() => onEnter('explore')}
+            onMouseLeave={onLeave}
+          />
+        )}
+      </div>
+
+      {/* EDUCATION */}
+      <div className="relative" onMouseEnter={() => onEnter('education')} onMouseLeave={onLeave}>
+        <button
+          className={btnClass(activeDropdown === 'education')}
+          style={{ fontFamily: 'inherit', fontSize: '14px', letterSpacing: '0.12em' }}
+        >
+          EDUCATION
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
+            className={`transition-transform duration-200 ${activeDropdown === 'education' ? 'rotate-180' : ''}`}>
+            <polyline points="6,9 12,15 18,9" />
+          </svg>
+        </button>
+        {activeDropdown === 'education' && (
+          <SmallDropdown
+            items={educationItems}
+            onMouseEnter={() => onEnter('education')}
+            onMouseLeave={onLeave}
+          />
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── Header ────────────────────────────────────────────────────────────────────
+
 export function Header({
   header,
   isLoggedIn,
@@ -33,42 +308,46 @@ export function Header({
 }: HeaderProps) {
   const { shop, menu } = header;
   const [isScrolled, setIsScrolled] = useState(false);
+  const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      setIsScrolled(scrollTop > 50);
-    };
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleEnter = (id: string) => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setActiveDropdown(id);
+  };
+
+  const handleLeave = () => {
+    closeTimer.current = setTimeout(() => setActiveDropdown(null), 150);
+  };
+
   return (
     <header
-      className={`w-full z-40 transition-all duration-300 ${isScrolled ? 'fixed top-0 left-0 right-0' : ''}`}
+      className={`w-full z-40 transition-all duration-300 ${
+        isScrolled ? 'fixed top-0 left-0 right-0' : 'relative'
+      }`}
     >
-      <div
-        className={`flex justify-center items-center bg-transparent`}
-      >
-        <div className="relative w-full mx-auto">
-          {/* Background */}
-          <div
-            className={`absolute top-0 left-0 w-full h-full transition-opacity duration-300`}
-            style={{
-              background: '#FFFFFF',
-              opacity: isScrolled ? 0.8 : 1,
-            }}
-          />
-          {/* Content */}
-          <div className="relative flex items-center justify-between h-[44px] md:h-[56px] lg:h-[77px] px-3 md:px-32 lg:px-48 xl:px-64">
-            {/* Left: Mobile Menu Toggle */}
-            <div className="flex items-center z-10">
+      <div className="relative w-full mx-auto">
+        {/* Background */}
+        <div
+          className="absolute top-0 left-0 w-full h-full transition-opacity duration-300"
+          style={{ background: '#FFFFFF', opacity: isScrolled ? 0.8 : 1 }}
+        />
+
+        {/* Nav bar */}
+        <div className="relative flex items-center h-[44px] md:h-[56px] lg:h-[77px] px-3 md:px-8 lg:px-12 xl:px-16">
+
+          {/* LEFT: Hamburger (mobile only) + Logo (desktop only) */}
+          <div className="flex items-center z-10">
+            <div className="md:hidden">
               <HeaderMenuMobileToggle />
             </div>
-
-            {/* Center: Logo */}
-            <div className="absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+            <div className="hidden md:block">
               <NavLink
                 prefetch="intent"
                 to="/"
@@ -79,21 +358,93 @@ export function Header({
                 <img
                   src="/images/JACKET%20Logo_Black.svg"
                   alt="Logo"
-                  className="block h-[140px] md:h-[160px] lg:h-[200px] xl:h-[230px] object-contain mt-3"
+                  className="block h-[160px] lg:h-[200px] xl:h-[230px] object-contain"
                 />
               </NavLink>
             </div>
+          </div>
 
-            {/* Right: CTAs */}
-            <div className="flex items-center z-10 gap-1 md:gap-3 lg:gap-4">
-              <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
-            </div>
+          {/* Mobile: Logo centered */}
+          <div className="md:hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+            <NavLink
+              prefetch="intent"
+              to="/"
+              className="flex items-center select-none"
+              style={{ textDecoration: 'none' }}
+              end
+            >
+              <img
+                src="/images/JACKET%20Logo_Black.svg"
+                alt="Logo"
+                className="block h-[140px] object-contain mt-3"
+              />
+            </NavLink>
+          </div>
+
+          {/* CENTER: Desktop nav links */}
+          <div className="hidden md:flex flex-1 justify-center items-center z-10">
+            <DesktopNav
+              activeDropdown={activeDropdown}
+              onEnter={handleEnter}
+              onLeave={handleLeave}
+            />
+          </div>
+
+          {/* RIGHT: CTAs */}
+          <div className="flex items-center z-10 gap-1 md:gap-3 lg:gap-4">
+            <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
           </div>
         </div>
       </div>
+
+      {/* SHOP Mega Menu — full width, below header */}
+      {activeDropdown === 'shop' && (
+        <div
+          className="hidden md:block absolute left-0 right-0 top-full bg-white z-30 border-t-2 border-[#fbac17]"
+          style={{ boxShadow: '0 8px 32px rgba(0,0,0,0.10)' }}
+          onMouseEnter={() => handleEnter('shop')}
+          onMouseLeave={handleLeave}
+        >
+          <div className="max-w-6xl mx-auto px-8 lg:px-12 py-8 lg:py-10">
+            <div className="grid grid-cols-4 gap-8 lg:gap-12">
+              {shopColumns.map((col) => (
+                <div key={col.id}>
+                  <p className="text-[11px] font-semibold tracking-[0.14em] text-gray-400 mb-4 uppercase">
+                    {col.title}
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    {col.items.map((item) => (
+                      <NavLink
+                        key={item.url}
+                        to={item.url}
+                        prefetch="intent"
+                        className="flex items-center gap-1.5 text-[13px] text-black hover:text-[#fbac17] transition-colors"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        {item.title}
+                        {item.badge && <Badge type={item.badge} />}
+                      </NavLink>
+                    ))}
+                  </div>
+                  <NavLink
+                    to={col.shopAllUrl}
+                    prefetch="intent"
+                    className="inline-flex items-center gap-1 mt-5 text-[11px] font-bold tracking-[0.1em] text-black hover:text-[#fbac17] transition-colors border-b border-black hover:border-[#fbac17] pb-0.5"
+                    style={{ textDecoration: 'none' }}
+                  >
+                    {col.shopAllLabel} →
+                  </NavLink>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
+
+// ── HeaderMenu (mobile drawer) ────────────────────────────────────────────────
 
 export function HeaderMenu({
   menu,
@@ -108,10 +459,8 @@ export function HeaderMenu({
   publicStoreDomain: HeaderProps['publicStoreDomain'];
   isLoggedIn?: Promise<boolean>;
 }) {
-  const className = `header-menu-${viewport} ${viewport === 'desktop' ? 'hidden md:flex gap-4 lg:gap-6 items-center z-10' : 'flex flex-col'} `;
   const { close } = useAside();
   const [expandedItems, setExpandedItems] = useState<Set<string>>(new Set());
-  const location = useLocation();
 
   const toggleSubmenu = (itemId: string, e: React.MouseEvent) => {
     e.preventDefault();
@@ -125,116 +474,10 @@ export function HeaderMenu({
     setExpandedItems(newExpandedItems);
   };
 
-  const staticMenuItems = [
-    {
-      id: 'home',
-      title: 'HOME',
-      url: '/',
-      items: [],
-    },
-    {
-      id: 'shop',
-      title: 'SHOP',
-      url: '/collections/shop-all',
-      items: [
-        { id: 'shop-all', title: 'SHOP ALL', url: '/collections/shop-all' },
-        {
-          id: 'sunscreen',
-          title: 'SUNSCREEN',
-          url: '#',
-          items: [
-            { id: 'spf50-face-body', title: 'SPF 50+ FACE AND BODY', url: '/products/spf-50-anti-aging-sunscreen' },
-            { id: 'spf30-spray', title: 'SPF 30+ SPRAY', url: '/products/jacket-spray-sunscreen' },
-            { id: 'spf50-mineral-stick', title: 'SPF 50+ MINERAL STICK', url: '/products/spf-50-mineral-stick-sunscreen' },
-            { id: 'spf40-tinted', title: 'SPF 40+ TINTED MINERAL MOISTURIZER', url: '/products/jacket-spf-40-tinted-moisturizer' },
-            { id: 'spf15-lip-balm', title: 'SPF 15 LIP BALM', url: '/products/lip-balm-by-jacket' },
-          ],
-        },
-        {
-          id: 'skincare',
-          title: 'SKINCARE',
-          url: '#',
-          items: [
-            { id: 'skincare-spf40-tinted', title: 'SPF 40+ TINTED MINERAL MOISTURIZER', url: '/products/jacket-spf-40-tinted-moisturizer' },
-            { id: 'refresh-serum', title: 'REFRESH HYDRATING SERUM', url: '/products/refresh-by-jacket' },
-            { id: 'refine-face-wash', title: 'REFINE FACE WASH', url: '/products/refine-by-jacket' },
-            { id: 'platinum-peptide', title: 'PLATINUM PEPTIDE FACE FIRMING CREAM', url: '/products/platinum-peptide-by-jacket-1' },
-            { id: 'radiance-brightening', title: 'RADIANCE BRIGHTENING SOLUTION', url: '/products/radiance-accelerated-brightening-solution' },
-          ],
-        },
-        {
-          id: 'bundles',
-          title: 'BUNDLES',
-          url: '#',
-          items: [
-            { id: 'sun-day-essentials', title: 'SUN DAY ESSENTIALS', url: '/products/sun-day-essentials-bundle' },
-            { id: 'wrinkle-reducer', title: 'WRINKLE REDUCER', url: '/products/wrinkle-reducer-bundle' },
-            { id: 'outdoor-beauty', title: 'OUTDOOR BEAUTY SYSTEM', url: '/products/outdoor-beauty-system-bundle' },
-          ],
-        },
-        {
-          id: 'apparel',
-          title: 'APPAREL',
-          url: '#',
-          items: [
-            { id: 'shirt-black', title: 'UPF 50+ LONG-SLEEVE SHIRT (BLACK)', url: '/products/jacket-l-s-hooded-performance-shirt' },
-            { id: 'shirt-white', title: 'UPF 50+ LONG-SLEEVE SHIRT (WHITE)', url: '/products/upf-50-long-sleeve-hooded-performance-shirt-white' },
-            { id: 'hat-black', title: 'STRAW SUN HAT (BLACK SHIELD)', url: '/products/jacket-lifeguard-hat-black-patch' },
-            { id: 'hat-yellow', title: 'STRAW SUN HAT (YELLOW SHIELD)', url: '/products/lifeguard-hat-yellow-patch' },
-            { id: 'hat-snapback', title: 'SNAPBACK ROPE HAT (OFF WHITE)', url: '/products/jacket-rope-snapback-hat-white' },
-          ],
-        },
-      ],
-    },
-    {
-      id: 'explore',
-      title: 'EXPLORE',
-      url: '#',
-      items: [
-        { id: 'retailers', title: 'RETAILERS', url: '/pages/retailers' },
-        { id: 'reviews', title: 'REVIEWS', url: '/pages/reviews' },
-        { id: 'contact', title: 'CONTACT', url: '/pages/contact' },
-        { id: 'about', title: 'ABOUT', url: '/pages/about' },
-      ],
-    },
-    {
-      id: 'education',
-      title: 'EDUCATION',
-      url: '#',
-      items: [
-        { id: 'faq', title: 'FAQ', url: '/pages/faq' },
-        { id: 'blog', title: 'BLOG', url: '/blog' },
-      ],
-    },
-  ];
-
-  const isMenuItemActive = (item: any, pathname: string) => {
-    if (item.id === 'home' && pathname === '/') return true;
-    if (item.id === 'shop') {
-      return (
-        pathname === '/collections/shop-all' ||
-        pathname === '/collections/all' ||
-        pathname === '/collections/extras' ||
-        pathname.startsWith('/products/')
-      );
-    }
-    if (item.id === 'blog') return pathname.startsWith('/blog') || pathname.startsWith('/blogs/');
-    if (item.id === 'explore') {
-      return (
-        pathname === '/pages/retailers' ||
-        pathname === '/pages/reviews' ||
-        pathname === '/pages/contact' ||
-        pathname === '/pages/about'
-      );
-    }
-    if (item.id === 'education') return pathname === '/pages/faq';
-    return false;
-  };
-
   return (
-    <nav className={className} role="navigation">
+    <nav className="flex flex-col" role="navigation">
       {viewport === 'mobile' && isLoggedIn && (
-        <div className="mb-4 pb-4 block md:hidden border-b border-gray-200">
+        <div className="mb-4 pb-4 border-b border-gray-200">
           <NavLink
             prefetch="intent"
             to="/account"
@@ -253,79 +496,48 @@ export function HeaderMenu({
       {staticMenuItems.map((item) => {
         const hasSubItems = item.items && item.items.length > 0;
         const isExpanded = expandedItems.has(item.id);
-
         return (
-          <div key={item.id} className={viewport === 'mobile' ? 'mb-0' : ''}>
+          <div key={item.id} className="mb-0">
             <NavLink
-              className={({ isActive }) => {
-                let shouldHighlight = false;
-                if (!hasSubItems) shouldHighlight = isActive;
-
-                const classes = `${viewport === 'desktop'
-                  ? `font-semibold text-[14px] lg:text-[14px] tracking-widest transition-colors px-1 py-0.5 rounded ${shouldHighlight
-                    ? 'text-[#fbac17] !important'
-                    : 'text-black hover:text-[#fbac17]'
-                  }`
-                  : `block py-1 font-bold text-[14px] tracking-wider border-0 ${shouldHighlight
-                    ? 'text-[#fbac17] !important'
-                    : 'text-black'
-                  }`
-                  } ${hasSubItems ? 'has-submenu' : ''} ${isExpanded ? 'expanded' : ''}`;
-
-                return classes;
-              }}
-              style={
-                viewport === 'desktop'
-                  ? { letterSpacing: '0.12em', textDecoration: 'none', fontSize: '14px' }
-                  : { textDecoration: 'none' }
+              className={() =>
+                `block py-1 font-bold text-[14px] tracking-wider text-black ${hasSubItems ? 'has-submenu' : ''}`
               }
+              style={{ textDecoration: 'none' }}
               end
-              onClick={
-                hasSubItems && viewport === 'mobile'
-                  ? (e) => toggleSubmenu(item.id, e)
-                  : close
-              }
+              onClick={hasSubItems ? (e) => toggleSubmenu(item.id, e) : close}
               prefetch="intent"
-              to={hasSubItems && viewport === 'mobile' ? '#' : item.url}
+              to={hasSubItems ? '#' : item.url}
             >
               <div className="flex items-center justify-between">
                 {item.title}
-                {viewport === 'mobile' && hasSubItems && (
+                {hasSubItems && (
                   <svg
                     className={`w-4 h-4 transition-transform ${isExpanded ? 'rotate-180' : ''}`}
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
+                    viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
                   >
-                    <polyline points="6,9 12,15 18,9"></polyline>
+                    <polyline points="6,9 12,15 18,9" />
                   </svg>
                 )}
               </div>
             </NavLink>
-            {viewport === 'mobile' && hasSubItems && isExpanded && (
+            {hasSubItems && isExpanded && (
               <div className="ml-4 mt-1 mb-2">
                 {item.items.map((subItem: any) => {
                   const hasNestedItems = subItem.items && subItem.items.length > 0;
                   const isSubExpanded = expandedItems.has(subItem.id);
-
                   if (hasNestedItems) {
                     return (
                       <div key={subItem.id}>
                         <button
-                          className={`flex items-center justify-between w-full py-1 font-bold text-[14px] tracking-wider text-left text-black`}
-                          style={{ textDecoration: 'none' }}
+                          className="flex items-center justify-between w-full py-1 font-bold text-[14px] tracking-wider text-left text-black"
                           onClick={(e) => toggleSubmenu(subItem.id, e)}
                         >
                           {subItem.title}
                           <svg
                             className={`w-3 h-3 transition-transform ${isSubExpanded ? 'rotate-180' : ''}`}
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="2"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
                           >
-                            <polyline points="6,9 12,15 18,9"></polyline>
+                            <polyline points="6,9 12,15 18,9" />
                           </svg>
                         </button>
                         {isSubExpanded && (
@@ -349,14 +561,13 @@ export function HeaderMenu({
                       </div>
                     );
                   }
-
                   return (
                     <NavLink
                       key={subItem.id}
                       className={({ isActive }) =>
                         `block py-0.5 text-[14px] tracking-wide ${isActive ? 'text-[#fbac17]' : 'text-black'}`
                       }
-                      style={{ textDecoration: 'none', fontSize: '14px' }}
+                      style={{ textDecoration: 'none' }}
                       onClick={close}
                       prefetch="intent"
                       to={subItem.url}
@@ -370,20 +581,18 @@ export function HeaderMenu({
           </div>
         );
       })}
-      {viewport === 'mobile' && <ShopByImages />}
     </nav>
   );
 }
+
+// ── CTAs ──────────────────────────────────────────────────────────────────────
 
 function HeaderCtas({
   isLoggedIn,
   cart,
 }: Pick<HeaderProps, 'isLoggedIn' | 'cart'>) {
   return (
-    <nav
-      className="header-ctas text-black flex items-center gap-1 md:gap-3 lg:gap-4"
-      role="navigation"
-    >
+    <nav className="header-ctas text-black flex items-center gap-1 md:gap-3 lg:gap-4" role="navigation">
       <div className="hidden md:block">
         <NavLink
           prefetch="intent"
@@ -406,18 +615,17 @@ function HeaderCtas({
 
 function HeaderMenuMobileToggle() {
   const aside = useAside();
-
   return (
     <button
-      className="flex items-center justify-center w-7 h-7 md:w-12 md:h-12 lg:w-14 lg:h-14 xl:w-16 xl:h-16 text-black hover:text-gray-600 transition-colors"
+      className="flex items-center justify-center w-7 h-7 md:w-12 md:h-12 text-black hover:text-gray-600 transition-colors"
       onClick={() => aside.open('mobile')}
       aria-label="Open menu"
     >
       <img
         src={HamburgerIcon}
         alt="Menu"
-        className="md:w-8 md:h-8 lg:w-9 lg:h-9 xl:w-11 xl:h-11"
-        style={{filter: 'brightness(0)'}}
+        className="md:w-8 md:h-8"
+        style={{ filter: 'brightness(0)' }}
       />
     </button>
   );
@@ -425,7 +633,6 @@ function HeaderMenuMobileToggle() {
 
 function SearchToggle() {
   const aside = useAside();
-
   return (
     <button
       className="reset text-black hover:text-gray-600 transition-colors p-1"
@@ -437,7 +644,7 @@ function SearchToggle() {
         width="16"
         height="16"
         className="md:w-5 md:h-5"
-        style={{filter: 'brightness(0)'}}
+        style={{ filter: 'brightness(0)' }}
       />
     </button>
   );
@@ -447,7 +654,6 @@ function CartBadge({ count }: { count: number | null }) {
   const analytics = useAnalytics();
   const aside = useAside();
   const { publish, shop, cart, prevCart } = analytics;
-
   return (
     <button
       onClick={(e) => {
@@ -468,19 +674,14 @@ function CartBadge({ count }: { count: number | null }) {
         </span>
       )}
       <svg
-        width="16"
-        height="16"
-        className="md:w-5 md:h-5"
-        fill="none"
-        stroke="black"
-        strokeWidth="2"
-        viewBox="0 0 24 24"
+        width="16" height="16" className="md:w-5 md:h-5"
+        fill="none" stroke="black" strokeWidth="2" viewBox="0 0 24 24"
       >
-        <circle cx="9" cy="21" r="1"></circle>
-        <circle cx="20" cy="21" r="1"></circle>
-        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6"></path>
-        <path d="M6 16v2"></path>
-        <path d="M21 16v2"></path>
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6" />
+        <path d="M6 16v2" />
+        <path d="M21 16v2" />
       </svg>
     </button>
   );
@@ -499,71 +700,5 @@ function CartToggle({ cart }: Pick<HeaderProps, 'cart'>) {
 function CartBanner() {
   const originalCart = useAsyncValue() as CartApiQueryFragment | null;
   const cart = useOptimisticCart(originalCart);
-  return (
-    <CartBadge count={getCartItemCount(cart as CartApiQueryFragment | null)} />
-  );
-}
-
-function ShopByImages() {
-  const [products, setProducts] = useState<ProductItemFragment[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { close } = useAside();
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch('/api/shop-all-products');
-        const data = (await response.json()) as {
-          products: ProductItemFragment[];
-        };
-        setProducts(data.products || []);
-      } catch (error) {
-        console.error('Failed to fetch products:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
-  if (loading) {
-    return (
-      <div className="shop-by-images mt-8">
-        <h3 className="text-lg font-[900] mb-6 text-black tracking-wider">
-          SHOP BY IMAGE
-        </h3>
-        <div className="flex gap-3 overflow-x-auto">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="w-32 h-96 bg-gray-200 animate-pulse flex-shrink-0" />
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="shop-by-images mt-8">
-      <h3 className="text-lg font-[900] mb-6 text-black tracking-wider">
-        SHOP BY IMAGE
-      </h3>
-      <div className="flex gap-3 overflow-x-auto">
-        {products.slice(0, 6).map((product) => (
-          <NavLink
-            key={product.id}
-            to={`/products/${product.handle}`}
-            className="block hover:opacity-80 transition-opacity flex-shrink-0"
-            onClick={close}
-          >
-            <img
-              src={product.featuredImage?.url}
-              alt={product.featuredImage?.altText || product.title}
-              className="w-16 object-cover"
-              style={{ height: '200px' }}
-            />
-          </NavLink>
-        ))}
-      </div>
-    </div>
-  );
+  return <CartBadge count={getCartItemCount(cart as CartApiQueryFragment | null)} />;
 }

@@ -58,12 +58,14 @@ const shopColumns = [
       { title: 'Outdoor Beauty System', url: '/products/outdoor-beauty-system-bundle', badge: undefined },
     ],
   },
-  {
+    {
     id: 'apparel',
     title: 'APPAREL',
     items: [
-      { title: 'UPF 50+ Shirts', url: '/collections/shirts', badge: undefined },
-      { title: 'Straw Sun Hats', url: '/collections/hats', badge: undefined },
+      { title: 'UPF 50+ Shirt (Black)', url: '/products/jacket-l-s-hooded-performance-shirt', badge: undefined },
+      { title: 'UPF 50+ Shirt (White)', url: '/products/upf-50-long-sleeve-hooded-performance-shirt-white', badge: undefined },
+      { title: 'Straw Sun Hat (Black)', url: '/products/jacket-lifeguard-hat-black-patch', badge: undefined },
+      { title: 'Straw Sun Hat (Yellow)', url: '/products/lifeguard-hat-yellow-patch', badge: undefined },
       { title: 'Snapback Rope Hat', url: '/products/jacket-rope-snapback-hat-white', badge: undefined },
     ],
   },
@@ -415,7 +417,7 @@ export function Header({
         </div>
       </div>
 
-      {/* SHOP Mega Menu — full width, below header */}
+            {/* SHOP Mega Menu — full width, below header */}
       {activeDropdown === 'shop' && (
         <div
           className="hidden md:block absolute left-0 right-0 top-full bg-white z-30 border-t-2 border-[#fbac17]"
@@ -424,51 +426,46 @@ export function Header({
           onMouseLeave={handleLeave}
         >
           <div className="max-w-6xl mx-auto px-8 lg:px-12 py-8 lg:py-10">
-            <div className="flex gap-8 lg:gap-10 items-start">
 
-              {/* SHOP ALL button */}
-              <div className="flex-shrink-0 flex flex-col justify-start pt-1">
-                <NavLink
-                  to="/collections/shop-all"
-                  prefetch="intent"
-                  onClick={closeMegaMenu}
-                  className="inline-block bg-black text-white text-[13px] font-bold tracking-[0.1em] px-5 py-2.5 hover:bg-[#fbac17] hover:text-black transition-colors"
-                  style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
-                >
-                  SHOP ALL
-                </NavLink>
-              </div>
-
-              {/* Divider */}
-              <div className="w-px self-stretch bg-gray-200 flex-shrink-0" />
-
-              {/* 4 columns — #3 fix: larger font sizes */}
-              <div className="flex-1 grid grid-cols-4 gap-8 lg:gap-12">
-                {shopColumns.map((col) => (
-                  <div key={col.id}>
-                    <p className="text-[13px] font-bold tracking-[0.14em] text-[#fbac17] mb-4 uppercase">
-                      {col.title}
-                    </p>
-                    <div className="flex flex-col gap-3">
-                      {col.items.map((item) => (
-                        <NavLink
-                          key={item.url}
-                          to={item.url}
-                          prefetch="intent"
-                          onClick={closeMegaMenu}
-                          className="flex items-center gap-1.5 text-[14px] text-black hover:text-[#fbac17] transition-colors"
-                          style={{ textDecoration: 'none' }}
-                        >
-                          {item.title}
-                          {item.badge && <Badge type={item.badge} />}
-                        </NavLink>
-                      ))}
-                    </div>
+            {/* 4 columns — full width */}
+            <div className="grid grid-cols-4 gap-8 lg:gap-12 mb-8">
+              {shopColumns.map((col) => (
+                <div key={col.id}>
+                  <p className="text-[13px] font-bold tracking-[0.14em] text-[#fbac17] mb-4 uppercase">
+                    {col.title}
+                  </p>
+                  <div className="flex flex-col gap-3">
+                    {col.items.map((item) => (
+                      <NavLink
+                        key={item.url}
+                        to={item.url}
+                        prefetch="intent"
+                        onClick={closeMegaMenu}
+                        className="flex items-center gap-1.5 text-[14px] text-black hover:text-[#fbac17] transition-colors"
+                        style={{ textDecoration: 'none' }}
+                      >
+                        {item.title}
+                        {item.badge && <Badge type={item.badge} />}
+                      </NavLink>
+                    ))}
                   </div>
-                ))}
-              </div>
-
+                </div>
+              ))}
             </div>
+
+            {/* SHOP ALL — bottom */}
+            <div className="pt-6 border-t border-gray-100">
+              <NavLink
+                to="/collections/shop-all"
+                prefetch="intent"
+                onClick={closeMegaMenu}
+                className="inline-block bg-black text-white text-[13px] font-bold tracking-[0.1em] px-6 py-2.5 hover:bg-[#fbac17] hover:text-black transition-colors"
+                style={{ textDecoration: 'none' }}
+              >
+                SHOP ALL
+              </NavLink>
+            </div>
+
           </div>
         </div>
       )}

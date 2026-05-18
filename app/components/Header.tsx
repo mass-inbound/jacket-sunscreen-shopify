@@ -58,14 +58,12 @@ const shopColumns = [
       { title: 'Outdoor Beauty System', url: '/products/outdoor-beauty-system-bundle', badge: undefined },
     ],
   },
-    {
+  {
     id: 'apparel',
     title: 'APPAREL',
     items: [
-      { title: 'UPF 50+ Shirt (Black)', url: '/products/jacket-l-s-hooded-performance-shirt', badge: undefined },
-      { title: 'UPF 50+ Shirt (White)', url: '/products/upf-50-long-sleeve-hooded-performance-shirt-white', badge: undefined },
-      { title: 'Straw Sun Hat (Black)', url: '/products/jacket-lifeguard-hat-black-patch', badge: undefined },
-      { title: 'Straw Sun Hat (Yellow)', url: '/products/lifeguard-hat-yellow-patch', badge: undefined },
+      { title: 'UPF 50+ Shirt', url: '/products/jacket-l-s-hooded-performance-shirt', badge: undefined },
+      { title: 'Straw Sun Hat', url: '/products/jacket-lifeguard-hat-black-patch', badge: undefined },
       { title: 'Snapback Rope Hat', url: '/products/jacket-rope-snapback-hat-white', badge: undefined },
     ],
   },
@@ -162,7 +160,7 @@ const staticMenuItems = [
   },
 ];
 
-// ── Badge — #1 fix: gold bg, black text ───────────────────────────────────────
+// ── Badge ─────────────────────────────────────────────────────────────────────
 
 function Badge({ type }: { type: 'BESTSELLER' | 'NEW' }) {
   return (
@@ -223,7 +221,7 @@ function DesktopNav({
   onLeave: () => void;
   onLinkClick: () => void;
 }) {
-  // SHOP: keeps the yellow underline indicator
+  // SHOP: yellow underline indicator + pb-1
   const shopBtnClass = (active: boolean) =>
     `flex items-center gap-1 font-semibold transition-colors pb-1 border-b-2 bg-transparent cursor-pointer ${
       active
@@ -231,9 +229,9 @@ function DesktopNav({
         : 'text-black border-transparent hover:text-[#fbac17]'
     }`;
 
-  // EXPLORE / EDUCATION: #4 fix — no underline, just text color
+  // FIX 3: added pb-1 so EXPLORE/EDUCATION sit at the same vertical position as SHOP
   const linkBtnClass = (active: boolean) =>
-    `flex items-center gap-1 font-semibold transition-colors bg-transparent cursor-pointer ${
+    `flex items-center gap-1 font-semibold transition-colors pb-1 bg-transparent cursor-pointer ${
       active ? 'text-[#fbac17]' : 'text-black hover:text-[#fbac17]'
     }`;
 
@@ -335,7 +333,6 @@ export function Header({
     setActiveDropdown(null);
   };
 
-  // #7 fix: scroll to top handler for logo
   const handleLogoClick = () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
@@ -353,7 +350,7 @@ export function Header({
           style={{ background: '#FFFFFF', opacity: isScrolled ? 0.8 : 1 }}
         />
 
-        {/* Nav bar — #5 fix: justify-between so mobile CTAs always go far right */}
+        {/* Nav bar */}
         <div className="relative flex items-center justify-between h-[44px] md:h-[56px] lg:h-[77px] px-3 md:px-8 lg:px-12 xl:px-16">
 
           {/* LEFT: Hamburger (mobile) + Logo (desktop) */}
@@ -379,7 +376,7 @@ export function Header({
             </div>
           </div>
 
-          {/* Mobile: Logo centered absolutely — #7 fix: NavLink to="/" */}
+          {/* Mobile: Logo centered absolutely */}
           <div className="md:hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
             <NavLink
               prefetch="intent"
@@ -397,7 +394,7 @@ export function Header({
             </NavLink>
           </div>
 
-          {/* CENTER: Desktop nav — absolutely centered relative to full header width */}
+          {/* CENTER: Desktop nav — absolutely centered */}
           <div className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none z-10">
             <div className="pointer-events-auto">
               <DesktopNav
@@ -409,7 +406,7 @@ export function Header({
             </div>
           </div>
 
-          {/* RIGHT: CTAs — #5 fix: flex-shrink-0 keeps it on the right with justify-between */}
+          {/* RIGHT: CTAs */}
           <div className="flex items-center z-10 flex-shrink-0 gap-1 md:gap-3 lg:gap-4">
             <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
           </div>
@@ -417,7 +414,7 @@ export function Header({
         </div>
       </div>
 
-            {/* SHOP Mega Menu — full width, below header */}
+      {/* SHOP Mega Menu */}
       {activeDropdown === 'shop' && (
         <div
           className="hidden md:block absolute left-0 right-0 top-full bg-white z-30 border-t-2 border-[#fbac17]"
@@ -427,7 +424,7 @@ export function Header({
         >
           <div className="max-w-6xl mx-auto px-8 lg:px-12 py-8 lg:py-10">
 
-            {/* 4 columns — full width */}
+            {/* 4 columns */}
             <div className="grid grid-cols-4 gap-8 lg:gap-12 mb-8">
               {shopColumns.map((col) => (
                 <div key={col.id}>
@@ -436,15 +433,16 @@ export function Header({
                   </p>
                   <div className="flex flex-col gap-3">
                     {col.items.map((item) => (
+                      // FIX 2: flex-col so badge sits below text — text never wraps due to competing width
                       <NavLink
                         key={item.url}
                         to={item.url}
                         prefetch="intent"
                         onClick={closeMegaMenu}
-                        className="flex items-center gap-1.5 text-[14px] text-black hover:text-[#fbac17] transition-colors"
+                        className="flex flex-col items-start gap-1 text-[14px] text-black hover:text-[#fbac17] transition-colors"
                         style={{ textDecoration: 'none' }}
                       >
-                        {item.title}
+                        <span>{item.title}</span>
                         {item.badge && <Badge type={item.badge} />}
                       </NavLink>
                     ))}
@@ -557,7 +555,6 @@ export function HeaderMenu({
                   if (hasNestedItems) {
                     return (
                       <div key={subItem.id}>
-                        {/* #6 fix: consistent text-[14px] for category headers */}
                         <button
                           className="flex items-center justify-between w-full py-1 font-bold text-[14px] tracking-wider text-left text-black"
                           onClick={(e) => toggleSubmenu(subItem.id, e)}
@@ -576,7 +573,6 @@ export function HeaderMenu({
                               <NavLink
                                 key={nestedItem.id}
                                 className={({ isActive }) =>
-                                  // #6 fix: text-[14px] for all nested product links too
                                   `block py-0.5 text-[14px] tracking-wide ${isActive ? 'text-[#fbac17]' : 'text-black'}`
                                 }
                                 style={{ textDecoration: 'none' }}

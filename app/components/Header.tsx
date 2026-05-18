@@ -31,8 +31,6 @@ const shopColumns = [
   {
     id: 'sunscreen',
     title: 'SUNSCREEN',
-    shopAllUrl: '/collections/sunscreen',
-    shopAllLabel: 'SHOP ALL SUNSCREEN',
     items: [
       { title: 'SPF 50+ Face and Body', url: '/products/spf-50-anti-aging-sunscreen', badge: 'BESTSELLER' as const },
       { title: 'SPF 30+ Spray', url: '/products/jacket-spray-sunscreen', badge: undefined },
@@ -44,8 +42,6 @@ const shopColumns = [
   {
     id: 'skincare',
     title: 'SKINCARE',
-    shopAllUrl: '/collections/skincare',
-    shopAllLabel: 'SHOP ALL SKINCARE',
     items: [
       { title: 'Refresh Hydrating Serum', url: '/products/refresh-by-jacket', badge: undefined },
       { title: 'Refine Face Wash', url: '/products/refine-by-jacket', badge: undefined },
@@ -56,8 +52,6 @@ const shopColumns = [
   {
     id: 'bundles',
     title: 'BUNDLES',
-    shopAllUrl: '/collections/bundles',
-    shopAllLabel: 'SHOP ALL BUNDLES',
     items: [
       { title: 'Sun Day Essentials', url: '/products/sun-day-essentials-bundle', badge: undefined },
       { title: 'Wrinkle Reducer', url: '/products/wrinkle-reducer-bundle', badge: undefined },
@@ -67,8 +61,6 @@ const shopColumns = [
   {
     id: 'apparel',
     title: 'APPAREL',
-    shopAllUrl: '/collections/apparel',
-    shopAllLabel: 'SHOP ALL APPAREL',
     items: [
       { title: 'UPF 50+ Shirts', url: '/collections/shirts', badge: undefined },
       { title: 'Straw Sun Hats', url: '/collections/hats', badge: undefined },
@@ -89,7 +81,7 @@ const educationItems = [
   { title: 'BLOG', url: '/blog' },
 ];
 
-// ── Mobile menu items (HOME + SHOP BY IMAGE removed) ─────────────────────────
+// ── Mobile menu items ─────────────────────────────────────────────────────────
 
 const staticMenuItems = [
   {
@@ -168,17 +160,11 @@ const staticMenuItems = [
   },
 ];
 
-// ── Badge ─────────────────────────────────────────────────────────────────────
+// ── Badge — #1 fix: gold bg, black text ───────────────────────────────────────
 
 function Badge({ type }: { type: 'BESTSELLER' | 'NEW' }) {
   return (
-    <span
-      className={`inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold tracking-wide rounded-sm flex-shrink-0 ${
-        type === 'BESTSELLER'
-          ? 'bg-[#e8d5b0] text-[#6b4c1e]'
-          : 'bg-[#f5c5b8] text-[#8b2e1a]'
-      }`}
-    >
+    <span className="inline-flex items-center px-1.5 py-0.5 text-[9px] font-bold tracking-wide rounded-sm flex-shrink-0 bg-[#FBAC1F] text-black">
       {type}
     </span>
   );
@@ -190,15 +176,17 @@ function SmallDropdown({
   items,
   onMouseEnter,
   onMouseLeave,
+  onLinkClick,
 }: {
   items: { title: string; url: string }[];
   onMouseEnter: () => void;
   onMouseLeave: () => void;
+  onLinkClick: () => void;
 }) {
   return (
     <div
       className="absolute left-1/2 -translate-x-1/2 top-full mt-1 bg-white border-t-2 border-[#fbac17] z-50 rounded-b-md"
-      style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.10)', minWidth: '160px' }}
+      style={{ boxShadow: '0 8px 24px rgba(0,0,0,0.10)', minWidth: '180px' }}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
     >
@@ -208,7 +196,8 @@ function SmallDropdown({
             key={item.url}
             to={item.url}
             prefetch="intent"
-            className="block px-5 py-2 text-[12px] font-semibold tracking-[0.1em] text-black hover:text-[#fbac17] transition-colors"
+            onClick={onLinkClick}
+            className="block px-5 py-2 text-[14px] font-semibold tracking-[0.1em] text-black hover:text-[#fbac17] transition-colors"
             style={{ textDecoration: 'none' }}
           >
             {item.title}
@@ -225,25 +214,35 @@ function DesktopNav({
   activeDropdown,
   onEnter,
   onLeave,
+  onLinkClick,
 }: {
   activeDropdown: string | null;
   onEnter: (id: string) => void;
   onLeave: () => void;
+  onLinkClick: () => void;
 }) {
-  const btnClass = (active: boolean) =>
+  // SHOP: keeps the yellow underline indicator
+  const shopBtnClass = (active: boolean) =>
     `flex items-center gap-1 font-semibold transition-colors pb-1 border-b-2 bg-transparent cursor-pointer ${
       active
         ? 'text-black border-[#fbac17]'
         : 'text-black border-transparent hover:text-[#fbac17]'
     }`;
 
+  // EXPLORE / EDUCATION: #4 fix — no underline, just text color
+  const linkBtnClass = (active: boolean) =>
+    `flex items-center gap-1 font-semibold transition-colors bg-transparent cursor-pointer ${
+      active ? 'text-[#fbac17]' : 'text-black hover:text-[#fbac17]'
+    }`;
+
   return (
     <div className="flex items-center gap-8 lg:gap-10">
+
       {/* SHOP */}
       <div className="relative" onMouseEnter={() => onEnter('shop')} onMouseLeave={onLeave}>
         <button
-          className={btnClass(activeDropdown === 'shop')}
-          style={{ fontFamily: 'inherit', fontSize: '14px', letterSpacing: '0.12em' }}
+          className={shopBtnClass(activeDropdown === 'shop')}
+          style={{ fontFamily: 'inherit', fontSize: '16px', letterSpacing: '0.12em' }}
         >
           SHOP
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
@@ -256,8 +255,8 @@ function DesktopNav({
       {/* EXPLORE */}
       <div className="relative" onMouseEnter={() => onEnter('explore')} onMouseLeave={onLeave}>
         <button
-          className={btnClass(activeDropdown === 'explore')}
-          style={{ fontFamily: 'inherit', fontSize: '14px', letterSpacing: '0.12em' }}
+          className={linkBtnClass(activeDropdown === 'explore')}
+          style={{ fontFamily: 'inherit', fontSize: '16px', letterSpacing: '0.12em' }}
         >
           EXPLORE
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
@@ -270,6 +269,7 @@ function DesktopNav({
             items={exploreItems}
             onMouseEnter={() => onEnter('explore')}
             onMouseLeave={onLeave}
+            onLinkClick={onLinkClick}
           />
         )}
       </div>
@@ -277,8 +277,8 @@ function DesktopNav({
       {/* EDUCATION */}
       <div className="relative" onMouseEnter={() => onEnter('education')} onMouseLeave={onLeave}>
         <button
-          className={btnClass(activeDropdown === 'education')}
-          style={{ fontFamily: 'inherit', fontSize: '14px', letterSpacing: '0.12em' }}
+          className={linkBtnClass(activeDropdown === 'education')}
+          style={{ fontFamily: 'inherit', fontSize: '16px', letterSpacing: '0.12em' }}
         >
           EDUCATION
           <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"
@@ -291,9 +291,11 @@ function DesktopNav({
             items={educationItems}
             onMouseEnter={() => onEnter('education')}
             onMouseLeave={onLeave}
+            onLinkClick={onLinkClick}
           />
         )}
       </div>
+
     </div>
   );
 }
@@ -326,6 +328,16 @@ export function Header({
     closeTimer.current = setTimeout(() => setActiveDropdown(null), 150);
   };
 
+  const closeMegaMenu = () => {
+    if (closeTimer.current) clearTimeout(closeTimer.current);
+    setActiveDropdown(null);
+  };
+
+  // #7 fix: scroll to top handler for logo
+  const handleLogoClick = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
   return (
     <header
       className={`w-full z-40 transition-all duration-300 ${
@@ -339,11 +351,11 @@ export function Header({
           style={{ background: '#FFFFFF', opacity: isScrolled ? 0.8 : 1 }}
         />
 
-        {/* Nav bar */}
-        <div className="relative flex items-center h-[44px] md:h-[56px] lg:h-[77px] px-3 md:px-8 lg:px-12 xl:px-16">
+        {/* Nav bar — #5 fix: justify-between so mobile CTAs always go far right */}
+        <div className="relative flex items-center justify-between h-[44px] md:h-[56px] lg:h-[77px] px-3 md:px-8 lg:px-12 xl:px-16">
 
-          {/* LEFT: Hamburger (mobile only) + Logo (desktop only) */}
-          <div className="flex items-center z-10">
+          {/* LEFT: Hamburger (mobile) + Logo (desktop) */}
+          <div className="flex items-center z-10 flex-shrink-0">
             <div className="md:hidden">
               <HeaderMenuMobileToggle />
             </div>
@@ -351,6 +363,7 @@ export function Header({
               <NavLink
                 prefetch="intent"
                 to="/"
+                onClick={handleLogoClick}
                 className="flex items-center select-none"
                 style={{ textDecoration: 'none' }}
                 end
@@ -364,11 +377,12 @@ export function Header({
             </div>
           </div>
 
-          {/* Mobile: Logo centered */}
+          {/* Mobile: Logo centered absolutely — #7 fix: NavLink to="/" */}
           <div className="md:hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
             <NavLink
               prefetch="intent"
               to="/"
+              onClick={handleLogoClick}
               className="flex items-center select-none"
               style={{ textDecoration: 'none' }}
               end
@@ -381,19 +395,23 @@ export function Header({
             </NavLink>
           </div>
 
-          {/* CENTER: Desktop nav links */}
-          <div className="hidden md:flex flex-1 justify-center items-center z-10">
-            <DesktopNav
-              activeDropdown={activeDropdown}
-              onEnter={handleEnter}
-              onLeave={handleLeave}
-            />
+          {/* CENTER: Desktop nav — absolutely centered relative to full header width */}
+          <div className="hidden md:flex absolute inset-0 items-center justify-center pointer-events-none z-10">
+            <div className="pointer-events-auto">
+              <DesktopNav
+                activeDropdown={activeDropdown}
+                onEnter={handleEnter}
+                onLeave={handleLeave}
+                onLinkClick={closeMegaMenu}
+              />
+            </div>
           </div>
 
-          {/* RIGHT: CTAs */}
-          <div className="flex items-center z-10 gap-1 md:gap-3 lg:gap-4">
+          {/* RIGHT: CTAs — #5 fix: flex-shrink-0 keeps it on the right with justify-between */}
+          <div className="flex items-center z-10 flex-shrink-0 gap-1 md:gap-3 lg:gap-4">
             <HeaderCtas isLoggedIn={isLoggedIn} cart={cart} />
           </div>
+
         </div>
       </div>
 
@@ -406,36 +424,50 @@ export function Header({
           onMouseLeave={handleLeave}
         >
           <div className="max-w-6xl mx-auto px-8 lg:px-12 py-8 lg:py-10">
-            <div className="grid grid-cols-4 gap-8 lg:gap-12">
-              {shopColumns.map((col) => (
-                <div key={col.id}>
-                  <p className="text-[11px] font-semibold tracking-[0.14em] text-gray-400 mb-4 uppercase">
-                    {col.title}
-                  </p>
-                  <div className="flex flex-col gap-3">
-                    {col.items.map((item) => (
-                      <NavLink
-                        key={item.url}
-                        to={item.url}
-                        prefetch="intent"
-                        className="flex items-center gap-1.5 text-[13px] text-black hover:text-[#fbac17] transition-colors"
-                        style={{ textDecoration: 'none' }}
-                      >
-                        {item.title}
-                        {item.badge && <Badge type={item.badge} />}
-                      </NavLink>
-                    ))}
+            <div className="flex gap-8 lg:gap-10 items-start">
+
+              {/* SHOP ALL button */}
+              <div className="flex-shrink-0 flex flex-col justify-start pt-1">
+                <NavLink
+                  to="/collections/shop-all"
+                  prefetch="intent"
+                  onClick={closeMegaMenu}
+                  className="inline-block bg-black text-white text-[13px] font-bold tracking-[0.1em] px-5 py-2.5 hover:bg-[#fbac17] hover:text-black transition-colors"
+                  style={{ textDecoration: 'none', whiteSpace: 'nowrap' }}
+                >
+                  SHOP ALL
+                </NavLink>
+              </div>
+
+              {/* Divider */}
+              <div className="w-px self-stretch bg-gray-200 flex-shrink-0" />
+
+              {/* 4 columns — #3 fix: larger font sizes */}
+              <div className="flex-1 grid grid-cols-4 gap-8 lg:gap-12">
+                {shopColumns.map((col) => (
+                  <div key={col.id}>
+                    <p className="text-[13px] font-bold tracking-[0.14em] text-[#fbac17] mb-4 uppercase">
+                      {col.title}
+                    </p>
+                    <div className="flex flex-col gap-3">
+                      {col.items.map((item) => (
+                        <NavLink
+                          key={item.url}
+                          to={item.url}
+                          prefetch="intent"
+                          onClick={closeMegaMenu}
+                          className="flex items-center gap-1.5 text-[14px] text-black hover:text-[#fbac17] transition-colors"
+                          style={{ textDecoration: 'none' }}
+                        >
+                          {item.title}
+                          {item.badge && <Badge type={item.badge} />}
+                        </NavLink>
+                      ))}
+                    </div>
                   </div>
-                  <NavLink
-                    to={col.shopAllUrl}
-                    prefetch="intent"
-                    className="inline-flex items-center gap-1 mt-5 text-[11px] font-bold tracking-[0.1em] text-black hover:text-[#fbac17] transition-colors border-b border-black hover:border-[#fbac17] pb-0.5"
-                    style={{ textDecoration: 'none' }}
-                  >
-                    {col.shopAllLabel} →
-                  </NavLink>
-                </div>
-              ))}
+                ))}
+              </div>
+
             </div>
           </div>
         </div>
@@ -528,6 +560,7 @@ export function HeaderMenu({
                   if (hasNestedItems) {
                     return (
                       <div key={subItem.id}>
+                        {/* #6 fix: consistent text-[14px] for category headers */}
                         <button
                           className="flex items-center justify-between w-full py-1 font-bold text-[14px] tracking-wider text-left text-black"
                           onClick={(e) => toggleSubmenu(subItem.id, e)}
@@ -546,7 +579,8 @@ export function HeaderMenu({
                               <NavLink
                                 key={nestedItem.id}
                                 className={({ isActive }) =>
-                                  `block py-0.5 text-[13px] tracking-wide ${isActive ? 'text-[#fbac17]' : 'text-black'}`
+                                  // #6 fix: text-[14px] for all nested product links too
+                                  `block py-0.5 text-[14px] tracking-wide ${isActive ? 'text-[#fbac17]' : 'text-black'}`
                                 }
                                 style={{ textDecoration: 'none' }}
                                 onClick={close}

@@ -368,7 +368,7 @@ export function Header({
                 <img
                   src="/images/JACKET%20Logo_Black.svg"
                   alt="Logo"
-                  className="block h-[160px] lg:h-[200px] xl:h-[230px] object-contain"
+                  className="block h-[200px] lg:h-[250px] xl:h-[290px] object-contain"
                 />
               </NavLink>
             </div>
@@ -387,7 +387,7 @@ export function Header({
               <img
                 src="/images/JACKET%20Logo_Black.svg"
                 alt="Logo"
-                className="block h-[140px] object-contain mt-3"
+                className="block h-[190px] object-contain mt-3"
               />
             </NavLink>
           </div>

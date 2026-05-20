@@ -349,7 +349,7 @@ export function Header({
         />
 
         {/* Nav bar */}
-        <div className="relative flex items-center justify-between h-[44px] md:h-[56px] lg:h-[77px] px-3 md:px-8 lg:px-12 xl:px-16">
+        <div className="relative flex items-center justify-between h-[60px] md:h-[56px] lg:h-[77px] px-3 md:px-8 lg:px-12 xl:px-16">
 
           {/* LEFT: Hamburger (mobile) + Logo (desktop) */}
           <div className="flex items-center z-10 flex-shrink-0">
@@ -387,7 +387,7 @@ export function Header({
               <img
                 src="/images/JACKET%20Logo_Black.svg"
                 alt="Logo"
-                className="block h-[120px] w-auto object-contain"
+                className="block h-[200px] w-auto object-contain"
               />
             </NavLink>
           </div>
@@ -642,14 +642,14 @@ function HeaderMenuMobileToggle() {
   const aside = useAside();
   return (
     <button
-      className="flex items-center justify-center w-7 h-7 md:w-12 md:h-12 text-black hover:text-gray-600 transition-colors"
+      className="flex items-center justify-center w-9 h-9 md:w-12 md:h-12 text-black hover:text-gray-600 transition-colors"
       onClick={() => aside.open('mobile')}
       aria-label="Open menu"
     >
       <img
         src={HamburgerIcon}
         alt="Menu"
-        className="md:w-8 md:h-8"
+        className="w-6 h-6 md:w-8 md:h-8"
         style={{ filter: 'brightness(0)' }}
       />
     </button>
@@ -666,8 +666,8 @@ function SearchToggle() {
       <img
         src={SearchIcon}
         alt="Search"
-        width="16"
-        height="16"
+        width="22"
+        height="22"
         className="md:w-5 md:h-5"
         style={{ filter: 'brightness(0)' }}
       />
@@ -699,7 +699,7 @@ function CartBadge({ count }: { count: number | null }) {
         </span>
       )}
       <svg
-        width="16" height="16" className="md:w-5 md:h-5"
+        width="22" height="22" className="md:w-5 md:h-5"
         fill="none" stroke="black" strokeWidth="2" viewBox="0 0 24 24"
       >
         <circle cx="9" cy="21" r="1" />

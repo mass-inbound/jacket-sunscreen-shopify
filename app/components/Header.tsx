@@ -375,7 +375,7 @@ export function Header({
           </div>
 
           {/* Mobile: Logo centered absolutely */}
-          <div className="md:hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20">
+          <div className="md:hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-[140px]">
             <NavLink
               prefetch="intent"
               to="/"
@@ -387,7 +387,7 @@ export function Header({
               <img
                 src="/images/JACKET%20Logo_Black.svg"
                 alt="Logo"
-                className="block w-[200px] h-auto object-contain"
+                className="block w-full h-auto"
               />
             </NavLink>
           </div>

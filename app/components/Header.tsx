@@ -375,7 +375,7 @@ export function Header({
           </div>
 
           {/* Mobile: Logo centered absolutely */}
-          <div className="md:hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-[140px]">
+          <div className="md:hidden absolute left-1/2 top-1/2 transform -translate-x-1/2 -translate-y-1/2 z-20 w-[200px]">
             <NavLink
               prefetch="intent"
               to="/"

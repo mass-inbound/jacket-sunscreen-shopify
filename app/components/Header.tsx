@@ -387,7 +387,7 @@ export function Header({
               <img
                 src="/images/JACKET%20Logo_Black.svg"
                 alt="Logo"
-                className="block w-[200px] h-auto object-contain"
+                className="block h-[120px] w-auto object-contain"
               />
             </NavLink>
           </div>

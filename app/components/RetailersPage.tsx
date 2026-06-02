@@ -1,3 +1,5 @@
+import {ShopifyRetailersForm} from '~/components/ShopifyRetailersForm';
+
 const retailers = [
   { id: 1, name: 'Balshi Dermatology & Cosmetic Surgery', address: '4665 W. Atlantic Avenue', city: 'Delray Beach, Florida' },
   { id: 2, name: 'Beyond Skin & Wellness', address: '606 S.E. Third Avenue', city: 'Ocala, Florida' },
@@ -33,32 +35,45 @@ export function RetailersPage() {
       {/* Header Section */}
       <div className="py-8 text-center">
         <div className="bg-[#FBAC18] px-8 py-2 inline-block rounded mb-4">
-          <div className="text-5xl font-normal text-white">RETAILERS</div>
+          <div className="text-3xl md:text-5xl font-normal text-white">RETAILERS</div>
         </div>
         <p className="text-base font-normal text-gray-700 mt-4">
           Thank you to all of our retail partners. We appreciate your support.
         </p>
       </div>
 
-      {/* Retailers List */}
+      {/* Retailers Grid */}
       <div className="max-w-7xl mx-auto px-4 pb-16">
-        <div className="grid grid-cols-1 md:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
           {retailers.map((retailer) => (
             <div
               key={retailer.id}
-              className="w-full p-6 bg-[#FBAC18] rounded-lg text-center"
+              className="w-full p-4 md:p-6 bg-[#FBAC18] rounded-lg text-center"
             >
               <div className="space-y-2">
-                <h3 className="font-bold text-base text-black">
+                <h3 className="font-bold text-sm md:text-base text-black">
                   {retailer.name}
                 </h3>
-                <div className="text-sm font-normal text-black">
+                <div className="text-xs md:text-sm font-normal text-black">
                   <p>{retailer.address}</p>
                   <p>{retailer.city}</p>
                 </div>
               </div>
             </div>
           ))}
+        </div>
+      </div>
+
+      {/* Become a Retailer Form */}
+      <div className="bg-gray-100 py-16">
+        <div className="max-w-2xl mx-auto px-4 text-center">
+          <h2 className="text-2xl md:text-4xl font-bold uppercase text-black mb-2">
+            Become a Retailer
+          </h2>
+          <p className="text-base font-normal text-gray-600 mb-8">
+            Interested in carrying JACKET products? Fill out the form below and we'll be in touch.
+          </p>
+          <ShopifyRetailersForm className="w-full" />
         </div>
       </div>
 

@@ -71,7 +71,7 @@ export function RetailersPage() {
             Become a Retailer
           </h2>
           <p className="text-base font-normal text-gray-600 mb-8">
-            Interested in carrying JACKET products? Fill out the form below and we'll be in touch.
+            Interested in selling JACKET products?
           </p>
           <ShopifyRetailersForm className="w-full" />
         </div>

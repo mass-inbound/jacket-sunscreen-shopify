@@ -261,7 +261,7 @@ export function Footer({
                       {/* Tagline */}
                       <div className="absolute left-[237px] top-[51px] w-[198px]">
                         <h6 className="text-[13px] leading-[1.4em] font-bold text-white pb-[11px]">
-                          OUTDOOR BEAUTY SYSTEM.
+                          OUTDOOR BEAUTY SYSTEM
                         </h6>
                       </div>
 
